@@ -1,0 +1,500 @@
+[
+  {
+    "id": 1,
+    "name": "Warrior Ice Arena",
+    "address": "90 Guest St",
+    "city": "Boston",
+    "state": "MA",
+    "lat": 42.3476,
+    "lng": -71.1508,
+    "type": "NHL",
+    "isPublic": true,
+    "rating": 4.6,
+    "reviewCount": 312,
+    "phone": "(617) 746-7370",
+    "website": "warrioricearena.com",
+    "checkins": 847,
+    "hours": {
+      "Mon": "5:30am–10pm",
+      "Tue": "5:30am–10pm",
+      "Wed": "5:30am–10pm",
+      "Thu": "5:30am–10pm",
+      "Fri": "5:30am–10pm",
+      "Sat": "7am–8pm",
+      "Sun": "7am–8pm"
+    },
+    "amenities": ["Pro Shop", "Locker Rooms", "Skate Rental", "Sharpening", "Concessions"],
+    "events": [
+      {"title": "Public Skate", "date": "Today 3–5 PM"},
+      {"title": "Learn to Skate", "date": "Sat 10 AM"}
+    ],
+    "reviews": [
+      {"author": "Mike D.", "rating": 5, "text": "Best ice in Boston. Two NHL sheets and a pro staff. Hard to beat.", "date": "2d ago"},
+      {"author": "Sarah K.", "rating": 4, "text": "Can get crowded on weekends but ice quality is top notch.", "date": "1w ago"}
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Skating Club of Boston",
+    "address": "1240 Soldiers Field Rd",
+    "city": "Brighton",
+    "state": "MA",
+    "lat": 42.3538,
+    "lng": -71.1391,
+    "type": "OLYMPIC",
+    "isPublic": false,
+    "rating": 4.8,
+    "reviewCount": 193,
+    "phone": "(617) 782-5900",
+    "website": "scboston.org",
+    "checkins": 1203,
+    "hours": {
+      "Mon": "7am–9pm",
+      "Tue": "7am–9pm",
+      "Wed": "7am–9pm",
+      "Thu": "7am–9pm",
+      "Fri": "7am–9pm",
+      "Sat": "8am–6pm",
+      "Sun": "8am–5pm"
+    },
+    "amenities": ["Pro Shop", "Locker Rooms", "Skate Rental", "Restaurant"],
+    "events": [
+      {"title": "Figure Skating Show", "date": "Sat 7 PM"},
+      {"title": "Adult League", "date": "Sun 9 AM"}
+    ],
+    "reviews": [
+      {"author": "Jessica L.", "rating": 5, "text": "World-class facility. Home to national champions.", "date": "3d ago"}
+    ]
+  },
+  {
+    "id": 3,
+    "name": "Johnny's IceHouse West",
+    "address": "1800 W Fulton St",
+    "city": "Chicago",
+    "state": "IL",
+    "lat": 41.8839,
+    "lng": -87.6553,
+    "type": "NHL",
+    "isPublic": true,
+    "rating": 4.5,
+    "reviewCount": 528,
+    "phone": "(312) 226-5555",
+    "website": "johnnysicehouse.com",
+    "checkins": 2341,
+    "hours": {
+      "Mon": "5am–11pm",
+      "Tue": "5am–11pm",
+      "Wed": "5am–11pm",
+      "Thu": "5am–11pm",
+      "Fri": "5am–11pm",
+      "Sat": "6am–10pm",
+      "Sun": "6am–9pm"
+    },
+    "amenities": ["Pro Shop", "Locker Rooms", "Bar & Grill", "Sharpening"],
+    "events": [
+      {"title": "Adult Drop-In", "date": "Wed 10 PM"},
+      {"title": "Public Skate", "date": "Fri 6 PM"}
+    ],
+    "reviews": [
+      {"author": "Tom R.", "rating": 5, "text": "The hockey hub of Chicago. Always packed for good reason.", "date": "1d ago"},
+      {"author": "Dave M.", "rating": 4, "text": "Great beer league leagues. Ice quality is top notch.", "date": "4d ago"}
+    ]
+  },
+  {
+    "id": 4,
+    "name": "McFetridge Sports Center",
+    "address": "3843 N California Ave",
+    "city": "Chicago",
+    "state": "IL",
+    "lat": 41.9475,
+    "lng": -87.7137,
+    "type": "STANDARD",
+    "isPublic": true,
+    "rating": 4.1,
+    "reviewCount": 287,
+    "phone": "(312) 742-7585",
+    "website": "chicago.gov/parks/mcfetridge",
+    "checkins": 1056,
+    "hours": {
+      "Mon": "6am–10pm",
+      "Tue": "6am–10pm",
+      "Wed": "6am–10pm",
+      "Thu": "6am–10pm",
+      "Fri": "6am–10pm",
+      "Sat": "8am–8pm",
+      "Sun": "8am–7pm"
+    },
+    "amenities": ["Locker Rooms", "Skate Rental", "Concessions"],
+    "events": [
+      {"title": "Public Skate", "date": "Sat & Sun 12–3 PM"},
+      {"title": "Stick & Puck", "date": "Tue 8 AM"}
+    ],
+    "reviews": [
+      {"author": "Maria G.", "rating": 4, "text": "Affordable public rink in the city. Gets busy on weekends.", "date": "5d ago"}
+    ]
+  },
+  {
+    "id": 5,
+    "name": "Tria Rink",
+    "address": "175 Kellogg Blvd W",
+    "city": "St. Paul",
+    "state": "MN",
+    "lat": 44.9445,
+    "lng": -93.0875,
+    "type": "NHL",
+    "isPublic": true,
+    "rating": 4.7,
+    "reviewCount": 410,
+    "phone": "(651) 265-4800",
+    "website": "triarink.com",
+    "checkins": 1876,
+    "hours": {
+      "Mon": "6am–10pm",
+      "Tue": "6am–10pm",
+      "Wed": "6am–10pm",
+      "Thu": "6am–10pm",
+      "Fri": "6am–10pm",
+      "Sat": "7am–9pm",
+      "Sun": "7am–8pm"
+    },
+    "amenities": ["Pro Shop", "Locker Rooms", "Food & Beverage", "Skate Sharpening"],
+    "events": [
+      {"title": "Wild Alumni Game", "date": "Fri 7 PM"},
+      {"title": "Public Skate", "date": "Sat 1–3 PM"}
+    ],
+    "reviews": [
+      {"author": "Lars H.", "rating": 5, "text": "Right next to Xcel Energy Center. Amazing facility and friendly staff.", "date": "2d ago"}
+    ]
+  },
+  {
+    "id": 6,
+    "name": "UPMC Lemieux Sports Complex",
+    "address": "8000 Cranberry Springs Dr",
+    "city": "Cranberry Twp.",
+    "state": "PA",
+    "lat": 40.6799,
+    "lng": -80.1081,
+    "type": "NHL",
+    "isPublic": true,
+    "rating": 4.8,
+    "reviewCount": 673,
+    "phone": "(724) 741-0555",
+    "website": "lemieuxsportscomplex.com",
+    "checkins": 2109,
+    "hours": {
+      "Mon": "6am–11pm",
+      "Tue": "6am–11pm",
+      "Wed": "6am–11pm",
+      "Thu": "6am–11pm",
+      "Fri": "6am–11pm",
+      "Sat": "7am–10pm",
+      "Sun": "7am–9pm"
+    },
+    "amenities": ["Pro Shop", "Locker Rooms", "Performance Center", "Restaurant", "Hotel"],
+    "events": [
+      {"title": "Penguins Dev. Camp", "date": "Jul 10–14"},
+      {"title": "Public Skate", "date": "Sat 2–4 PM"}
+    ],
+    "reviews": [
+      {"author": "Pittsy", "rating": 5, "text": "Where the Pens train. First class everything — incredible ice.", "date": "1w ago"}
+    ]
+  },
+  {
+    "id": 7,
+    "name": "Wollman Rink",
+    "address": "830 5th Ave (Central Park)",
+    "city": "New York",
+    "state": "NY",
+    "lat": 40.7704,
+    "lng": -73.9761,
+    "type": "STANDARD",
+    "isPublic": true,
+    "rating": 4.3,
+    "reviewCount": 2847,
+    "phone": "(212) 439-6900",
+    "website": "wollmanrinknyc.com",
+    "checkins": 8932,
+    "hours": {
+      "Mon": "10am–10pm",
+      "Tue": "10am–10pm",
+      "Wed": "10am–10pm",
+      "Thu": "10am–10pm",
+      "Fri": "10am–11pm",
+      "Sat": "10am–11pm",
+      "Sun": "10am–9pm"
+    },
+    "amenities": ["Skate Rental", "Lockers", "Snack Bar"],
+    "events": [
+      {"title": "Public Skate", "date": "Daily 10am–10pm"},
+      {"title": "Hockey Clinic", "date": "Sat 8 AM"}
+    ],
+    "reviews": [
+      {"author": "Emma S.", "rating": 5, "text": "Iconic NYC experience. Manhattan skyline backdrop is unbeatable.", "date": "1d ago"},
+      {"author": "Kevin P.", "rating": 3, "text": "Beautiful but gets very crowded. Go early.", "date": "3d ago"}
+    ]
+  },
+  {
+    "id": 8,
+    "name": "Sky Rink at Chelsea Piers",
+    "address": "Pier 61, W 23rd St",
+    "city": "New York",
+    "state": "NY",
+    "lat": 40.7481,
+    "lng": -74.0063,
+    "type": "OLYMPIC",
+    "isPublic": true,
+    "rating": 4.4,
+    "reviewCount": 1204,
+    "phone": "(212) 336-6100",
+    "website": "chelseapiers.com",
+    "checkins": 4521,
+    "hours": {
+      "Mon": "6am–11pm",
+      "Tue": "6am–11pm",
+      "Wed": "6am–11pm",
+      "Thu": "6am–11pm",
+      "Fri": "6am–12am",
+      "Sat": "8am–12am",
+      "Sun": "8am–11pm"
+    },
+    "amenities": ["Pro Shop", "Locker Rooms", "Skate Rental", "Sharpening", "Restaurant"],
+    "events": [
+      {"title": "Adult Hockey League", "date": "Mon/Wed 10 PM"},
+      {"title": "Public Skate", "date": "Daily 12–5 PM"}
+    ],
+    "reviews": [
+      {"author": "Alex T.", "rating": 5, "text": "Two full ice sheets in Manhattan. Hidden gem for hockey players.", "date": "2d ago"}
+    ]
+  },
+  {
+    "id": 9,
+    "name": "MedStar Capitals Iceplex",
+    "address": "627 N Glebe Rd",
+    "city": "Arlington",
+    "state": "VA",
+    "lat": 38.8762,
+    "lng": -77.1038,
+    "type": "NHL",
+    "isPublic": true,
+    "rating": 4.5,
+    "reviewCount": 441,
+    "phone": "(703) 600-5640",
+    "website": "monumentaliceplex.com",
+    "checkins": 1678,
+    "hours": {
+      "Mon": "6am–11pm",
+      "Tue": "6am–11pm",
+      "Wed": "6am–11pm",
+      "Thu": "6am–11pm",
+      "Fri": "6am–11pm",
+      "Sat": "7am–10pm",
+      "Sun": "7am–9pm"
+    },
+    "amenities": ["Pro Shop", "Locker Rooms", "Caps Training", "Restaurant"],
+    "events": [
+      {"title": "Public Skate", "date": "Daily 12–2 PM"},
+      {"title": "Adult Drop-In", "date": "Thu 9 PM"}
+    ],
+    "reviews": [
+      {"author": "Cap Hawk", "rating": 5, "text": "Train where the Caps train. Two sheets, pro quality everything.", "date": "3d ago"}
+    ]
+  },
+  {
+    "id": 10,
+    "name": "Flyers Skate Zone Voorhees",
+    "address": "601 Laurel Oak Rd",
+    "city": "Voorhees",
+    "state": "NJ",
+    "lat": 39.8862,
+    "lng": -74.9680,
+    "type": "NHL",
+    "isPublic": true,
+    "rating": 4.4,
+    "reviewCount": 389,
+    "phone": "(856) 435-3900",
+    "website": "flyersskatezone.com",
+    "checkins": 1543,
+    "hours": {
+      "Mon": "6am–10pm",
+      "Tue": "6am–10pm",
+      "Wed": "6am–10pm",
+      "Thu": "6am–10pm",
+      "Fri": "6am–10pm",
+      "Sat": "8am–9pm",
+      "Sun": "8am–8pm"
+    },
+    "amenities": ["Pro Shop", "Locker Rooms", "Snack Bar", "Skate Rental"],
+    "events": [
+      {"title": "Flyers Youth Camp", "date": "Jul–Aug"},
+      {"title": "Adult League", "date": "Mon 8 PM"}
+    ],
+    "reviews": [
+      {"author": "Philly Fan", "rating": 4, "text": "Two sheets, great leagues. Staff is super helpful.", "date": "3d ago"}
+    ]
+  },
+  {
+    "id": 11,
+    "name": "Ford Ice Center",
+    "address": "14622 Old Hickory Blvd",
+    "city": "Antioch",
+    "state": "TN",
+    "lat": 36.0515,
+    "lng": -86.7089,
+    "type": "NHL",
+    "isPublic": true,
+    "rating": 4.6,
+    "reviewCount": 298,
+    "phone": "(615) 941-7825",
+    "website": "fordicecenter.com",
+    "checkins": 1234,
+    "hours": {
+      "Mon": "6am–10pm",
+      "Tue": "6am–10pm",
+      "Wed": "6am–10pm",
+      "Thu": "6am–10pm",
+      "Fri": "6am–10pm",
+      "Sat": "8am–9pm",
+      "Sun": "9am–8pm"
+    },
+    "amenities": ["Pro Shop", "Locker Rooms", "Predators Training", "Concessions"],
+    "events": [
+      {"title": "Preds Fan Skate", "date": "First Friday Monthly"},
+      {"title": "Learn to Skate", "date": "Sat 10 AM"}
+    ],
+    "reviews": [
+      {"author": "Smashville", "rating": 5, "text": "Home of the Predators development. Amazing facility and great staff.", "date": "2d ago"}
+    ]
+  },
+  {
+    "id": 12,
+    "name": "City National Arena",
+    "address": "1550 S Pavilion Center Dr",
+    "city": "Las Vegas",
+    "state": "NV",
+    "lat": 36.1057,
+    "lng": -115.3251,
+    "type": "NHL",
+    "isPublic": false,
+    "rating": 4.9,
+    "reviewCount": 156,
+    "phone": "(702) 645-4259",
+    "website": "vegasgoldenknights.com",
+    "checkins": 987,
+    "hours": {
+      "Mon": "Private",
+      "Tue": "Private",
+      "Wed": "Private",
+      "Thu": "Private",
+      "Fri": "Private",
+      "Sat": "Private",
+      "Sun": "Community"
+    },
+    "amenities": ["NHL Training Sheets", "Performance Center", "Film Room", "Hydrotherapy"],
+    "events": [
+      {"title": "Knights Development Camp", "date": "Jul 7–11"},
+      {"title": "Community Skate", "date": "Monthly"}
+    ],
+    "reviews": [
+      {"author": "Knight Fan", "rating": 5, "text": "State of the art. Best NHL practice facility in the league.", "date": "1w ago"}
+    ]
+  },
+  {
+    "id": 13,
+    "name": "Family Sports Center",
+    "address": "14600 E Hampden Ave",
+    "city": "Aurora",
+    "state": "CO",
+    "lat": 39.6343,
+    "lng": -104.8419,
+    "type": "STANDARD",
+    "isPublic": true,
+    "rating": 4.2,
+    "reviewCount": 521,
+    "phone": "(303) 699-4472",
+    "website": "familysportscenter.com",
+    "checkins": 876,
+    "hours": {
+      "Mon": "6am–10pm",
+      "Tue": "6am–10pm",
+      "Wed": "6am–10pm",
+      "Thu": "6am–10pm",
+      "Fri": "6am–10pm",
+      "Sat": "7am–9pm",
+      "Sun": "8am–8pm"
+    },
+    "amenities": ["Pro Shop", "Locker Rooms", "Skate Rental", "Concessions", "Arcade"],
+    "events": [
+      {"title": "Public Skate", "date": "Sat & Sun 1–4 PM"},
+      {"title": "Stick Time", "date": "Mon–Fri 6 AM"}
+    ],
+    "reviews": [
+      {"author": "Denver Dave", "rating": 4, "text": "Three ice sheets! Great for families and adult leagues.", "date": "5d ago"}
+    ]
+  },
+  {
+    "id": 14,
+    "name": "Little Caesars Arena Practice Facility",
+    "address": "2700 Woodward Ave",
+    "city": "Detroit",
+    "state": "MI",
+    "lat": 42.3412,
+    "lng": -83.0551,
+    "type": "NHL",
+    "isPublic": false,
+    "rating": 4.9,
+    "reviewCount": 89,
+    "phone": "(313) 471-6600",
+    "website": "littlecaesarsarena.com",
+    "checkins": 654,
+    "hours": {
+      "Mon": "Private",
+      "Tue": "Private",
+      "Wed": "Private",
+      "Thu": "Private",
+      "Fri": "Private",
+      "Sat": "Private",
+      "Sun": "Closed"
+    },
+    "amenities": ["Performance Center", "Locker Rooms", "Training Sheets"],
+    "events": [
+      {"title": "Wings Prospect Camp", "date": "Aug 15–18"},
+      {"title": "Community Skate", "date": "TBD"}
+    ],
+    "reviews": [
+      {"author": "Red Fan", "rating": 5, "text": "Had a chance to skate here for a charity event. Incredible facility.", "date": "3w ago"}
+    ]
+  },
+  {
+    "id": 15,
+    "name": "Nationwide Arena Practice Rink",
+    "address": "200 W Nationwide Blvd",
+    "city": "Columbus",
+    "state": "OH",
+    "lat": 39.9692,
+    "lng": -83.0088,
+    "type": "NHL",
+    "isPublic": false,
+    "rating": 4.6,
+    "reviewCount": 112,
+    "phone": "(614) 246-4625",
+    "website": "nationwidearena.com",
+    "checkins": 743,
+    "hours": {
+      "Mon": "Private",
+      "Tue": "Private",
+      "Wed": "Private",
+      "Thu": "Private",
+      "Fri": "Private",
+      "Sat": "Private",
+      "Sun": "Closed"
+    },
+    "amenities": ["NHL Training", "Performance Center", "Locker Rooms"],
+    "events": [
+      {"title": "Blue Jackets Camp", "date": "Jul"},
+      {"title": "Youth Hockey Showcase", "date": "Aug"}
+    ],
+    "reviews": [
+      {"author": "CBJ Fan", "rating": 5, "text": "Got to skate here for charity. Absolutely incredible facility.", "date": "2w ago"}
+    ]
+  }
+]

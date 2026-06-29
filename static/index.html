@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Barn &amp; Biscuit — Rink Finder</title>
+<link rel="icon" href="/static/logo/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Hanken+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/brand-tokens.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; overflow: hidden; }
+  body { font-family: var(--font-body); background: var(--bg); color: var(--text); }
+
+  /* Leaflet dark theme */
+  .leaflet-container { background: #13192b !important; font-family: var(--font-body) !important; }
+  .leaflet-popup-content-wrapper { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; box-shadow: 0 0 20px rgba(20,207,207,.18), 0 4px 24px rgba(0,0,0,.55); }
+  .leaflet-popup-tip { background: var(--surface); }
+  .leaflet-popup-close-button { color: var(--text-muted) !important; top: 10px !important; right: 10px !important; font-size: 16px !important; }
+  .leaflet-popup-close-button:hover { color: var(--text) !important; background: none !important; }
+  .leaflet-popup-content { margin: 14px 16px; }
+  .leaflet-control-attribution { background: rgba(10,14,26,.9) !important; color: var(--neutral-700) !important; font-size: 10px !important; }
+  .leaflet-control-attribution a { color: var(--cyan-500) !important; }
+  .leaflet-control-zoom { border: 1px solid var(--border) !important; border-radius: 8px !important; overflow: hidden; box-shadow: none !important; }
+  .leaflet-control-zoom a { background: var(--surface) !important; color: var(--text-faint) !important; border-bottom-color: var(--border) !important; width: 30px !important; height: 30px !important; line-height: 30px !important; font-size: 16px !important; }
+  .leaflet-control-zoom a:hover { background: var(--surface-2) !important; color: var(--color-primary) !important; }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  input::placeholder { color: var(--neutral-600); }
+  input[type=range] { height: 4px; }
+
+  /* Animations */
+  @keyframes slideInRight { from { transform: translateX(100%); } to { transform: translateX(0); } }
+  @keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes checkinPop { 0% { transform: scale(0.8); opacity: 0; } 60% { transform: scale(1.06); } 100% { transform: scale(1); opacity: 1; } }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.35; } }
+
+  /* Layout helpers */
+  #app { display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+  #content-area { display: flex; flex: 1; overflow: hidden; position: relative; }
+  #map-container { flex: 1; position: relative; overflow: hidden; }
+  #hl-map { width: 100%; height: 100%; }
+
+  /* Nav */
+  #nav { height: 56px; background: #0E1322; border-bottom: 1px solid var(--border); display: flex; align-items: center; padding: 0 16px; flex-shrink: 0; z-index: 200; position: relative; }
+
+  /* Sidebar */
+  #sidebar { width: 355px; background: var(--bg); border-right: 1px solid var(--hair); display: flex; flex-direction: column; overflow: hidden; flex-shrink: 0; }
+
+  /* Drawer */
+  #detail-drawer { position: fixed; right: 0; top: 56px; width: 400px; height: calc(100vh - 56px); background: var(--bg); border-left: 1px solid var(--border); display: flex; flex-direction: column; z-index: 300; animation: slideInRight 0.22s ease; box-shadow: -4px 0 32px rgba(0,0,0,0.5); }
+
+  /* Mobile list overlay */
+  #mobile-list { position: fixed; top: 56px; left: 0; right: 0; bottom: 0; background: var(--bg); z-index: 100; display: flex; flex-direction: column; overflow: hidden; animation: slideUp 0.2s ease; }
+
+  /* Modal overlay */
+  .modal-overlay { position: fixed; inset: 0; background: rgba(10,14,26,0.88); z-index: 400; display: flex; align-items: center; justify-content: center; padding: 20px; animation: fadeIn 0.15s ease; }
+  .modal-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; width: 100%; padding: 24px; }
+
+  /* Chip styles */
+  .chip { padding: 3px 10px; background: transparent; border: 1px solid var(--border); border-radius: 20px; font-size: 11px; font-weight: 500; color: var(--neutral-600); cursor: pointer; font-family: inherit; white-space: nowrap; }
+  .chip.active { background: rgba(20,207,207,0.13); border-color: var(--color-primary); color: var(--color-primary); font-weight: 600; }
+
+  /* Tab styles */
+  .drawer-tab { padding: 10px 16px; background: none; border: none; border-bottom: 2px solid transparent; color: var(--neutral-600); font-size: 13px; font-weight: 500; font-family: inherit; cursor: pointer; flex-shrink: 0; }
+  .drawer-tab.active { color: var(--color-primary); font-weight: 600; border-bottom-color: var(--color-primary); }
+
+  /* Rink card */
+  .rink-card { padding: 10px 11px; border-radius: 9px; margin-bottom: 2px; cursor: pointer; border: 1px solid transparent; border-left: 2px solid transparent; }
+  .rink-card:hover { background: rgba(20,207,207,0.02); }
+  .rink-card.selected { background: rgba(20,207,207,0.04); border-color: rgba(20,207,207,0.2); border-left-color: var(--color-primary); }
+</style>
+</head>
+<body>
+<div id="app">
+
+  <!-- NAV -->
+  <nav id="nav">
+    <a href="#" style="display:flex;align-items:center;gap:9px;text-decoration:none;margin-right:28px;flex-shrink:0;">
+      <svg width="22" height="22" viewBox="0 0 32 32" fill="none" stroke="#14CFCF" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M7 4v22l1 2h12"/><line x1="7" y1="21" x2="17" y2="21"/>
+      </svg>
+      <span id="nav-wordmark" style="font-family:var(--font-display);font-weight:700;font-size:16px;color:var(--text);letter-spacing:-0.025em;white-space:nowrap;"></span>
+    </a>
+    <div id="nav-links" style="display:flex;align-items:center;gap:2px;flex:1;">
+      <a href="#" style="padding:5px 11px;font-size:13px;font-weight:500;color:var(--text-faint);text-decoration:none;border-radius:6px;">Home</a>
+      <a href="#" style="padding:5px 11px;font-size:13px;font-weight:600;color:var(--color-primary);text-decoration:none;border-radius:6px;background:rgba(20,207,207,0.08);">Rink Finder</a>
+      <a href="#" style="padding:5px 11px;font-size:13px;font-weight:500;color:var(--text-faint);text-decoration:none;border-radius:6px;">Community</a>
+      <a href="#" style="padding:5px 11px;font-size:13px;font-weight:500;color:var(--text-faint);text-decoration:none;border-radius:6px;">News</a>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
+      <button id="location-btn" style="display:flex;align-items:center;gap:5px;padding:5px 11px;background:transparent;border:1px solid var(--border);border-radius:20px;color:var(--text-faint);font-size:12px;font-family:inherit;cursor:pointer;white-space:nowrap;">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>
+        <span id="location-label">Find Me</span>
+      </button>
+      <div style="width:30px;height:30px;border-radius:50%;background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--text-faint);cursor:pointer;flex-shrink:0;">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </div>
+    </div>
+  </nav>
+
+  <!-- CONTENT -->
+  <div id="content-area">
+
+    <!-- SIDEBAR (desktop) -->
+    <aside id="sidebar">
+      <!-- Search -->
+      <div style="padding:12px 12px 8px;">
+        <div style="position:relative;">
+          <svg style="position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--neutral-600);pointer-events:none;" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <input id="search-input" type="text" placeholder="City, zip, or rink name…" style="width:100%;padding:9px 30px 9px 33px;background:var(--surface);border:1px solid var(--border);border-radius:10px;color:var(--text);font-size:13px;font-family:inherit;outline:none;">
+          <button id="search-clear" style="display:none;position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--neutral-600);cursor:pointer;padding:2px;align-items:center;justify-content:center;">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+          </button>
+        </div>
+      </div>
+      <!-- Filters -->
+      <div style="padding:0 12px 10px;display:flex;flex-direction:column;gap:9px;border-bottom:1px solid var(--hair);">
+        <div>
+          <div style="font-size:10px;font-weight:600;color:var(--neutral-700);text-transform:uppercase;letter-spacing:0.09em;margin-bottom:5px;">Rink Type</div>
+          <div id="type-filters" style="display:flex;flex-wrap:wrap;gap:4px;"></div>
+        </div>
+        <div style="display:flex;align-items:flex-end;gap:10px;flex-wrap:wrap;">
+          <div>
+            <div style="font-size:10px;font-weight:600;color:var(--neutral-700);text-transform:uppercase;letter-spacing:0.09em;margin-bottom:5px;">Access</div>
+            <div id="access-filters" style="display:flex;gap:4px;"></div>
+          </div>
+          <div id="open-now-toggle" style="display:flex;align-items:center;gap:6px;cursor:pointer;padding-bottom:1px;margin-left:auto;">
+            <div id="open-now-track" style="width:30px;height:17px;border-radius:9px;background:var(--border);display:flex;align-items:center;padding:0 2px;cursor:pointer;flex-shrink:0;transition:background 0.15s;">
+              <div id="open-now-thumb" style="width:13px;height:13px;border-radius:50%;background:var(--text);transition:margin-left 0.15s;"></div>
+            </div>
+            <span style="font-size:12px;font-weight:500;color:var(--text-muted);white-space:nowrap;">Open Now</span>
+          </div>
+        </div>
+        <div style="display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap;">
+          <div style="flex:1;min-width:100px;">
+            <div style="display:flex;justify-content:space-between;margin-bottom:5px;">
+              <span style="font-size:10px;font-weight:600;color:var(--neutral-700);text-transform:uppercase;letter-spacing:0.09em;">Distance</span>
+              <span id="distance-label" style="font-size:10px;font-family:var(--font-mono);color:var(--color-primary);">Any</span>
+            </div>
+            <input id="distance-slider" type="range" min="10" max="200" step="10" value="200" style="width:100%;accent-color:var(--color-primary);cursor:pointer;">
+          </div>
+          <div>
+            <div style="font-size:10px;font-weight:600;color:var(--neutral-700);text-transform:uppercase;letter-spacing:0.09em;margin-bottom:5px;">Sort</div>
+            <div id="sort-filters" style="display:flex;gap:4px;"></div>
+          </div>
+        </div>
+      </div>
+      <!-- List header -->
+      <div style="padding:8px 12px;display:flex;align-items:center;justify-content:space-between;">
+        <span id="rink-count" style="font-size:11px;color:var(--neutral-700);font-family:var(--font-mono);">— rinks</span>
+        <button id="add-rink-btn" style="display:flex;align-items:center;gap:3px;font-size:12px;color:var(--color-primary);background:none;border:none;cursor:pointer;font-family:inherit;font-weight:500;">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+          Add Rink
+        </button>
+      </div>
+      <!-- Rink list -->
+      <div id="rink-list" style="flex:1;overflow-y:auto;padding:0 8px 8px;"></div>
+    </aside>
+
+    <!-- MAP -->
+    <div id="map-container">
+      <div id="hl-map"></div>
+      <!-- Location toast -->
+      <div id="location-toast" style="display:none;position:absolute;top:16px;left:50%;transform:translateX(-50%);background:var(--surface);border:1px solid rgba(20,207,207,0.5);border-radius:10px;padding:8px 14px;z-index:1000;display:none;align-items:center;gap:8px;box-shadow:0 0 20px rgba(20,207,207,0.15);pointer-events:none;animation:fadeIn 0.2s ease;white-space:nowrap;">
+        <div style="width:6px;height:6px;border-radius:50%;background:var(--color-primary);animation:pulse 1.2s infinite;"></div>
+        <span style="font-size:12px;color:var(--text-muted);">Finding your location…</span>
+      </div>
+      <!-- Mobile view toggle -->
+      <div id="mobile-toggle" style="display:none;position:absolute;bottom:28px;left:50%;transform:translateX(-50%);background:#0E1322;border:1px solid var(--border);border-radius:24px;padding:3px;z-index:1000;box-shadow:0 4px 24px rgba(0,0,0,0.6);">
+        <button id="map-btn" onclick="app.showMap()" style="padding:5px 15px;background:var(--color-primary);border:none;border-radius:20px;color:#06181A;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:inline;margin-right:4px;vertical-align:middle;"><path d="M9 20L3.55 17.27A1 1 0 0 1 3 16.38V5.62a1 1 0 0 1 1.45-.89L9 7l6-3 5.45 2.72A1 1 0 0 1 21 7.62v10.76a1 1 0 0 1-1.45.89L15 17l-6 3z"/><path d="M9 7v13M15 4v13"/></svg>
+          Map
+        </button>
+        <button id="list-btn" onclick="app.showList()" style="padding:5px 15px;background:transparent;border:none;border-radius:20px;color:var(--text-muted);font-size:13px;font-weight:500;cursor:pointer;font-family:inherit;">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:inline;margin-right:4px;vertical-align:middle;"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>
+          List
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- MOBILE LIST OVERLAY (hidden by default) -->
+<div id="mobile-list" style="display:none;">
+  <div style="padding:12px;">
+    <div style="position:relative;">
+      <svg style="position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--neutral-600);pointer-events:none;" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input id="mobile-search-input" type="text" placeholder="Search rinks…" style="width:100%;padding:10px 12px 10px 34px;background:var(--surface);border:1px solid var(--border);border-radius:10px;color:var(--text);font-size:14px;font-family:inherit;outline:none;">
+    </div>
+  </div>
+  <div id="mobile-type-filters" style="padding:0 12px 10px;display:flex;gap:4px;flex-wrap:wrap;border-bottom:1px solid var(--hair);"></div>
+  <div id="mobile-rink-count" style="padding:8px 12px;font-size:11px;color:var(--neutral-700);font-family:var(--font-mono);border-bottom:1px solid var(--hair);">— rinks</div>
+  <div id="mobile-rink-list" style="flex:1;overflow-y:auto;padding:8px;"></div>
+  <div style="padding:12px;border-top:1px solid var(--hair);">
+    <button onclick="app.showMap()" style="width:100%;padding:11px;background:rgba(20,207,207,0.08);border:1.5px solid var(--color-primary);border-radius:10px;color:var(--color-primary);font-size:14px;font-weight:600;font-family:inherit;cursor:pointer;">← Back to Map</button>
+  </div>
+</div>
+
+<!-- DETAIL DRAWER (hidden by default) -->
+<div id="detail-drawer" style="display:none;">
+  <!-- Header -->
+  <div style="padding:14px 16px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;gap:10px;flex-shrink:0;background:#0E1322;">
+    <div style="flex:1;min-width:0;">
+      <div id="drawer-name" style="font-family:var(--font-display);font-size:17px;font-weight:700;color:var(--text);line-height:1.3;margin-bottom:5px;"></div>
+      <div id="drawer-meta" style="display:flex;align-items:center;gap:7px;flex-wrap:wrap;"></div>
+    </div>
+    <button onclick="app.closeDrawer()" style="width:30px;height:30px;display:flex;align-items:center;justify-content:center;background:var(--surface-2);border:1px solid var(--border);border-radius:8px;color:var(--text-faint);cursor:pointer;flex-shrink:0;">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+  <!-- Tabs -->
+  <div id="drawer-tabs" style="display:flex;border-bottom:1px solid var(--border);background:#0E1322;flex-shrink:0;">
+    <button class="drawer-tab active" data-tab="info" onclick="app.setTab('info')">Info</button>
+    <button class="drawer-tab" data-tab="events" onclick="app.setTab('events')">Events</button>
+    <button class="drawer-tab" data-tab="reviews" onclick="app.setTab('reviews')">Reviews</button>
+  </div>
+  <!-- Tab body -->
+  <div id="drawer-body" style="flex:1;overflow-y:auto;padding:16px;background:var(--bg);"></div>
+</div>
+
+<!-- REPORT MODAL -->
+<div id="modal-report" style="display:none;" class="modal-overlay">
+  <div class="modal-card" style="max-width:400px;">
+    <div style="font-family:var(--font-display);font-size:18px;font-weight:700;color:var(--text);margin-bottom:4px;">Report an Issue</div>
+    <div style="font-size:13px;color:var(--text-faint);margin-bottom:20px;">Help keep rink info accurate for the community</div>
+    <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:18px;">
+      <label style="display:flex;align-items:center;gap:10px;padding:11px;background:var(--surface-2);border-radius:8px;cursor:pointer;font-size:14px;color:var(--text-muted);"><input type="radio" name="rt" style="accent-color:var(--color-primary);"> Wrong hours</label>
+      <label style="display:flex;align-items:center;gap:10px;padding:11px;background:var(--surface-2);border-radius:8px;cursor:pointer;font-size:14px;color:var(--text-muted);"><input type="radio" name="rt" style="accent-color:var(--color-primary);"> Incorrect address or contact</label>
+      <label style="display:flex;align-items:center;gap:10px;padding:11px;background:var(--surface-2);border-radius:8px;cursor:pointer;font-size:14px;color:var(--text-muted);"><input type="radio" name="rt" style="accent-color:var(--color-primary);"> Rink permanently closed</label>
+      <label style="display:flex;align-items:center;gap:10px;padding:11px;background:var(--surface-2);border-radius:8px;cursor:pointer;font-size:14px;color:var(--text-muted);"><input type="radio" name="rt" style="accent-color:var(--color-primary);"> Other</label>
+    </div>
+    <textarea placeholder="Additional details (optional)…" style="width:100%;padding:10px 12px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:13px;font-family:inherit;outline:none;resize:vertical;min-height:72px;margin-bottom:16px;"></textarea>
+    <div style="display:flex;gap:8px;">
+      <button onclick="app.hideReport()" style="flex:1;padding:10px;background:transparent;border:1px solid var(--border);border-radius:8px;color:var(--text-muted);font-size:14px;font-family:inherit;cursor:pointer;">Cancel</button>
+      <button onclick="app.hideReport()" style="flex:1;padding:10px;background:var(--color-primary);border:none;border-radius:8px;color:#06181A;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;">Submit</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADD RINK MODAL -->
+<div id="modal-add-rink" style="display:none;" class="modal-overlay">
+  <div class="modal-card" style="max-width:440px;max-height:85vh;overflow-y:auto;">
+    <div style="font-family:var(--font-display);font-size:18px;font-weight:700;color:var(--text);margin-bottom:4px;">Add a Rink</div>
+    <div style="font-size:13px;color:var(--text-faint);margin-bottom:20px;">Know a rink we're missing? Tell us about it.</div>
+    <form id="add-rink-form" style="display:flex;flex-direction:column;gap:12px;margin-bottom:20px;">
+      <div>
+        <label style="font-size:10px;font-weight:600;color:var(--neutral-700);text-transform:uppercase;letter-spacing:0.09em;display:block;margin-bottom:5px;">Rink Name *</label>
+        <input name="name" type="text" placeholder="e.g. Hometown Ice Arena" required style="width:100%;padding:10px 12px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:14px;font-family:inherit;outline:none;">
+      </div>
+      <div>
+        <label style="font-size:10px;font-weight:600;color:var(--neutral-700);text-transform:uppercase;letter-spacing:0.09em;display:block;margin-bottom:5px;">Address *</label>
+        <input name="address" type="text" placeholder="123 Ice Ln, City, State ZIP" required style="width:100%;padding:10px 12px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:14px;font-family:inherit;outline:none;">
+      </div>
+      <div style="display:flex;gap:8px;">
+        <div style="flex:1;">
+          <label style="font-size:10px;font-weight:600;color:var(--neutral-700);text-transform:uppercase;letter-spacing:0.09em;display:block;margin-bottom:5px;">Rink Type</label>
+          <select name="type" style="width:100%;padding:10px 12px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:14px;font-family:inherit;outline:none;"><option>NHL Size</option><option>Olympic</option><option>Synthetic</option><option>Standard</option></select>
+        </div>
+        <div style="flex:1;">
+          <label style="font-size:10px;font-weight:600;color:var(--neutral-700);text-transform:uppercase;letter-spacing:0.09em;display:block;margin-bottom:5px;">Access</label>
+          <select name="access" style="width:100%;padding:10px 12px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:14px;font-family:inherit;outline:none;"><option>Public</option><option>Private</option></select>
+        </div>
+      </div>
+      <div>
+        <label style="font-size:10px;font-weight:600;color:var(--neutral-700);text-transform:uppercase;letter-spacing:0.09em;display:block;margin-bottom:5px;">Website or Phone (optional)</label>
+        <input name="contact" type="text" placeholder="https://… or (555) 000-0000" style="width:100%;padding:10px 12px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:14px;font-family:inherit;outline:none;">
+      </div>
+    </form>
+    <div style="display:flex;gap:8px;">
+      <button onclick="app.hideAddRink()" style="flex:1;padding:10px;background:transparent;border:1px solid var(--border);border-radius:8px;color:var(--text-muted);font-size:14px;font-family:inherit;cursor:pointer;">Cancel</button>
+      <button onclick="app.submitRink()" style="flex:1;padding:10px;background:var(--color-primary);border:none;border-radius:8px;color:#06181A;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;">Submit Rink</button>
+    </div>
+  </div>
+</div>
+
+<script>
+class RinkFinder {
+  BRAND = 'Barn & Biscuit';
+
+  state = {
+    search: '',
+    filters: { type: 'all', access: 'all', openNow: false, maxDistance: 200 },
+    sortBy: 'name',
+    selectedRinkId: null,
+    drawerOpen: false,
+    activeTab: 'info',
+    isMobile: false,
+    mobileView: 'map',
+    userLocation: null,
+    locationStatus: 'idle',
+    checkinsById: {},
+    checkinConfirm: false,
+  };
+
+  rinks = [];
+  map = null;
+  markers = {};
+
+  // ── Init ──────────────────────────────────────────────────────────────────
+
+  async init() {
+    // Set brand wordmark
+    document.getElementById('nav-wordmark').innerHTML =
+      `${this.BRAND.split(' ')[0]}&nbsp;<span style="color:var(--color-primary);">${this.BRAND.split(' ').slice(1).join(' ')}</span>`;
+
+    this.rinks = await fetch('/api/rinks').then(r => r.json());
+
+    this.bindEvents();
+    this.buildFilterChips();
+    this.setState({}); // initial render
+    setTimeout(() => this.initMap(), 200);
+    this.requestLocation();
+
+    window.addEventListener('resize', () => {
+      const was = this.state.isMobile;
+      const is = window.innerWidth < 768;
+      if (was !== is) this.setState({ isMobile: is });
+      if (this.map) setTimeout(() => { try { this.map.invalidateSize(); } catch(e){} }, 150);
+    });
+    this.setState({ isMobile: window.innerWidth < 768 });
+  }
+
+  bindEvents() {
+    // Search
+    document.getElementById('search-input').addEventListener('input', e => {
+      this.setState({ search: e.target.value });
+    });
+    document.getElementById('search-clear').addEventListener('click', () => {
+      document.getElementById('search-input').value = '';
+      this.setState({ search: '' });
+    });
+    document.getElementById('mobile-search-input').addEventListener('input', e => {
+      document.getElementById('search-input').value = e.target.value;
+      this.setState({ search: e.target.value });
+    });
+
+    // Open Now toggle
+    document.getElementById('open-now-toggle').addEventListener('click', () => {
+      this.setState(s => ({ filters: { ...s.filters, openNow: !s.filters.openNow } }));
+    });
+
+    // Distance slider
+    document.getElementById('distance-slider').addEventListener('input', e => {
+      this.setState(s => ({ filters: { ...s.filters, maxDistance: Number(e.target.value) } }));
+    });
+
+    // Location button
+    document.getElementById('location-btn').addEventListener('click', () => this.requestLocation());
+
+    // Add rink button
+    document.getElementById('add-rink-btn').addEventListener('click', () => this.showAddRink());
+  }
+
+  buildFilterChips() {
+    const types = [
+      { v: 'all', l: 'All' }, { v: 'NHL', l: 'NHL' }, { v: 'OLYMPIC', l: 'Olympic' },
+      { v: 'SYNTHETIC', l: 'Synthetic' }, { v: 'STANDARD', l: 'Standard' },
+    ];
+    const access = [{ v: 'all', l: 'All' }, { v: 'public', l: 'Public' }, { v: 'private', l: 'Private' }];
+    const sorts = [{ v: 'name', l: 'Name' }, { v: 'rating', l: 'Rating' }, { v: 'distance', l: 'Distance' }];
+
+    const makeChips = (containerId, items, field) => {
+      const el = document.getElementById(containerId);
+      el.innerHTML = items.map(o =>
+        `<button class="chip${this.state.filters[field] === o.v || (field === 'sort' && this.state.sortBy === o.v) ? ' active' : ''}" data-val="${o.v}">${o.l}</button>`
+      ).join('');
+      el.querySelectorAll('button').forEach(btn => {
+        btn.addEventListener('click', () => {
+          if (field === 'sort') {
+            this.setState({ sortBy: btn.dataset.val });
+          } else {
+            this.setState(s => ({ filters: { ...s.filters, [field]: btn.dataset.val } }));
+          }
+        });
+      });
+    };
+
+    makeChips('type-filters', types, 'type');
+    makeChips('mobile-type-filters', types, 'type');
+    makeChips('access-filters', access, 'access');
+    makeChips('sort-filters', sorts, 'sort');
+  }
+
+  // ── State ─────────────────────────────────────────────────────────────────
+
+  setState(partial) {
+    const prev = { ...this.state };
+    if (typeof partial === 'function') {
+      Object.assign(this.state, partial(this.state));
+    } else {
+      Object.assign(this.state, partial);
+    }
+    this.render(prev);
+  }
+
+  // ── Derived helpers ───────────────────────────────────────────────────────
+
+  haversine(lat1, lng1, lat2, lng2) {
+    const R = 3959, dLat = (lat2 - lat1) * Math.PI / 180, dLng = (lng2 - lng1) * Math.PI / 180;
+    const a = Math.sin(dLat/2)**2 + Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLng/2)**2;
+    return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  }
+
+  isOpenNow(hours) {
+    const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+    const day = days[new Date().getDay()];
+    const h = hours[day];
+    if (!h || h === 'Closed' || h === 'Private') return false;
+    const now = new Date();
+    const toMins = str => {
+      const m = str.trim().match(/^(\d+)(?::(\d+))?(am|pm)$/i);
+      if (!m) return null;
+      let hrs = parseInt(m[1]), mins = parseInt(m[2] || '0');
+      if (m[3].toLowerCase() === 'pm' && hrs !== 12) hrs += 12;
+      if (m[3].toLowerCase() === 'am' && hrs === 12) hrs = 0;
+      return hrs * 60 + mins;
+    };
+    const parts = h.split('–');
+    if (parts.length < 2) return false;
+    const open = toMins(parts[0]), close = toMins(parts[1]);
+    if (open === null || close === null) return false;
+    const cur = now.getHours() * 60 + now.getMinutes();
+    return cur >= open && cur < close;
+  }
+
+  getFilteredRinks() {
+    const { search, filters, sortBy, userLocation } = this.state;
+    let rinks = this.rinks.map(r => ({
+      ...r,
+      openNow: this.isOpenNow(r.hours),
+      distance: userLocation ? this.haversine(userLocation.lat, userLocation.lng, r.lat, r.lng) : null,
+    }));
+    if (search) {
+      const q = search.toLowerCase();
+      rinks = rinks.filter(r =>
+        r.name.toLowerCase().includes(q) || r.city.toLowerCase().includes(q) || r.state.toLowerCase().includes(q)
+      );
+    }
+    if (filters.type !== 'all') rinks = rinks.filter(r => r.type === filters.type);
+    if (filters.access !== 'all') rinks = rinks.filter(r => filters.access === 'public' ? r.isPublic : !r.isPublic);
+    if (filters.openNow) rinks = rinks.filter(r => r.openNow);
+    if (userLocation && filters.maxDistance < 200) rinks = rinks.filter(r => r.distance !== null && r.distance <= filters.maxDistance);
+    if (sortBy === 'distance' && userLocation) rinks.sort((a, b) => a.distance - b.distance);
+    else if (sortBy === 'rating') rinks.sort((a, b) => b.rating - a.rating);
+    else rinks.sort((a, b) => a.name.localeCompare(b.name));
+    return rinks;
+  }
+
+  typeInfo(type) {
+    return ({
+      NHL: { label: 'NHL Size', color: '#14CFCF', bg: 'rgba(20,207,207,0.1)', border: 'rgba(20,207,207,0.21)' },
+      OLYMPIC: { label: 'Olympic', color: '#CB78FF', bg: 'rgba(203,120,255,0.1)', border: 'rgba(203,120,255,0.21)' },
+      SYNTHETIC: { label: 'Synthetic', color: '#34E0A0', bg: 'rgba(52,224,160,0.1)', border: 'rgba(52,224,160,0.21)' },
+      STANDARD: { label: 'Standard', color: '#888FA8', bg: 'rgba(136,143,168,0.1)', border: 'rgba(136,143,168,0.21)' },
+    })[type] || { label: type, color: '#888FA8', bg: 'rgba(136,143,168,0.1)', border: 'rgba(136,143,168,0.21)' };
+  }
+
+  badgeHTML(type) {
+    const { label, color, bg, border } = this.typeInfo(type);
+    return `<span style="padding:2px 8px;background:${bg};border:1px solid ${border};border-radius:20px;font-size:11px;font-weight:600;color:${color};white-space:nowrap;flex-shrink:0;">${label}</span>`;
+  }
+
+  openPillHTML(openNow) {
+    return openNow
+      ? `<span style="padding:2px 7px;background:rgba(52,224,160,0.1);border:1px solid rgba(52,224,160,0.3);border-radius:20px;font-size:10px;font-weight:600;color:#34E0A0;white-space:nowrap;flex-shrink:0;">Open</span>`
+      : `<span style="padding:2px 7px;background:rgba(255,107,125,0.1);border:1px solid rgba(255,107,125,0.3);border-radius:20px;font-size:10px;font-weight:600;color:#FF6B7D;white-space:nowrap;flex-shrink:0;">Closed</span>`;
+  }
+
+  stars(rating) {
+    const n = Math.round(rating);
+    return '★'.repeat(n) + '☆'.repeat(5 - n);
+  }
+
+  // ── Render ────────────────────────────────────────────────────────────────
+
+  render(prev = {}) {
+    const s = this.state;
+
+    // Responsive layout
+    const sidebar = document.getElementById('sidebar');
+    const navLinks = document.getElementById('nav-links');
+    const mobileToggle = document.getElementById('mobile-toggle');
+    if (s.isMobile) {
+      sidebar.style.display = 'none';
+      navLinks.style.display = 'none';
+      mobileToggle.style.display = 'flex';
+    } else {
+      sidebar.style.display = 'flex';
+      navLinks.style.display = 'flex';
+      mobileToggle.style.display = 'none';
+      document.getElementById('mobile-list').style.display = 'none';
+    }
+
+    // Search clear button
+    document.getElementById('search-clear').style.display = s.search ? 'flex' : 'none';
+
+    // Open Now toggle
+    const track = document.getElementById('open-now-track');
+    const thumb = document.getElementById('open-now-thumb');
+    track.style.background = s.filters.openNow ? 'var(--color-primary)' : 'var(--border)';
+    thumb.style.marginLeft = s.filters.openNow ? 'auto' : '0';
+
+    // Distance label
+    document.getElementById('distance-label').textContent =
+      s.filters.maxDistance >= 200 ? 'Any' : `${s.filters.maxDistance} mi`;
+
+    // Location label
+    const labels = { idle: 'Find Me', requesting: 'Locating…', granted: 'Located ✓', denied: 'Location Off' };
+    document.getElementById('location-label').textContent = labels[s.locationStatus] || 'Find Me';
+
+    // Location toast
+    const toast = document.getElementById('location-toast');
+    toast.style.display = s.locationStatus === 'requesting' ? 'flex' : 'none';
+
+    // Filter chips (update active state)
+    this.updateChips();
+
+    // Rink list (desktop + mobile)
+    const filtered = this.getFilteredRinks();
+    const listHTML = this.renderRinkList(filtered);
+    document.getElementById('rink-list').innerHTML = listHTML;
+    document.getElementById('mobile-rink-list').innerHTML = listHTML;
+
+    // Rink counts
+    const countText = `${filtered.length} rink${filtered.length === 1 ? '' : 's'}`;
+    document.getElementById('rink-count').textContent = countText;
+    document.getElementById('mobile-rink-count').textContent = countText;
+
+    // Attach list card click handlers
+    document.querySelectorAll('.rink-card').forEach(card => {
+      card.addEventListener('click', () => this.selectRink(Number(card.dataset.id)));
+    });
+
+    // Mobile views
+    if (s.isMobile) {
+      document.getElementById('mobile-list').style.display = s.mobileView === 'list' ? 'flex' : 'none';
+      const mapBtn = document.getElementById('map-btn');
+      const listBtn = document.getElementById('list-btn');
+      mapBtn.style.background = s.mobileView === 'map' ? 'var(--color-primary)' : 'transparent';
+      mapBtn.style.color = s.mobileView === 'map' ? '#06181A' : 'var(--text-muted)';
+      mapBtn.style.fontWeight = s.mobileView === 'map' ? '600' : '500';
+      listBtn.style.background = s.mobileView === 'list' ? 'var(--color-primary)' : 'transparent';
+      listBtn.style.color = s.mobileView === 'list' ? '#06181A' : 'var(--text-muted)';
+      listBtn.style.fontWeight = s.mobileView === 'list' ? '600' : '500';
+    }
+
+    // Drawer
+    const drawer = document.getElementById('detail-drawer');
+    if (s.drawerOpen && s.selectedRinkId) {
+      drawer.style.display = 'flex';
+      drawer.style.width = s.isMobile ? '100%' : '400px';
+      this.renderDrawer();
+    } else {
+      drawer.style.display = 'none';
+    }
+
+    // Update map markers when filter/selection changes
+    if (this.map) {
+      const filtersChanged = JSON.stringify(prev.filters) !== JSON.stringify(s.filters) ||
+        prev.search !== s.search || prev.selectedRinkId !== s.selectedRinkId;
+      if (filtersChanged) {
+        this.updateMarkers(s.selectedRinkId, filtered);
+      }
+      // Pan to selected rink
+      if (s.selectedRinkId && prev.selectedRinkId !== s.selectedRinkId) {
+        const r = this.rinks.find(r => r.id === s.selectedRinkId);
+        if (r) this.map.panTo([r.lat, r.lng], { animate: true, duration: 0.5 });
+      }
+      // Invalidate size when drawer opens/closes
+      if (prev.drawerOpen !== s.drawerOpen) {
+        setTimeout(() => { try { this.map.invalidateSize(); } catch(e){} }, 300);
+      }
+    }
+
+    // Modals
+    document.getElementById('modal-report').style.display = s.showReport ? 'flex' : 'none';
+    document.getElementById('modal-add-rink').style.display = s.showAddRink ? 'flex' : 'none';
+  }
+
+  updateChips() {
+    const s = this.state;
+    document.querySelectorAll('#type-filters .chip, #mobile-type-filters .chip').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.val === s.filters.type);
+    });
+    document.querySelectorAll('#access-filters .chip').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.val === s.filters.access);
+    });
+    document.querySelectorAll('#sort-filters .chip').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.val === s.sortBy);
+    });
+  }
+
+  renderRinkList(filtered) {
+    if (filtered.length === 0) {
+      return `<div style="text-align:center;padding:48px 20px;">
+        <div style="font-size:38px;margin-bottom:10px;opacity:0.5;">🏒</div>
+        <div style="font-size:14px;font-weight:600;color:var(--text-muted);margin-bottom:5px;">No rinks found</div>
+        <div style="font-size:12px;color:var(--text-faint);">Try adjusting your filters</div>
+      </div>`;
+    }
+    return filtered.map(r => {
+      const sel = r.id === this.state.selectedRinkId;
+      const dist = r.distance !== null ? `<span style="margin-left:auto;font-size:10px;font-family:var(--font-mono);color:var(--neutral-700);">${r.distance.toFixed(1)} mi</span>` : '';
+      return `<div class="rink-card${sel ? ' selected' : ''}" data-id="${r.id}">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:5px;">
+          <div style="flex:1;min-width:0;">
+            <div style="font-size:13px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.35;">${this.esc(r.name)}</div>
+            <div style="font-size:11px;color:var(--neutral-600);margin-top:1px;">${this.esc(r.city)}, ${this.esc(r.state)}</div>
+          </div>
+          ${this.openPillHTML(r.openNow)}
+        </div>
+        <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap;">
+          ${this.badgeHTML(r.type)}
+          <span style="font-size:11px;color:#FFD24D;font-weight:600;">★ ${r.rating.toFixed(1)}</span>
+          <span style="font-size:10px;color:var(--border);">(${r.reviewCount})</span>
+          ${dist}
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  renderDrawer() {
+    const s = this.state;
+    const rink = this.rinks.find(r => r.id === s.selectedRinkId);
+    if (!rink) return;
+
+    const openNow = this.isOpenNow(rink.hours);
+    const dist = s.userLocation ? this.haversine(s.userLocation.lat, s.userLocation.lng, rink.lat, rink.lng) : null;
+    const checkinCount = (s.checkinsById[rink.id] || 0);
+    const totalCheckins = rink.checkins + checkinCount;
+
+    // Header
+    document.getElementById('drawer-name').textContent = rink.name;
+    const accessPill = rink.isPublic
+      ? `<span style="padding:2px 8px;background:rgba(52,224,160,0.1);border:1px solid rgba(52,224,160,0.3);border-radius:20px;font-size:10px;font-weight:600;color:#34E0A0;white-space:nowrap;">Public</span>`
+      : `<span style="padding:2px 8px;background:rgba(255,210,77,0.1);border:1px solid rgba(255,210,77,0.3);border-radius:20px;font-size:10px;font-weight:600;color:#FFC83D;white-space:nowrap;">Private</span>`;
+    document.getElementById('drawer-meta').innerHTML =
+      `${this.badgeHTML(rink.type)}<span style="font-size:12px;color:#FFD24D;font-weight:600;">★ ${rink.rating.toFixed(1)}</span><span style="font-size:11px;color:var(--neutral-700);">(${rink.reviewCount} reviews)</span>${accessPill}`;
+
+    // Tabs active state
+    document.querySelectorAll('.drawer-tab').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.tab === s.activeTab);
+    });
+
+    // Tab body
+    const body = document.getElementById('drawer-body');
+    if (s.activeTab === 'info') {
+      body.innerHTML = this.renderInfoTab(rink, dist, totalCheckins, s.checkinConfirm);
+      document.getElementById('checkin-btn')?.addEventListener('click', () => this.checkin());
+      document.getElementById('report-link')?.addEventListener('click', () => this.showReport());
+    } else if (s.activeTab === 'events') {
+      body.innerHTML = this.renderEventsTab(rink);
+    } else if (s.activeTab === 'reviews') {
+      body.innerHTML = this.renderReviewsTab(rink);
+    }
+  }
+
+  renderInfoTab(rink, dist, totalCheckins, checkinConfirm) {
+    const days = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+    const today = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][new Date().getDay()];
+
+    const checkinSection = checkinConfirm
+      ? `<div style="background:rgba(52,224,160,0.07);border:1px solid rgba(52,224,160,0.35);border-radius:12px;padding:14px;text-align:center;margin-bottom:14px;animation:checkinPop 0.3s ease;">
+          <div style="font-size:26px;margin-bottom:4px;">🏒</div>
+          <div style="font-size:14px;font-weight:700;color:#34E0A0;font-family:var(--font-display);">Checked In!</div>
+          <div style="font-size:12px;color:var(--text-faint);margin-top:3px;">Welcome to the ice</div>
+        </div>`
+      : `<button id="checkin-btn" style="width:100%;padding:12px 16px;background:rgba(20,207,207,0.07);border:1.5px solid var(--color-primary);border-radius:12px;color:var(--color-primary);font-size:14px;font-weight:600;font-family:inherit;cursor:pointer;margin-bottom:14px;display:flex;align-items:center;justify-content:center;gap:8px;">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          I Skate Here
+          <span style="font-size:11px;font-family:var(--font-mono);opacity:0.6;font-weight:400;">(${totalCheckins})</span>
+        </button>`;
+
+    const distStr = dist !== null ? `<div style="font-size:11px;color:var(--color-primary);margin-top:3px;font-family:var(--font-mono);">${dist.toFixed(1)} mi away</div>` : '';
+
+    const hoursRows = days.map((day, i) => {
+      const isToday = day === today;
+      const hrs = rink.hours[day] || 'Closed';
+      return `<div style="display:flex;justify-content:space-between;align-items:center;padding:7px 12px;${i < 6 ? 'border-bottom:1px solid var(--hair);' : ''}background:${isToday ? 'rgba(20,207,207,0.04)' : 'transparent'};">
+        <span style="font-size:12px;font-weight:${isToday ? '600' : '400'};color:${isToday ? 'var(--color-primary)' : 'var(--text-faint)'};min-width:34px;">${day}</span>
+        <span style="font-size:12px;color:var(--text-muted);font-family:var(--font-mono);">${this.esc(hrs)}</span>
+      </div>`;
+    }).join('');
+
+    const amenitiesHTML = rink.amenities.map(a =>
+      `<span style="padding:3px 10px;background:var(--surface);border:1px solid var(--border);border-radius:20px;font-size:12px;color:var(--text-muted);">${this.esc(a)}</span>`
+    ).join('');
+
+    return `${checkinSection}
+      <div style="display:flex;gap:10px;margin-bottom:14px;align-items:flex-start;">
+        <div style="width:32px;height:32px;background:var(--surface);border:1px solid var(--border);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--color-primary);margin-top:1px;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        </div>
+        <div>
+          <div style="font-size:14px;font-weight:500;color:var(--text);line-height:1.4;">${this.esc(rink.address)}</div>
+          <div style="font-size:12px;color:var(--text-faint);margin-top:1px;">${this.esc(rink.city)}, ${this.esc(rink.state)}</div>
+          ${distStr}
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;margin-bottom:14px;">
+        <a href="tel:${rink.phone.replace(/\D/g,'')}" style="flex:1;display:flex;align-items:center;gap:7px;padding:9px 11px;background:var(--surface);border:1px solid var(--border);border-radius:9px;text-decoration:none;min-width:0;">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2" stroke-linecap="round" style="flex-shrink:0;"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 15a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.59 4.34h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 11.9a16 16 0 0 0 6.06 6.06l1.62-1.62a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          <span style="font-size:12px;color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${this.esc(rink.phone)}</span>
+        </a>
+        <a href="https://${rink.website}" target="_blank" rel="noopener" style="flex:1;display:flex;align-items:center;gap:7px;padding:9px 11px;background:var(--surface);border:1px solid var(--border);border-radius:9px;text-decoration:none;min-width:0;">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2" stroke-linecap="round" style="flex-shrink:0;"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          <span style="font-size:12px;color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${this.esc(rink.website)}</span>
+        </a>
+      </div>
+      <div style="margin-bottom:14px;">
+        <div style="font-size:10px;font-weight:600;color:var(--neutral-700);text-transform:uppercase;letter-spacing:0.09em;margin-bottom:7px;">Hours</div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;">${hoursRows}</div>
+      </div>
+      <div style="margin-bottom:14px;">
+        <div style="font-size:10px;font-weight:600;color:var(--neutral-700);text-transform:uppercase;letter-spacing:0.09em;margin-bottom:7px;">Amenities</div>
+        <div style="display:flex;flex-wrap:wrap;gap:5px;">${amenitiesHTML}</div>
+      </div>
+      <div style="padding-top:14px;border-top:1px solid var(--hair);">
+        <button id="report-link" style="font-size:12px;color:var(--text-faint);background:none;border:none;cursor:pointer;font-family:inherit;font-weight:500;">Report an issue with this listing</button>
+      </div>`;
+  }
+
+  renderEventsTab(rink) {
+    const eventsHTML = rink.events.map(ev =>
+      `<div style="padding:13px;background:var(--surface);border:1px solid var(--border);border-radius:10px;margin-bottom:8px;">
+        <div style="font-size:14px;font-weight:600;color:var(--text);margin-bottom:5px;">${this.esc(ev.title)}</div>
+        <div style="display:flex;align-items:center;gap:5px;">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <span style="font-size:12px;color:var(--color-primary);font-family:var(--font-mono);">${this.esc(ev.date)}</span>
+        </div>
+      </div>`
+    ).join('');
+    return `${eventsHTML}<button style="width:100%;padding:11px;background:transparent;border:1px dashed var(--border);border-radius:10px;color:var(--text-faint);font-size:13px;font-family:inherit;cursor:pointer;margin-top:4px;">+ Submit an Event</button>`;
+  }
+
+  renderReviewsTab(rink) {
+    const reviewsHTML = rink.reviews.map(rv =>
+      `<div style="padding:13px;background:var(--surface);border:1px solid var(--border);border-radius:10px;margin-bottom:8px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+          <div style="display:flex;align-items:center;gap:8px;">
+            <div style="width:26px;height:26px;border-radius:50%;background:var(--surface-2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--color-primary);">${this.esc(rv.author.charAt(0))}</div>
+            <span style="font-size:13px;font-weight:600;color:var(--text);">${this.esc(rv.author)}</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:4px;">
+            <span style="font-size:11px;color:#FFD24D;">${this.stars(rv.rating)}</span>
+            <span style="font-size:10px;color:var(--neutral-700);">· ${this.esc(rv.date)}</span>
+          </div>
+        </div>
+        <p style="font-size:13px;color:var(--text-muted);line-height:1.55;margin:0;">${this.esc(rv.text)}</p>
+      </div>`
+    ).join('');
+    return `<div style="text-align:center;padding:16px 0 20px;border-bottom:1px solid var(--hair);margin-bottom:14px;">
+        <div style="font-family:var(--font-display);font-size:46px;font-weight:700;color:var(--text);line-height:1;">${rink.rating.toFixed(1)}</div>
+        <div style="font-size:18px;color:#FFD24D;margin:6px 0 3px;">${this.stars(rink.rating)}</div>
+        <div style="font-size:12px;color:var(--text-faint);">${rink.reviewCount} reviews</div>
+      </div>
+      ${reviewsHTML}
+      <button style="width:100%;padding:11px;background:rgba(20,207,207,0.06);border:1px dashed var(--border);border-radius:10px;color:var(--color-primary);font-size:13px;font-weight:500;font-family:inherit;cursor:pointer;margin-top:4px;">+ Write a Review</button>`;
+  }
+
+  // ── Map ───────────────────────────────────────────────────────────────────
+
+  initMap() {
+    if (typeof L === 'undefined') { setTimeout(() => this.initMap(), 300); return; }
+    const el = document.getElementById('hl-map');
+    if (!el || this.map) return;
+    this.map = L.map('hl-map', { center: [39.8, -98.5], zoom: 4, zoomControl: false });
+    L.control.zoom({ position: 'topright' }).addTo(this.map);
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+      attribution: '&copy; <a href="https://openstreetmap.org">OSM</a> &copy; <a href="https://carto.com">CARTO</a>',
+      subdomains: 'abcd', maxZoom: 20,
+    }).addTo(this.map);
+    this.rinks.forEach(r => this.addMarker(r));
+    window.__rlSelectRink = id => this.selectRink(id);
+  }
+
+  makeIcon(selected) {
+    const c = selected ? '#FFC83D' : '#14CFCF';
+    const glow = selected ? 'rgba(255,200,61,0.55)' : 'rgba(20,207,207,0.45)';
+    const s = selected ? 34 : 28;
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${s}" height="${s+10}" viewBox="0 0 28 38"><ellipse cx="14" cy="36" rx="5" ry="2" fill="rgba(0,0,0,0.3)"/><path d="M14 2C9 2 5 6 5 11c0 7.5 9 25 9 25s9-17.5 9-25C23 6 19 2 14 2z" fill="${c}"/><circle cx="14" cy="11" r="4.5" fill="rgba(8,12,22,0.82)"/><path d="M11.5 9.5 L14 11 L16.5 9.5 M14 7 L14 11" stroke="${c}" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>`;
+    return L.divIcon({
+      html: `<div style="filter:drop-shadow(0 2px 8px ${glow})">${svg}</div>`,
+      iconSize: [s, s+10], iconAnchor: [s/2, s+10], popupAnchor: [0, -(s+12)], className: '',
+    });
+  }
+
+  addMarker(rink) {
+    if (!this.map) return;
+    const marker = L.marker([rink.lat, rink.lng], { icon: this.makeIcon(false) }).addTo(this.map);
+    marker.bindPopup(`<div style="font-family:'Hanken Grotesk',sans-serif;min-width:180px;">
+      <div style="font-weight:700;font-size:14px;color:#F3F5FB;margin-bottom:2px;">${this.esc(rink.name)}</div>
+      <div style="font-size:12px;color:#B0B8CF;margin-bottom:5px;">${this.esc(rink.city)}, ${this.esc(rink.state)}</div>
+      <div style="font-size:12px;color:#FFD24D;margin-bottom:10px;">★ ${rink.rating.toFixed(1)} <span style="color:#4B5168;">(${rink.reviewCount})</span></div>
+      <button onclick="window.__rlSelectRink(${rink.id})" style="width:100%;padding:8px;background:#07C8C8;color:#06181A;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;">View Details →</button>
+    </div>`, { maxWidth: 220 });
+    marker.on('click', () => this.selectRink(rink.id));
+    this.markers[rink.id] = marker;
+  }
+
+  updateMarkers(selId, filtered) {
+    if (!this.map) return;
+    const visIds = new Set((filtered || this.getFilteredRinks()).map(r => r.id));
+    Object.entries(this.markers).forEach(([idStr, marker]) => {
+      const id = Number(idStr), sel = id === selId, vis = visIds.has(id);
+      marker.setIcon(this.makeIcon(sel));
+      if (vis && !this.map.hasLayer(marker)) marker.addTo(this.map);
+      if (!vis && this.map.hasLayer(marker)) marker.remove();
+    });
+  }
+
+  // ── Actions ───────────────────────────────────────────────────────────────
+
+  selectRink(id) {
+    this.setState({ selectedRinkId: id, drawerOpen: true, activeTab: 'info', checkinConfirm: false, mobileView: 'map' });
+    document.getElementById('mobile-list').style.display = 'none';
+  }
+
+  closeDrawer() {
+    this.setState({ drawerOpen: false, selectedRinkId: null });
+  }
+
+  setTab(tab) {
+    this.setState({ activeTab: tab });
+  }
+
+  checkin() {
+    const id = this.state.selectedRinkId;
+    if (!id) return;
+    this.setState(s => ({ checkinsById: { ...s.checkinsById, [id]: (s.checkinsById[id] || 0) + 1 }, checkinConfirm: true }));
+    setTimeout(() => this.setState({ checkinConfirm: false }), 2500);
+  }
+
+  requestLocation() {
+    if (!navigator.geolocation) { this.setState({ locationStatus: 'denied' }); return; }
+    this.setState({ locationStatus: 'requesting' });
+    navigator.geolocation.getCurrentPosition(
+      pos => {
+        const loc = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+        this.setState({ userLocation: loc, locationStatus: 'granted', sortBy: 'distance' });
+        if (this.map) {
+          this.map.setView([loc.lat, loc.lng], 10);
+          L.circleMarker([loc.lat, loc.lng], {
+            radius: 8, fillColor: '#14CFCF', color: '#0A0E1A', weight: 2.5, opacity: 1, fillOpacity: 1,
+          }).addTo(this.map).bindPopup('<span style="color:#F3F5FB;font-size:13px;font-family:Hanken Grotesk,sans-serif;">Your location</span>');
+        }
+      },
+      () => this.setState({ locationStatus: 'denied' })
+    );
+  }
+
+  showMap() { this.setState({ mobileView: 'map' }); }
+  showList() { this.setState({ mobileView: 'list' }); }
+
+  showReport() { this.setState({ showReport: true }); }
+  hideReport() { this.setState({ showReport: false }); }
+
+  showAddRink() { this.setState({ showAddRink: true }); }
+  hideAddRink() { this.setState({ showAddRink: false }); }
+
+  async submitRink() {
+    const form = document.getElementById('add-rink-form');
+    const data = Object.fromEntries(new FormData(form));
+    await fetch('/api/rinks/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    }).catch(() => {});
+    this.hideAddRink();
+    form.reset();
+  }
+
+  // ── Utils ─────────────────────────────────────────────────────────────────
+
+  esc(str) {
+    return String(str ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+}
+
+const app = new RinkFinder();
+app.init();
+</script>
+</body>
+</html>

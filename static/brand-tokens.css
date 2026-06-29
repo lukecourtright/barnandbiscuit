@@ -1,0 +1,126 @@
+/* ============================================================
+   LUKE COURTRIGHT — BRAND TOKENS  ·  "Neon Night" palette  ·  v1
+   Retro-futurist / Vegas-after-dark: electric cyan · electric purple ·
+   golden ticket · midnight navy. Staged for glow on near-black.
+   All pairings verified against WCAG 2.2 AA (see usage notes).
+   Usage: <html data-theme="light">  →  toggle to "dark" for neon mode.
+   ============================================================ */
+
+:root {
+  /* ---- BRAND RAMPS (mode-independent raw scales) ---- */
+  --cyan-50:#E0FBFB; --cyan-100:#B5F5F5; --cyan-200:#7DEDED; --cyan-300:#3FE0E0;
+  --cyan-400:#14CFCF; --cyan-500:#07C8C8; --cyan-600:#08A6A6; --cyan-700:#0A8585;
+  --cyan-800:#0C6868; --cyan-900:#0C4F4F;
+
+  --purple-50:#F8ECFF; --purple-100:#EED2FF; --purple-200:#DDA6FF; --purple-300:#CB78FF;
+  --purple-400:#BC44FF; --purple-500:#B026FF; --purple-600:#8E12D6; --purple-700:#6E0FA3;
+  --purple-800:#530B7A; --purple-900:#3A0857;
+
+  --gold-50:#FFF8E3; --gold-100:#FFEDB0; --gold-200:#FFDF7A; --gold-300:#FFD24D;
+  --gold-400:#FFC83D; --gold-500:#F0AC0A; --gold-600:#C98B06; --gold-700:#9E6C0A;
+  --gold-800:#7C540F; --gold-900:#5E3F0F;
+
+  --navy-50:#ECEEF8; --navy-100:#D6DBEF; --navy-200:#AEB7DC; --navy-300:#7E8BC4;
+  --navy-400:#5463A0; --navy-500:#3A487E; --navy-600:#2B3763; --navy-700:#20294B;
+  --navy-800:#161D36; --navy-900:#0E1322;
+
+  /* ---- NEUTRALS (cool navy-slate) ---- */
+  --neutral-0:#FFFFFF; --neutral-50:#F3F5FB; --neutral-100:#E6EAF3; --neutral-200:#D0D6E6;
+  --neutral-300:#B0B8CF; --neutral-400:#888FA8; --neutral-500:#656C84; --neutral-600:#4B5168;
+  --neutral-700:#373C4E; --neutral-800:#262A38; --neutral-900:#161925; --neutral-950:#0E1019;
+
+  /* ---- SEMANTIC (raw) ---- */
+  --success-solid:#057A55; --success-on-dark:#34E0A0;   /* solid + white = 5.4:1 AA */
+  --error-solid:#BE123C;   --error-on-dark:#FF6B7D;     /* solid + white = 6.3:1 AA */
+  --warning-solid:#B45309; --warning-on-dark:#FFC83D;   /* chip: INK on gold-400   */
+  --info-solid:#1D4ED8;    --info-on-dark:#4FB8FF;      /* solid + white = 6.7:1 AA */
+}
+
+/* ============================  LIGHT  ============================ */
+:root,
+[data-theme="light"] {
+  color-scheme: light;
+
+  --color-primary:        var(--cyan-500);   /* neon fills, the LC mark            */
+  --color-primary-ink:    var(--cyan-800);   /* cyan TEXT / solid btn · 6.6:1 AA  */
+  --on-primary:           #06181A;           /* DARK ink on cyan fills (cyan is too light for white) */
+  --color-primary-btn:    var(--cyan-800);   /* solid button w/ WHITE text         */
+
+  --color-secondary:      var(--purple-500);
+  --color-secondary-ink:  var(--purple-700); /* purple TEXT on white  · 9.3:1 AAA */
+  --on-secondary:         #FFFFFF;           /* white on purple-500   · 4.6:1 AA  */
+
+  --color-accent:         var(--gold-400);
+  --color-accent-ink:     var(--gold-700);   /* gold TEXT on white    · 4.6:1 AA  */
+  --on-accent:            var(--neutral-900); /* ALWAYS ink on gold — never white  */
+
+  --color-navy:           var(--navy-700);   /* depth / dark fills                 */
+
+  --bg:        #F2F4FA;        /* page            */
+  --surface:   #FFFFFF;        /* cards           */
+  --surface-2: var(--neutral-50);
+  --border:    #DEE3EF;
+  --hair:      #EBEEF5;        /* faint dividers  */
+
+  --text:        var(--neutral-900);  /* body  · 17.5:1 AAA */
+  --text-muted:  var(--neutral-600);  /* muted · 7.9:1  AAA */
+  --text-faint:  var(--neutral-500);  /* labels · 5.2:1     */
+
+  --success: var(--success-solid); --error: var(--error-solid);
+  --warning: var(--warning-solid); --info: var(--info-solid);
+
+  --glow-primary: none; --glow-secondary: none; --glow-accent: none;
+  --card-shadow: 0 1px 2px rgba(14,16,25,.06), 0 10px 28px rgba(14,16,25,.05);
+}
+
+/* ============================  DARK  (neon glows) ============================ */
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  --color-primary:        var(--cyan-400);   /* on bg · 10.0:1 AAA, glows */
+  --color-primary-ink:    var(--cyan-300);   /* on bg · 11.9:1 AAA        */
+  --on-primary:           #06181A;
+  --color-primary-btn:    var(--cyan-400);
+
+  --color-secondary:      var(--purple-300);  /* on bg · 7.0:1 AAA. purple-500 is UI/large only on dark */
+  --color-secondary-ink:  var(--purple-300);
+  --on-secondary:         #1A0A28;
+
+  --color-accent:         var(--gold-300);    /* on bg · 13.4:1 AAA */
+  --color-accent-ink:     var(--gold-300);
+  --on-accent:            #2A1F00;
+
+  --color-navy:           var(--navy-400);
+
+  --bg:        #0A0E1A;        /* near-black navy so neon pops */
+  --surface:   #131A2B;
+  --surface-2: #1C2540;
+  --border:    #2A3450;
+  --hair:      #1F2940;
+
+  --text:        #F3F5FB;      /* 17.7:1 AAA */
+  --text-muted:  var(--neutral-300);  /* 9.7:1 AAA */
+  --text-faint:  var(--neutral-400);  /* 6.0:1     */
+
+  --success: var(--success-on-dark); --error: var(--error-on-dark);
+  --warning: var(--warning-on-dark); --info: var(--info-on-dark);
+
+  --glow-primary:   0 0 24px rgba(20,207,207,.50);
+  --glow-secondary: 0 0 24px rgba(184,69,255,.50);
+  --glow-accent:    0 0 24px rgba(255,210,77,.50);
+  --card-shadow: 0 1px 0 rgba(255,255,255,.04), 0 14px 36px rgba(0,0,0,.55);
+}
+
+/* ---- Type ---- */
+:root {
+  --font-display: 'Space Grotesk', system-ui, sans-serif;  /* headlines */
+  --font-body:    'Hanken Grotesk', system-ui, sans-serif; /* body / UI */
+  --font-mono:    'Space Mono', ui-monospace, monospace;   /* tags, stats, hex */
+}
+
+/* ---- Radius / spacing helpers ---- */
+:root {
+  --radius-sm: 9px; --radius-md: 14px; --radius-lg: 20px; --radius-pill: 999px;
+  --icon-stroke: 1.75px;            /* monoline icons @ 24px */
+  --tap-min: 44px;                  /* minimum interactive target */
+}
