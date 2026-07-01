@@ -54,6 +54,9 @@ def sync_rinks_from_file():
     with Session(engine) as session:
         for rink in rinks:
             session.merge(Rink(**rink))
+        file_ids = {r["id"] for r in rinks}
+        for stale in session.exec(select(Rink).where(Rink.id.not_in(file_ids))).all():
+            session.delete(stale)
         session.commit()
 
 

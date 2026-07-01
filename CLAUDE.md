@@ -56,7 +56,7 @@ barnbiscuit/
 
 ### Backend (`main.py`)
 
-Data is stored in a database (Postgres in production via Railway addon, local SQLite fallback otherwise) accessed through SQLModel. `rinks.json` remains the human/AI-edited source of truth — on every startup, `sync_rinks_from_file()` creates tables if missing and upserts (by `id`) every rink from `rinks.json` into the `Rink` table, so pushing an updated `rinks.json` to `main` is enough to update production data on the next deploy.
+Data is stored in a database (Postgres in production via Railway addon, local SQLite fallback otherwise) accessed through SQLModel. `rinks.json` remains the human/AI-edited source of truth — on every startup, `sync_rinks_from_file()` creates tables if missing, upserts (by `id`) every rink from `rinks.json` into the `Rink` table, and deletes any `Rink` row whose `id` is no longer in the file, so pushing an updated `rinks.json` to `main` (additions, edits, *and* removals) is enough to update production data on the next deploy.
 
 - `GET /` → serves `static/index.html`
 - `GET /api/rinks` → queries the `Rink` table, returns all rows as JSON (same shape as before)
@@ -99,9 +99,9 @@ Vanilla JS SPA — no bundler, no framework.
 
 ### Data (`rinks.json`)
 
-Source of truth for rink data — edit by hand to add/remove/update. Synced into the `Rink` table (Postgres/SQLite, see Backend above) on every app startup, by upsert on `id`. `openNow` is not stored — it's derived at runtime in the browser.
+Source of truth for rink data — edit by hand to add/remove/update. Synced into the `Rink` table (Postgres/SQLite, see Backend above) on every app startup: rows are upserted by `id`, and any DB row whose `id` is no longer present in `rinks.json` is deleted, so removals in the file propagate too. `openNow` is not stored — it's derived at runtime in the browser.
 
-**Current count:** ~50 rinks (15 original seeds, 4 West Coast NHL facilities, 31 IL/WI batch added 2026-06-30). Duplicate to resolve: id 3 (`Johnny's IceHouse West`, placeholder address `1800 W Fulton St`) conflicts with id 21 (user-researched, `2551 W Madison St`) — delete id 3 from `rinks.json`.
+**Current count:** ~49 rinks (15 original seeds, 4 West Coast NHL facilities, 30 IL/WI batch added 2026-06-30).
 
 **Bulk import workflow:**
 1. Copy `rinks_import_template.csv`, fill in one region's worth of rinks, save as a new file.

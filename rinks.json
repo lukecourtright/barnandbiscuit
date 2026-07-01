@@ -105,61 +105,6 @@
     ]
   },
   {
-    "id": 3,
-    "name": "Johnny's IceHouse West",
-    "address": "1800 W Fulton St",
-    "city": "Chicago",
-    "state": "IL",
-    "lat": 41.8839,
-    "lng": -87.6553,
-    "type": "NHL",
-    "isPublic": true,
-    "rating": 4.5,
-    "reviewCount": 528,
-    "phone": "(312) 226-5555",
-    "website": "johnnysicehouse.com",
-    "checkins": 2341,
-    "hours": {
-      "Mon": "5am–11pm",
-      "Tue": "5am–11pm",
-      "Wed": "5am–11pm",
-      "Thu": "5am–11pm",
-      "Fri": "5am–11pm",
-      "Sat": "6am–10pm",
-      "Sun": "6am–9pm"
-    },
-    "amenities": [
-      "Pro Shop",
-      "Locker Rooms",
-      "Bar & Grill",
-      "Sharpening"
-    ],
-    "events": [
-      {
-        "title": "Adult Drop-In",
-        "date": "Wed 10 PM"
-      },
-      {
-        "title": "Public Skate",
-        "date": "Fri 6 PM"
-      }
-    ],
-    "reviews": [
-      {
-        "author": "Tom R.",
-        "rating": 5,
-        "text": "The hockey hub of Chicago. Always packed for good reason.",
-        "date": "1d ago"
-      },
-      {
-        "author": "Dave M.",
-        "rating": 4,
-        "text": "Great beer league leagues. Ice quality is top notch.",
-        "date": "4d ago"
-      }
-    ]
-  },
-  {
     "id": 4,
     "name": "McFetridge Sports Center",
     "address": "3843 N California Ave",
