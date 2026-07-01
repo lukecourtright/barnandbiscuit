@@ -24,6 +24,8 @@ Deploy to Railway via `railway.toml`. Auto-deploys on push to `main`.
 
 `DATABASE_URL` — Postgres connection string, auto-injected by the Railway Postgres addon once linked to the web service. Not required locally: if unset, the app falls back to a local `dev.db` SQLite file (gitignored).
 
+`SECRET_KEY` — signs the session cookie used for login. Not required locally: falls back to an insecure dev default if unset. **⚠️ Must be set as a Railway env var before deploying auth to production** — otherwise sessions are signed with a key baked into source control.
+
 ## Brand Name
 
 The brand name is TBD — "HockeyLifers" domain was taken, "Barn & Biscuit" is the current placeholder. To rename:
@@ -61,6 +63,7 @@ Data is stored in a database (Postgres in production via Railway addon, local SQ
 - `GET /` → serves `static/index.html`
 - `GET /api/rinks` → queries the `Rink` table, returns all rows as JSON (same shape as before)
 - `POST /api/rinks/submit` → inserts community-submitted rinks into the `PendingRink` table (`id`, `submittedAt`, raw `data` JSON blob) — not public until moderated, no validation yet
+- `POST /api/auth/signup`, `POST /api/auth/login`, `POST /api/auth/logout`, `GET /api/auth/me` → email/password auth against the `User` table (`id`, `email`, `passwordHash` (bcrypt), `displayName`, `createdAt`). Login state is a signed, httponly session cookie (Starlette `SessionMiddleware`, see `SECRET_KEY` above) holding `user_id` — no tokens handled in JS.
 - `/static` → static file mount for CSS, logos, etc.
 
 ### Frontend (`static/index.html`)
@@ -69,14 +72,14 @@ Vanilla JS SPA — no bundler, no framework.
 
 **`RinkFinder` class** manages all state and rendering:
 - `this.rinks` — fetched from `/api/rinks` on init
-- `this.state` — single state object (search, filters, selectedRinkId, drawerOpen, activeTab, locationStatus, mobileView, checkinsById, etc.)
+- `this.state` — single state object (search, filters, selectedRinkId, drawerOpen, activeTab, locationStatus, mobileView, checkinsById, currentUser, showAuth, authMode, etc.)
 - `setState(partial | fn)` — merges partial state and calls `render(prev)`
 - `render(prev)` — diffs against prev state, updates the DOM in targeted sections
 
 **Three dynamic render sections** (rebuilt via `innerHTML` on change):
 - `#rink-list` + `#mobile-rink-list` — rink cards, rebuilt on filter/search/selection changes
 - `#drawer-body` — Info/Events/Reviews tab content, rebuilt on selection/tab/checkin changes
-- Modals — toggled via `display` on `showReport`/`showAddRink` state
+- Modals — toggled via `display` on `showReport`/`showAddRink`/`showAuth` state. The auth modal doubles as sign-in/sign-up, switching via `authMode` (`updateAuthUI()` toggles the display-name field, title, and error text)
 
 **All other DOM updates** (location label, toggle state, filter chip active class, distance label, count) are targeted property sets, not full re-renders.
 
@@ -160,10 +163,9 @@ Source of truth for rink data — edit by hand to add/remove/update. Synced into
 
 ## Not Yet Implemented
 
-- User accounts / authentication
 - Google Places API integration (rink data currently curated by hand in `rinks.json`)
-- Admin UI for moderating community-submitted rinks (sit in the `PendingRink` table, unvalidated)
-- Server-persisted check-ins and reviews (session-only in v1)
+- Admin UI for moderating community-submitted rinks (sit in the `PendingRink` table, unvalidated) — accounts now exist, so this can gate on an `isAdmin`-style check when built
+- Server-persisted check-ins and reviews (session-only in v1) — accounts now exist to attribute these to, but check-ins/reviews still aren't wired to the `User` table
 - Schema migrations (tables are created via `SQLModel.metadata.create_all()`, no Alembic yet)
 - Rink photo carousels
 - Community and News sections (nav links present but inactive)

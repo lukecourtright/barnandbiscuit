@@ -4,13 +4,18 @@ import pathlib
 from datetime import datetime, timezone
 from typing import Optional
 
-from fastapi import FastAPI, Request
+import bcrypt
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from sqlalchemy import JSON, Column
 from sqlmodel import Field, Session, SQLModel, create_engine, select
+from starlette.middleware.sessions import SessionMiddleware
 
 app = FastAPI()
+
+SECRET_KEY = os.environ.get("SECRET_KEY", "dev-secret-change-in-prod")
+app.add_middleware(SessionMiddleware, secret_key=SECRET_KEY, same_site="lax")
 
 RINKS_FILE = pathlib.Path("rinks.json")
 
@@ -49,6 +54,26 @@ class PendingRink(SQLModel, table=True):
     data: dict = Field(sa_column=Column(JSON))
 
 
+class User(SQLModel, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
+    email: str = Field(unique=True, index=True)
+    passwordHash: str
+    displayName: str
+    createdAt: str = Field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
+
+
+def hash_password(password: str) -> str:
+    return bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
+
+
+def verify_password(password: str, password_hash: str) -> bool:
+    return bcrypt.checkpw(password.encode(), password_hash.encode())
+
+
+def user_public(user: User) -> dict:
+    return {"id": user.id, "email": user.email, "displayName": user.displayName}
+
+
 def sync_rinks_from_file():
     rinks = json.loads(RINKS_FILE.read_text(encoding="utf-8"))
     with Session(engine) as session:
@@ -85,6 +110,54 @@ async def submit_rink(request: Request):
         session.add(PendingRink(data=rink))
         session.commit()
     return {"status": "received"}
+
+
+@app.post("/api/auth/signup")
+async def signup(request: Request):
+    body = await request.json()
+    email = body.get("email", "").strip().lower()
+    password = body.get("password", "")
+    displayName = body.get("displayName", "").strip()
+    if not email or not displayName or len(password) < 8:
+        raise HTTPException(400, "Email, display name, and a password of at least 8 characters are required")
+    with Session(engine) as session:
+        if session.exec(select(User).where(User.email == email)).first():
+            raise HTTPException(409, "Email already registered")
+        user = User(email=email, passwordHash=hash_password(password), displayName=displayName)
+        session.add(user)
+        session.commit()
+        session.refresh(user)
+        request.session["user_id"] = user.id
+        return user_public(user)
+
+
+@app.post("/api/auth/login")
+async def login(request: Request):
+    body = await request.json()
+    email = body.get("email", "").strip().lower()
+    password = body.get("password", "")
+    with Session(engine) as session:
+        user = session.exec(select(User).where(User.email == email)).first()
+        if not user or not verify_password(password, user.passwordHash):
+            raise HTTPException(401, "Invalid email or password")
+        request.session["user_id"] = user.id
+        return user_public(user)
+
+
+@app.post("/api/auth/logout")
+async def logout(request: Request):
+    request.session.clear()
+    return {"status": "logged_out"}
+
+
+@app.get("/api/auth/me")
+def me(request: Request):
+    user_id = request.session.get("user_id")
+    if user_id is None:
+        return {"user": None}
+    with Session(engine) as session:
+        user = session.get(User, user_id)
+        return {"user": user_public(user) if user else None}
 
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
