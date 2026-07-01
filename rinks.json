@@ -15,22 +15,44 @@
     "website": "warrioricearena.com",
     "checkins": 847,
     "hours": {
-      "Mon": "5:30am–10pm",
-      "Tue": "5:30am–10pm",
-      "Wed": "5:30am–10pm",
-      "Thu": "5:30am–10pm",
-      "Fri": "5:30am–10pm",
-      "Sat": "7am–8pm",
-      "Sun": "7am–8pm"
+      "Mon": "5:30am\u201310pm",
+      "Tue": "5:30am\u201310pm",
+      "Wed": "5:30am\u201310pm",
+      "Thu": "5:30am\u201310pm",
+      "Fri": "5:30am\u201310pm",
+      "Sat": "7am\u20138pm",
+      "Sun": "7am\u20138pm"
     },
-    "amenities": ["Pro Shop", "Locker Rooms", "Skate Rental", "Sharpening", "Concessions"],
+    "amenities": [
+      "Pro Shop",
+      "Locker Rooms",
+      "Skate Rental",
+      "Sharpening",
+      "Concessions"
+    ],
     "events": [
-      {"title": "Public Skate", "date": "Today 3–5 PM"},
-      {"title": "Learn to Skate", "date": "Sat 10 AM"}
+      {
+        "title": "Public Skate",
+        "date": "Today 3\u20135 PM"
+      },
+      {
+        "title": "Learn to Skate",
+        "date": "Sat 10 AM"
+      }
     ],
     "reviews": [
-      {"author": "Mike D.", "rating": 5, "text": "Best ice in Boston. Two NHL sheets and a pro staff. Hard to beat.", "date": "2d ago"},
-      {"author": "Sarah K.", "rating": 4, "text": "Can get crowded on weekends but ice quality is top notch.", "date": "1w ago"}
+      {
+        "author": "Mike D.",
+        "rating": 5,
+        "text": "Best ice in Boston. Two NHL sheets and a pro staff. Hard to beat.",
+        "date": "2d ago"
+      },
+      {
+        "author": "Sarah K.",
+        "rating": 4,
+        "text": "Can get crowded on weekends but ice quality is top notch.",
+        "date": "1w ago"
+      }
     ]
   },
   {
@@ -49,21 +71,37 @@
     "website": "scboston.org",
     "checkins": 1203,
     "hours": {
-      "Mon": "7am–9pm",
-      "Tue": "7am–9pm",
-      "Wed": "7am–9pm",
-      "Thu": "7am–9pm",
-      "Fri": "7am–9pm",
-      "Sat": "8am–6pm",
-      "Sun": "8am–5pm"
+      "Mon": "7am\u20139pm",
+      "Tue": "7am\u20139pm",
+      "Wed": "7am\u20139pm",
+      "Thu": "7am\u20139pm",
+      "Fri": "7am\u20139pm",
+      "Sat": "8am\u20136pm",
+      "Sun": "8am\u20135pm"
     },
-    "amenities": ["Pro Shop", "Locker Rooms", "Skate Rental", "Restaurant"],
+    "amenities": [
+      "Pro Shop",
+      "Locker Rooms",
+      "Skate Rental",
+      "Restaurant"
+    ],
     "events": [
-      {"title": "Figure Skating Show", "date": "Sat 7 PM"},
-      {"title": "Adult League", "date": "Sun 9 AM"}
+      {
+        "title": "Figure Skating Show",
+        "date": "Sat 7 PM"
+      },
+      {
+        "title": "Adult League",
+        "date": "Sun 9 AM"
+      }
     ],
     "reviews": [
-      {"author": "Jessica L.", "rating": 5, "text": "World-class facility. Home to national champions.", "date": "3d ago"}
+      {
+        "author": "Jessica L.",
+        "rating": 5,
+        "text": "World-class facility. Home to national champions.",
+        "date": "3d ago"
+      }
     ]
   },
   {
@@ -90,14 +128,35 @@
       "Sat": "6am–10pm",
       "Sun": "6am–9pm"
     },
-    "amenities": ["Pro Shop", "Locker Rooms", "Bar & Grill", "Sharpening"],
+    "amenities": [
+      "Pro Shop",
+      "Locker Rooms",
+      "Bar & Grill",
+      "Sharpening"
+    ],
     "events": [
-      {"title": "Adult Drop-In", "date": "Wed 10 PM"},
-      {"title": "Public Skate", "date": "Fri 6 PM"}
+      {
+        "title": "Adult Drop-In",
+        "date": "Wed 10 PM"
+      },
+      {
+        "title": "Public Skate",
+        "date": "Fri 6 PM"
+      }
     ],
     "reviews": [
-      {"author": "Tom R.", "rating": 5, "text": "The hockey hub of Chicago. Always packed for good reason.", "date": "1d ago"},
-      {"author": "Dave M.", "rating": 4, "text": "Great beer league leagues. Ice quality is top notch.", "date": "4d ago"}
+      {
+        "author": "Tom R.",
+        "rating": 5,
+        "text": "The hockey hub of Chicago. Always packed for good reason.",
+        "date": "1d ago"
+      },
+      {
+        "author": "Dave M.",
+        "rating": 4,
+        "text": "Great beer league leagues. Ice quality is top notch.",
+        "date": "4d ago"
+      }
     ]
   },
   {
@@ -116,21 +175,36 @@
     "website": "chicago.gov/parks/mcfetridge",
     "checkins": 1056,
     "hours": {
-      "Mon": "6am–10pm",
-      "Tue": "6am–10pm",
-      "Wed": "6am–10pm",
-      "Thu": "6am–10pm",
-      "Fri": "6am–10pm",
-      "Sat": "8am–8pm",
-      "Sun": "8am–7pm"
+      "Mon": "6am\u201310pm",
+      "Tue": "6am\u201310pm",
+      "Wed": "6am\u201310pm",
+      "Thu": "6am\u201310pm",
+      "Fri": "6am\u201310pm",
+      "Sat": "8am\u20138pm",
+      "Sun": "8am\u20137pm"
     },
-    "amenities": ["Locker Rooms", "Skate Rental", "Concessions"],
+    "amenities": [
+      "Locker Rooms",
+      "Skate Rental",
+      "Concessions"
+    ],
     "events": [
-      {"title": "Public Skate", "date": "Sat & Sun 12–3 PM"},
-      {"title": "Stick & Puck", "date": "Tue 8 AM"}
+      {
+        "title": "Public Skate",
+        "date": "Sat & Sun 12\u20133 PM"
+      },
+      {
+        "title": "Stick & Puck",
+        "date": "Tue 8 AM"
+      }
     ],
     "reviews": [
-      {"author": "Maria G.", "rating": 4, "text": "Affordable public rink in the city. Gets busy on weekends.", "date": "5d ago"}
+      {
+        "author": "Maria G.",
+        "rating": 4,
+        "text": "Affordable public rink in the city. Gets busy on weekends.",
+        "date": "5d ago"
+      }
     ]
   },
   {
@@ -149,21 +223,37 @@
     "website": "triarink.com",
     "checkins": 1876,
     "hours": {
-      "Mon": "6am–10pm",
-      "Tue": "6am–10pm",
-      "Wed": "6am–10pm",
-      "Thu": "6am–10pm",
-      "Fri": "6am–10pm",
-      "Sat": "7am–9pm",
-      "Sun": "7am–8pm"
+      "Mon": "6am\u201310pm",
+      "Tue": "6am\u201310pm",
+      "Wed": "6am\u201310pm",
+      "Thu": "6am\u201310pm",
+      "Fri": "6am\u201310pm",
+      "Sat": "7am\u20139pm",
+      "Sun": "7am\u20138pm"
     },
-    "amenities": ["Pro Shop", "Locker Rooms", "Food & Beverage", "Skate Sharpening"],
+    "amenities": [
+      "Pro Shop",
+      "Locker Rooms",
+      "Food & Beverage",
+      "Skate Sharpening"
+    ],
     "events": [
-      {"title": "Wild Alumni Game", "date": "Fri 7 PM"},
-      {"title": "Public Skate", "date": "Sat 1–3 PM"}
+      {
+        "title": "Wild Alumni Game",
+        "date": "Fri 7 PM"
+      },
+      {
+        "title": "Public Skate",
+        "date": "Sat 1\u20133 PM"
+      }
     ],
     "reviews": [
-      {"author": "Lars H.", "rating": 5, "text": "Right next to Xcel Energy Center. Amazing facility and friendly staff.", "date": "2d ago"}
+      {
+        "author": "Lars H.",
+        "rating": 5,
+        "text": "Right next to Xcel Energy Center. Amazing facility and friendly staff.",
+        "date": "2d ago"
+      }
     ]
   },
   {
@@ -182,21 +272,38 @@
     "website": "lemieuxsportscomplex.com",
     "checkins": 2109,
     "hours": {
-      "Mon": "6am–11pm",
-      "Tue": "6am–11pm",
-      "Wed": "6am–11pm",
-      "Thu": "6am–11pm",
-      "Fri": "6am–11pm",
-      "Sat": "7am–10pm",
-      "Sun": "7am–9pm"
+      "Mon": "6am\u201311pm",
+      "Tue": "6am\u201311pm",
+      "Wed": "6am\u201311pm",
+      "Thu": "6am\u201311pm",
+      "Fri": "6am\u201311pm",
+      "Sat": "7am\u201310pm",
+      "Sun": "7am\u20139pm"
     },
-    "amenities": ["Pro Shop", "Locker Rooms", "Performance Center", "Restaurant", "Hotel"],
+    "amenities": [
+      "Pro Shop",
+      "Locker Rooms",
+      "Performance Center",
+      "Restaurant",
+      "Hotel"
+    ],
     "events": [
-      {"title": "Penguins Dev. Camp", "date": "Jul 10–14"},
-      {"title": "Public Skate", "date": "Sat 2–4 PM"}
+      {
+        "title": "Penguins Dev. Camp",
+        "date": "Jul 10\u201314"
+      },
+      {
+        "title": "Public Skate",
+        "date": "Sat 2\u20134 PM"
+      }
     ],
     "reviews": [
-      {"author": "Pittsy", "rating": 5, "text": "Where the Pens train. First class everything — incredible ice.", "date": "1w ago"}
+      {
+        "author": "Pittsy",
+        "rating": 5,
+        "text": "Where the Pens train. First class everything \u2014 incredible ice.",
+        "date": "1w ago"
+      }
     ]
   },
   {
@@ -215,22 +322,42 @@
     "website": "wollmanrinknyc.com",
     "checkins": 8932,
     "hours": {
-      "Mon": "10am–10pm",
-      "Tue": "10am–10pm",
-      "Wed": "10am–10pm",
-      "Thu": "10am–10pm",
-      "Fri": "10am–11pm",
-      "Sat": "10am–11pm",
-      "Sun": "10am–9pm"
+      "Mon": "10am\u201310pm",
+      "Tue": "10am\u201310pm",
+      "Wed": "10am\u201310pm",
+      "Thu": "10am\u201310pm",
+      "Fri": "10am\u201311pm",
+      "Sat": "10am\u201311pm",
+      "Sun": "10am\u20139pm"
     },
-    "amenities": ["Skate Rental", "Lockers", "Snack Bar"],
+    "amenities": [
+      "Skate Rental",
+      "Lockers",
+      "Snack Bar"
+    ],
     "events": [
-      {"title": "Public Skate", "date": "Daily 10am–10pm"},
-      {"title": "Hockey Clinic", "date": "Sat 8 AM"}
+      {
+        "title": "Public Skate",
+        "date": "Daily 10am\u201310pm"
+      },
+      {
+        "title": "Hockey Clinic",
+        "date": "Sat 8 AM"
+      }
     ],
     "reviews": [
-      {"author": "Emma S.", "rating": 5, "text": "Iconic NYC experience. Manhattan skyline backdrop is unbeatable.", "date": "1d ago"},
-      {"author": "Kevin P.", "rating": 3, "text": "Beautiful but gets very crowded. Go early.", "date": "3d ago"}
+      {
+        "author": "Emma S.",
+        "rating": 5,
+        "text": "Iconic NYC experience. Manhattan skyline backdrop is unbeatable.",
+        "date": "1d ago"
+      },
+      {
+        "author": "Kevin P.",
+        "rating": 3,
+        "text": "Beautiful but gets very crowded. Go early.",
+        "date": "3d ago"
+      }
     ]
   },
   {
@@ -249,21 +376,38 @@
     "website": "chelseapiers.com",
     "checkins": 4521,
     "hours": {
-      "Mon": "6am–11pm",
-      "Tue": "6am–11pm",
-      "Wed": "6am–11pm",
-      "Thu": "6am–11pm",
-      "Fri": "6am–12am",
-      "Sat": "8am–12am",
-      "Sun": "8am–11pm"
+      "Mon": "6am\u201311pm",
+      "Tue": "6am\u201311pm",
+      "Wed": "6am\u201311pm",
+      "Thu": "6am\u201311pm",
+      "Fri": "6am\u201312am",
+      "Sat": "8am\u201312am",
+      "Sun": "8am\u201311pm"
     },
-    "amenities": ["Pro Shop", "Locker Rooms", "Skate Rental", "Sharpening", "Restaurant"],
+    "amenities": [
+      "Pro Shop",
+      "Locker Rooms",
+      "Skate Rental",
+      "Sharpening",
+      "Restaurant"
+    ],
     "events": [
-      {"title": "Adult Hockey League", "date": "Mon/Wed 10 PM"},
-      {"title": "Public Skate", "date": "Daily 12–5 PM"}
+      {
+        "title": "Adult Hockey League",
+        "date": "Mon/Wed 10 PM"
+      },
+      {
+        "title": "Public Skate",
+        "date": "Daily 12\u20135 PM"
+      }
     ],
     "reviews": [
-      {"author": "Alex T.", "rating": 5, "text": "Two full ice sheets in Manhattan. Hidden gem for hockey players.", "date": "2d ago"}
+      {
+        "author": "Alex T.",
+        "rating": 5,
+        "text": "Two full ice sheets in Manhattan. Hidden gem for hockey players.",
+        "date": "2d ago"
+      }
     ]
   },
   {
@@ -282,21 +426,37 @@
     "website": "monumentaliceplex.com",
     "checkins": 1678,
     "hours": {
-      "Mon": "6am–11pm",
-      "Tue": "6am–11pm",
-      "Wed": "6am–11pm",
-      "Thu": "6am–11pm",
-      "Fri": "6am–11pm",
-      "Sat": "7am–10pm",
-      "Sun": "7am–9pm"
+      "Mon": "6am\u201311pm",
+      "Tue": "6am\u201311pm",
+      "Wed": "6am\u201311pm",
+      "Thu": "6am\u201311pm",
+      "Fri": "6am\u201311pm",
+      "Sat": "7am\u201310pm",
+      "Sun": "7am\u20139pm"
     },
-    "amenities": ["Pro Shop", "Locker Rooms", "Caps Training", "Restaurant"],
+    "amenities": [
+      "Pro Shop",
+      "Locker Rooms",
+      "Caps Training",
+      "Restaurant"
+    ],
     "events": [
-      {"title": "Public Skate", "date": "Daily 12–2 PM"},
-      {"title": "Adult Drop-In", "date": "Thu 9 PM"}
+      {
+        "title": "Public Skate",
+        "date": "Daily 12\u20132 PM"
+      },
+      {
+        "title": "Adult Drop-In",
+        "date": "Thu 9 PM"
+      }
     ],
     "reviews": [
-      {"author": "Cap Hawk", "rating": 5, "text": "Train where the Caps train. Two sheets, pro quality everything.", "date": "3d ago"}
+      {
+        "author": "Cap Hawk",
+        "rating": 5,
+        "text": "Train where the Caps train. Two sheets, pro quality everything.",
+        "date": "3d ago"
+      }
     ]
   },
   {
@@ -306,7 +466,7 @@
     "city": "Voorhees",
     "state": "NJ",
     "lat": 39.8862,
-    "lng": -74.9680,
+    "lng": -74.968,
     "type": "NHL",
     "isPublic": true,
     "rating": 4.4,
@@ -315,21 +475,37 @@
     "website": "flyersskatezone.com",
     "checkins": 1543,
     "hours": {
-      "Mon": "6am–10pm",
-      "Tue": "6am–10pm",
-      "Wed": "6am–10pm",
-      "Thu": "6am–10pm",
-      "Fri": "6am–10pm",
-      "Sat": "8am–9pm",
-      "Sun": "8am–8pm"
+      "Mon": "6am\u201310pm",
+      "Tue": "6am\u201310pm",
+      "Wed": "6am\u201310pm",
+      "Thu": "6am\u201310pm",
+      "Fri": "6am\u201310pm",
+      "Sat": "8am\u20139pm",
+      "Sun": "8am\u20138pm"
     },
-    "amenities": ["Pro Shop", "Locker Rooms", "Snack Bar", "Skate Rental"],
+    "amenities": [
+      "Pro Shop",
+      "Locker Rooms",
+      "Snack Bar",
+      "Skate Rental"
+    ],
     "events": [
-      {"title": "Flyers Youth Camp", "date": "Jul–Aug"},
-      {"title": "Adult League", "date": "Mon 8 PM"}
+      {
+        "title": "Flyers Youth Camp",
+        "date": "Jul\u2013Aug"
+      },
+      {
+        "title": "Adult League",
+        "date": "Mon 8 PM"
+      }
     ],
     "reviews": [
-      {"author": "Philly Fan", "rating": 4, "text": "Two sheets, great leagues. Staff is super helpful.", "date": "3d ago"}
+      {
+        "author": "Philly Fan",
+        "rating": 4,
+        "text": "Two sheets, great leagues. Staff is super helpful.",
+        "date": "3d ago"
+      }
     ]
   },
   {
@@ -348,21 +524,37 @@
     "website": "fordicecenter.com",
     "checkins": 1234,
     "hours": {
-      "Mon": "6am–10pm",
-      "Tue": "6am–10pm",
-      "Wed": "6am–10pm",
-      "Thu": "6am–10pm",
-      "Fri": "6am–10pm",
-      "Sat": "8am–9pm",
-      "Sun": "9am–8pm"
+      "Mon": "6am\u201310pm",
+      "Tue": "6am\u201310pm",
+      "Wed": "6am\u201310pm",
+      "Thu": "6am\u201310pm",
+      "Fri": "6am\u201310pm",
+      "Sat": "8am\u20139pm",
+      "Sun": "9am\u20138pm"
     },
-    "amenities": ["Pro Shop", "Locker Rooms", "Predators Training", "Concessions"],
+    "amenities": [
+      "Pro Shop",
+      "Locker Rooms",
+      "Predators Training",
+      "Concessions"
+    ],
     "events": [
-      {"title": "Preds Fan Skate", "date": "First Friday Monthly"},
-      {"title": "Learn to Skate", "date": "Sat 10 AM"}
+      {
+        "title": "Preds Fan Skate",
+        "date": "First Friday Monthly"
+      },
+      {
+        "title": "Learn to Skate",
+        "date": "Sat 10 AM"
+      }
     ],
     "reviews": [
-      {"author": "Smashville", "rating": 5, "text": "Home of the Predators development. Amazing facility and great staff.", "date": "2d ago"}
+      {
+        "author": "Smashville",
+        "rating": 5,
+        "text": "Home of the Predators development. Amazing facility and great staff.",
+        "date": "2d ago"
+      }
     ]
   },
   {
@@ -389,13 +581,29 @@
       "Sat": "Private",
       "Sun": "Community"
     },
-    "amenities": ["NHL Training Sheets", "Performance Center", "Film Room", "Hydrotherapy"],
+    "amenities": [
+      "NHL Training Sheets",
+      "Performance Center",
+      "Film Room",
+      "Hydrotherapy"
+    ],
     "events": [
-      {"title": "Knights Development Camp", "date": "Jul 7–11"},
-      {"title": "Community Skate", "date": "Monthly"}
+      {
+        "title": "Knights Development Camp",
+        "date": "Jul 7\u201311"
+      },
+      {
+        "title": "Community Skate",
+        "date": "Monthly"
+      }
     ],
     "reviews": [
-      {"author": "Knight Fan", "rating": 5, "text": "State of the art. Best NHL practice facility in the league.", "date": "1w ago"}
+      {
+        "author": "Knight Fan",
+        "rating": 5,
+        "text": "State of the art. Best NHL practice facility in the league.",
+        "date": "1w ago"
+      }
     ]
   },
   {
@@ -414,21 +622,38 @@
     "website": "familysportscenter.com",
     "checkins": 876,
     "hours": {
-      "Mon": "6am–10pm",
-      "Tue": "6am–10pm",
-      "Wed": "6am–10pm",
-      "Thu": "6am–10pm",
-      "Fri": "6am–10pm",
-      "Sat": "7am–9pm",
-      "Sun": "8am–8pm"
+      "Mon": "6am\u201310pm",
+      "Tue": "6am\u201310pm",
+      "Wed": "6am\u201310pm",
+      "Thu": "6am\u201310pm",
+      "Fri": "6am\u201310pm",
+      "Sat": "7am\u20139pm",
+      "Sun": "8am\u20138pm"
     },
-    "amenities": ["Pro Shop", "Locker Rooms", "Skate Rental", "Concessions", "Arcade"],
+    "amenities": [
+      "Pro Shop",
+      "Locker Rooms",
+      "Skate Rental",
+      "Concessions",
+      "Arcade"
+    ],
     "events": [
-      {"title": "Public Skate", "date": "Sat & Sun 1–4 PM"},
-      {"title": "Stick Time", "date": "Mon–Fri 6 AM"}
+      {
+        "title": "Public Skate",
+        "date": "Sat & Sun 1\u20134 PM"
+      },
+      {
+        "title": "Stick Time",
+        "date": "Mon\u2013Fri 6 AM"
+      }
     ],
     "reviews": [
-      {"author": "Denver Dave", "rating": 4, "text": "Three ice sheets! Great for families and adult leagues.", "date": "5d ago"}
+      {
+        "author": "Denver Dave",
+        "rating": 4,
+        "text": "Three ice sheets! Great for families and adult leagues.",
+        "date": "5d ago"
+      }
     ]
   },
   {
@@ -455,13 +680,28 @@
       "Sat": "Private",
       "Sun": "Closed"
     },
-    "amenities": ["Performance Center", "Locker Rooms", "Training Sheets"],
+    "amenities": [
+      "Performance Center",
+      "Locker Rooms",
+      "Training Sheets"
+    ],
     "events": [
-      {"title": "Wings Prospect Camp", "date": "Aug 15–18"},
-      {"title": "Community Skate", "date": "TBD"}
+      {
+        "title": "Wings Prospect Camp",
+        "date": "Aug 15\u201318"
+      },
+      {
+        "title": "Community Skate",
+        "date": "TBD"
+      }
     ],
     "reviews": [
-      {"author": "Red Fan", "rating": 5, "text": "Had a chance to skate here for a charity event. Incredible facility.", "date": "3w ago"}
+      {
+        "author": "Red Fan",
+        "rating": 5,
+        "text": "Had a chance to skate here for a charity event. Incredible facility.",
+        "date": "3w ago"
+      }
     ]
   },
   {
@@ -488,13 +728,1175 @@
       "Sat": "Private",
       "Sun": "Closed"
     },
-    "amenities": ["NHL Training", "Performance Center", "Locker Rooms"],
+    "amenities": [
+      "NHL Training",
+      "Performance Center",
+      "Locker Rooms"
+    ],
     "events": [
-      {"title": "Blue Jackets Camp", "date": "Jul"},
-      {"title": "Youth Hockey Showcase", "date": "Aug"}
+      {
+        "title": "Blue Jackets Camp",
+        "date": "Jul"
+      },
+      {
+        "title": "Youth Hockey Showcase",
+        "date": "Aug"
+      }
     ],
     "reviews": [
-      {"author": "CBJ Fan", "rating": 5, "text": "Got to skate here for charity. Absolutely incredible facility.", "date": "2w ago"}
+      {
+        "author": "CBJ Fan",
+        "rating": 5,
+        "text": "Got to skate here for charity. Absolutely incredible facility.",
+        "date": "2w ago"
+      }
     ]
+  },
+  {
+    "id": 16,
+    "name": "Toyota Sports Performance Center",
+    "address": "555 N Nash St",
+    "city": "El Segundo",
+    "state": "CA",
+    "lat": 33.92167,
+    "lng": -118.38806,
+    "type": "NHL",
+    "isPublic": true,
+    "rating": 3.9,
+    "reviewCount": 615,
+    "phone": "(310) 535-4400",
+    "website": "toyotasportsperformancecenter.com",
+    "checkins": 681,
+    "hours": {
+      "Mon": "Call for hours",
+      "Tue": "Call for hours",
+      "Wed": "Call for hours",
+      "Thu": "Call for hours",
+      "Fri": "Call for hours",
+      "Sat": "Call for hours",
+      "Sun": "Call for hours"
+    },
+    "amenities": [
+      "Pro Shop",
+      "Locker Rooms",
+      "Restaurant",
+      "Sports Medicine"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 17,
+    "name": "Great Park Ice & FivePoint Arena",
+    "address": "888 Ridge Valley",
+    "city": "Irvine",
+    "state": "CA",
+    "lat": 33.67761,
+    "lng": -117.74524,
+    "type": "NHL",
+    "isPublic": true,
+    "rating": 4.8,
+    "reviewCount": 788,
+    "phone": "(949) 774-1600",
+    "website": "greatparkice.com",
+    "checkins": 1766,
+    "hours": {
+      "Mon": "Call for hours",
+      "Tue": "Call for hours",
+      "Wed": "Call for hours",
+      "Thu": "Call for hours",
+      "Fri": "Call for hours",
+      "Sat": "Call for hours",
+      "Sun": "Call for hours"
+    },
+    "amenities": [
+      "Pro Shop",
+      "Restaurant",
+      "Arcade",
+      "Team Store"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 18,
+    "name": "Sharks Ice at San Jose",
+    "address": "1500 S 10th St",
+    "city": "San Jose",
+    "state": "CA",
+    "lat": 37.31966,
+    "lng": -121.86422,
+    "type": "NHL",
+    "isPublic": true,
+    "rating": 4.5,
+    "reviewCount": 441,
+    "phone": "(408) 279-6000",
+    "website": "solar4americaiceatsanjose.com",
+    "checkins": 1726,
+    "hours": {
+      "Mon": "5:30am\u201310pm",
+      "Tue": "5:30am\u201310pm",
+      "Wed": "5:30am\u201310pm",
+      "Thu": "5:30am\u201310pm",
+      "Fri": "5:30am\u201310pm",
+      "Sat": "5:30am\u201310pm",
+      "Sun": "5:30am\u201310pm"
+    },
+    "amenities": [
+      "Pro Shop",
+      "Skate Rental",
+      "Locker Rooms"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 19,
+    "name": "Kraken Community Iceplex",
+    "address": "10601 5th Ave NE",
+    "city": "Seattle",
+    "state": "WA",
+    "lat": 47.706247,
+    "lng": -122.3250916,
+    "type": "NHL",
+    "isPublic": true,
+    "rating": 4.9,
+    "reviewCount": 784,
+    "phone": null,
+    "website": "krakencommunityiceplex.com",
+    "checkins": 1441,
+    "hours": {
+      "Mon": "Call for hours",
+      "Tue": "Call for hours",
+      "Wed": "Call for hours",
+      "Thu": "Call for hours",
+      "Fri": "Call for hours",
+      "Sat": "Call for hours",
+      "Sun": "Call for hours"
+    },
+    "amenities": [
+      "Pro Shop",
+      "Team Store",
+      "Locker Rooms"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 20,
+    "name": "Fifth Third Arena",
+    "address": "1801 W Jackson Blvd",
+    "city": "Chicago",
+    "state": "IL",
+    "lat": 41.8776,
+    "lng": -87.6723,
+    "type": "STANDARD",
+    "isPublic": true,
+    "rating": 4.6,
+    "reviewCount": 557,
+    "phone": "(312) 455-7000",
+    "website": "www.fifththirdarena.com",
+    "checkins": 891,
+    "hours": {
+      "Mon": "6:00 AM - 11:00 PM",
+      "Tue": "6:00 AM - 11:00 PM",
+      "Wed": "6:00 AM - 11:00 PM",
+      "Thu": "6:00 AM - 11:00 PM",
+      "Fri": "6:00 AM - 11:00 PM",
+      "Sat": "6:00 AM - 11:00 PM",
+      "Sun": "6:00 AM - 11:00 PM"
+    },
+    "amenities": [
+      "2 NHL Sheets",
+      "Pro Shop",
+      "Concessions",
+      "Skate Rental",
+      "Tavern"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 21,
+    "name": "Johnny's IceHouse West",
+    "address": "2551 W Madison St",
+    "city": "Chicago",
+    "state": "IL",
+    "lat": 41.8812,
+    "lng": -87.6911,
+    "type": "STANDARD",
+    "isPublic": true,
+    "rating": 4.4,
+    "reviewCount": 355,
+    "phone": "(312) 243-4441",
+    "website": "www.johnnysicehouse.com",
+    "checkins": 2364,
+    "hours": {
+      "Mon": "Varies",
+      "Tue": "Varies",
+      "Wed": "Varies",
+      "Thu": "Varies",
+      "Fri": "Varies",
+      "Sat": "Varies",
+      "Sun": "Varies"
+    },
+    "amenities": [
+      "1 NHL Sheet",
+      "Stanley's Club Bar",
+      "Pro Shop",
+      "Skate Rental"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 22,
+    "name": "Johnny's IceHouse East",
+    "address": "1350 W Madison St",
+    "city": "Chicago",
+    "state": "IL",
+    "lat": 41.8817,
+    "lng": -87.6614,
+    "type": "STANDARD",
+    "isPublic": true,
+    "rating": 4.3,
+    "reviewCount": 690,
+    "phone": "(312) 226-5555",
+    "website": "www.johnnysicehouse.com",
+    "checkins": 2460,
+    "hours": {
+      "Mon": "Varies",
+      "Tue": "Varies",
+      "Wed": "Varies",
+      "Thu": "Varies",
+      "Fri": "Varies",
+      "Sat": "Varies",
+      "Sun": "Varies"
+    },
+    "amenities": [
+      "1 NHL Sheet",
+      "Bar",
+      "Skate Rental"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 23,
+    "name": "Robert Crown Community Center",
+    "address": "1801 Main St",
+    "city": "Evanston",
+    "state": "IL",
+    "lat": 42.0334,
+    "lng": -87.7015,
+    "type": "STANDARD",
+    "isPublic": true,
+    "rating": 4.7,
+    "reviewCount": 485,
+    "phone": "(847) 448-8258",
+    "website": "www.cityofevanston.org",
+    "checkins": 505,
+    "hours": {
+      "Mon": "8:00 AM - 9:00 PM",
+      "Tue": "8:00 AM - 9:00 PM",
+      "Wed": "8:00 AM - 9:00 PM",
+      "Thu": "8:00 AM - 9:00 PM",
+      "Fri": "8:00 AM - 10:00 PM",
+      "Sat": "6:00 AM - 10:00 PM",
+      "Sun": "6:00 AM - 9:00 PM"
+    },
+    "amenities": [
+      "1 NHL Sheet",
+      "1 Studio Sheet",
+      "Skate Rental",
+      "Concessions"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 24,
+    "name": "Centennial Ice Rink",
+    "address": "2300 Old Glenview Rd",
+    "city": "Wilmette",
+    "state": "IL",
+    "lat": 42.0645,
+    "lng": -87.746,
+    "type": "STANDARD",
+    "isPublic": true,
+    "rating": 4.8,
+    "reviewCount": 116,
+    "phone": "(847) 256-9666",
+    "website": "www.wilmetteparkdistrict.org",
+    "checkins": 2113,
+    "hours": {
+      "Mon": "Varies",
+      "Tue": "Varies",
+      "Wed": "Varies",
+      "Thu": "Varies",
+      "Fri": "Varies",
+      "Sat": "Varies",
+      "Sun": "Varies"
+    },
+    "amenities": [
+      "1 Indoor Sheet",
+      "Outdoor Studio Sheet (Seasonal)",
+      "Pro Shop",
+      "Skate Rental"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 25,
+    "name": "All Seasons Ice Rinks",
+    "address": "31W330 N Aurora Rd",
+    "city": "Naperville",
+    "state": "IL",
+    "lat": 41.7766,
+    "lng": -88.2435,
+    "type": "STANDARD",
+    "isPublic": true,
+    "rating": 4.1,
+    "reviewCount": 336,
+    "phone": "(630) 851-0600",
+    "website": "www.allseasonsicerinks.com",
+    "checkins": 521,
+    "hours": {
+      "Mon": "Varies",
+      "Tue": "Varies",
+      "Wed": "Varies",
+      "Thu": "Varies",
+      "Fri": "Varies",
+      "Sat": "Varies",
+      "Sun": "Varies"
+    },
+    "amenities": [
+      "2 NHL Sheets",
+      "1 Studio Sheet",
+      "Pro Shop",
+      "Concessions"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 26,
+    "name": "Seven Bridges Ice Arena",
+    "address": "6690 S Route 53",
+    "city": "Woodridge",
+    "state": "IL",
+    "lat": 41.7663,
+    "lng": -88.0441,
+    "type": "STANDARD",
+    "isPublic": true,
+    "rating": 4.0,
+    "reviewCount": 533,
+    "phone": "(630) 887-1234",
+    "website": "www.sevenbridgesicearena.com",
+    "checkins": 2441,
+    "hours": {
+      "Mon": "Varies",
+      "Tue": "Varies",
+      "Wed": "Varies",
+      "Thu": "Varies",
+      "Fri": "Varies",
+      "Sat": "Varies",
+      "Sun": "Varies"
+    },
+    "amenities": [
+      "1 NHL Sheet",
+      "1 Olympic Sheet",
+      "Turf Field",
+      "Pro Shop",
+      "Cafe"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 27,
+    "name": "Fox Valley Ice Arena",
+    "address": "1996 S Kirk Rd",
+    "city": "Geneva",
+    "state": "IL",
+    "lat": 41.8688,
+    "lng": -88.2811,
+    "type": "STANDARD",
+    "isPublic": true,
+    "rating": 4.9,
+    "reviewCount": 256,
+    "phone": "(630) 262-0690",
+    "website": "www.fvia.com",
+    "checkins": 1663,
+    "hours": {
+      "Mon": "Varies",
+      "Tue": "Varies",
+      "Wed": "Varies",
+      "Thu": "Varies",
+      "Fri": "Varies",
+      "Sat": "Varies",
+      "Sun": "Varies"
+    },
+    "amenities": [
+      "Home of Chicago Steel (USHL)",
+      "1 NHL Sheet",
+      "1 Olympic Sheet",
+      "Restaurant",
+      "Fitness Center"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 28,
+    "name": "Leafs Ice Centre",
+    "address": "801 Sunset Dr",
+    "city": "West Dundee",
+    "state": "IL",
+    "lat": 42.0838,
+    "lng": -88.2982,
+    "type": "STANDARD",
+    "isPublic": true,
+    "rating": 4.6,
+    "reviewCount": 458,
+    "phone": "(847) 844-8700",
+    "website": "www.leafsicecentre.com",
+    "checkins": 2050,
+    "hours": {
+      "Mon": "Varies",
+      "Tue": "Varies",
+      "Wed": "Varies",
+      "Thu": "Varies",
+      "Fri": "Varies",
+      "Sat": "Varies",
+      "Sun": "Varies"
+    },
+    "amenities": [
+      "3 NHL Sheets",
+      "Pro Shop",
+      "Concessions",
+      "Training Room"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 29,
+    "name": "Owens Center",
+    "address": "1019 W Lake Ave",
+    "city": "Peoria",
+    "state": "IL",
+    "lat": 40.741,
+    "lng": -89.6124,
+    "type": "STANDARD",
+    "isPublic": true,
+    "rating": 4.3,
+    "reviewCount": 482,
+    "phone": "(309) 686-3368",
+    "website": "peoriaparks.org/facilities/owens-center/",
+    "checkins": 2807,
+    "hours": {
+      "Mon": "Varies",
+      "Tue": "Varies",
+      "Wed": "Varies",
+      "Thu": "Varies",
+      "Fri": "Varies",
+      "Sat": "Varies",
+      "Sun": "Varies"
+    },
+    "amenities": [
+      "2 Full Size Sheets",
+      "Pro Shop",
+      "Skate Rental",
+      "Concessions"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 30,
+    "name": "Nelson Center",
+    "address": "1601 N 5th St",
+    "city": "Springfield",
+    "state": "IL",
+    "lat": 39.8228,
+    "lng": -89.6455,
+    "type": "STANDARD",
+    "isPublic": true,
+    "rating": 4.1,
+    "reviewCount": 524,
+    "phone": "(217) 753-2800",
+    "website": "www.springfieldparks.org",
+    "checkins": 1760,
+    "hours": {
+      "Mon": "Varies",
+      "Tue": "Varies",
+      "Wed": "Varies",
+      "Thu": "Varies",
+      "Fri": "Varies",
+      "Sat": "Varies",
+      "Sun": "Varies"
+    },
+    "amenities": [
+      "2 Indoor Sheets",
+      "Skate Rental",
+      "Concessions"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 31,
+    "name": "Grossinger Motors Arena",
+    "address": "101 S Madison St",
+    "city": "Bloomington",
+    "state": "IL",
+    "lat": 40.4792,
+    "lng": -88.9972,
+    "type": "STANDARD",
+    "isPublic": true,
+    "rating": 4.5,
+    "reviewCount": 879,
+    "phone": "(309) 434-2843",
+    "website": "www.grossingermotorsarena.com",
+    "checkins": 233,
+    "hours": {
+      "Mon": "Varies",
+      "Tue": "Varies",
+      "Wed": "Varies",
+      "Thu": "Varies",
+      "Fri": "Varies",
+      "Sat": "Varies",
+      "Sun": "Varies"
+    },
+    "amenities": [
+      "Multi-purpose Arena",
+      "1 NHL Sheet",
+      "Concessions",
+      "Luxury Suites"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 32,
+    "name": "David S. Palmer Arena",
+    "address": "100 N Vermilion St",
+    "city": "Danville",
+    "state": "IL",
+    "lat": 40.1245,
+    "lng": -87.6304,
+    "type": "STANDARD",
+    "isPublic": true,
+    "rating": 4.9,
+    "reviewCount": 299,
+    "phone": "(217) 443-4241",
+    "website": "www.palmerarena.com",
+    "checkins": 2706,
+    "hours": {
+      "Mon": "Varies",
+      "Tue": "Varies",
+      "Wed": "Varies",
+      "Thu": "Varies",
+      "Fri": "Varies",
+      "Sat": "Varies",
+      "Sun": "Varies"
+    },
+    "amenities": [
+      "1 Sheet",
+      "Concessions",
+      "Skate Rental",
+      "Event Space"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 33,
+    "name": "Hoffman Estates Ice Arena",
+    "address": "1685 W Higgins Rd",
+    "city": "Hoffman Estates",
+    "state": "IL",
+    "lat": 42.0416,
+    "lng": -88.1362,
+    "type": "STANDARD",
+    "isPublic": true,
+    "rating": 3.8,
+    "reviewCount": 316,
+    "phone": "(847) 885-7500",
+    "website": "www.heparks.org",
+    "checkins": 2144,
+    "hours": {
+      "Mon": "Varies",
+      "Tue": "Varies",
+      "Wed": "Varies",
+      "Thu": "Varies",
+      "Fri": "Varies",
+      "Sat": "Varies",
+      "Sun": "Varies"
+    },
+    "amenities": [
+      "1 NHL Sheet",
+      "Pro Shop",
+      "Concessions",
+      "Room Rentals"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 34,
+    "name": "Mount Prospect Ice Arena",
+    "address": "1501 Industrial Dr",
+    "city": "Mount Prospect",
+    "state": "IL",
+    "lat": 42.0559,
+    "lng": -87.9421,
+    "type": "STANDARD",
+    "isPublic": true,
+    "rating": 4.0,
+    "reviewCount": 505,
+    "phone": "(224) 443-4370",
+    "website": "www.mpicearena.com",
+    "checkins": 2520,
+    "hours": {
+      "Mon": "Varies",
+      "Tue": "Varies",
+      "Wed": "Varies",
+      "Thu": "Varies",
+      "Fri": "Varies",
+      "Sat": "Varies",
+      "Sun": "Varies"
+    },
+    "amenities": [
+      "2 NHL Sheets",
+      "Pro Shop",
+      "Bricks Wood Fired Pizza",
+      "Training Center"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 35,
+    "name": "Addison Ice Arena",
+    "address": "475 S Grace St",
+    "city": "Addison",
+    "state": "IL",
+    "lat": 41.9248,
+    "lng": -87.9942,
+    "type": "STANDARD",
+    "isPublic": true,
+    "rating": 4.9,
+    "reviewCount": 436,
+    "phone": "(630) 543-9200",
+    "website": "www.addisonice.com",
+    "checkins": 1101,
+    "hours": {
+      "Mon": "Varies",
+      "Tue": "Varies",
+      "Wed": "Varies",
+      "Thu": "Varies",
+      "Fri": "Varies",
+      "Sat": "Varies",
+      "Sun": "Varies"
+    },
+    "amenities": [
+      "1 NHL Sheet",
+      "1 Olympic Sheet",
+      "Pro Shop",
+      "Concessions",
+      "Fitness Center"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 36,
+    "name": "The Pettit National Ice Center",
+    "address": "500 S 84th St",
+    "city": "Milwaukee",
+    "state": "WI",
+    "lat": 43.0252,
+    "lng": -87.9944,
+    "type": "STANDARD",
+    "isPublic": true,
+    "rating": 4.7,
+    "reviewCount": 224,
+    "phone": "(414) 266-0100",
+    "website": "thepettit.com",
+    "checkins": 2906,
+    "hours": {
+      "Mon": "Varies",
+      "Tue": "Varies",
+      "Wed": "Varies",
+      "Thu": "Varies",
+      "Fri": "Varies",
+      "Sat": "Varies",
+      "Sun": "Varies"
+    },
+    "amenities": [
+      "Official US Olympic Training Site",
+      "2 NHL Rinks",
+      "Run/Walk Track"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 37,
+    "name": "Bob Suter's Capitol Ice Arena",
+    "address": "2616 Pleasant View Rd",
+    "city": "Middleton",
+    "state": "WI",
+    "lat": 43.0975,
+    "lng": -89.5255,
+    "type": "STANDARD",
+    "isPublic": true,
+    "rating": 4.3,
+    "reviewCount": 860,
+    "phone": "(608) 836-1036",
+    "website": "www.capitolicearena.com",
+    "checkins": 2251,
+    "hours": {
+      "Mon": "Varies",
+      "Tue": "Varies",
+      "Wed": "Varies",
+      "Thu": "Varies",
+      "Fri": "Varies",
+      "Sat": "Varies",
+      "Sun": "Varies"
+    },
+    "amenities": [
+      "Home of Madison Capitols (USHL)",
+      "Pro Shop",
+      "Concessions",
+      "Beer Garage"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 38,
+    "name": "Ozaukee Ice Center",
+    "address": "5505 Pioneer Rd",
+    "city": "Mequon",
+    "state": "WI",
+    "lat": 43.322,
+    "lng": -87.971,
+    "type": "STANDARD",
+    "isPublic": true,
+    "rating": 4.6,
+    "reviewCount": 898,
+    "phone": "(262) 375-6851",
+    "website": "www.ozaukeeicecenter.org",
+    "checkins": 2501,
+    "hours": {
+      "Mon": "Varies",
+      "Tue": "Varies",
+      "Wed": "Varies",
+      "Thu": "Varies",
+      "Fri": "Varies",
+      "Sat": "Varies",
+      "Sun": "Varies"
+    },
+    "amenities": [
+      "2 Rinks",
+      "Pro Shop",
+      "Concessions"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 39,
+    "name": "Cornerstone Community Ice Center",
+    "address": "1642 Fernando Dr",
+    "city": "De Pere",
+    "state": "WI",
+    "lat": 44.4491,
+    "lng": -88.0832,
+    "type": "STANDARD",
+    "isPublic": true,
+    "rating": 3.8,
+    "reviewCount": 523,
+    "phone": "(920) 403-2000",
+    "website": "www.cornerstoneicecenter.org",
+    "checkins": 1651,
+    "hours": {
+      "Mon": "Varies",
+      "Tue": "Varies",
+      "Wed": "Varies",
+      "Thu": "Varies",
+      "Fri": "Varies",
+      "Sat": "Varies",
+      "Sun": "Varies"
+    },
+    "amenities": [
+      "3 Sheets (1 Olympic",
+      "2 NHL)",
+      "Pro Shop",
+      "Concessions"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 40,
+    "name": "Kohl Center",
+    "address": "601 W Dayton St",
+    "city": "Madison",
+    "state": "WI",
+    "lat": 43.0692,
+    "lng": -89.3986,
+    "type": "STANDARD",
+    "isPublic": true,
+    "rating": 3.9,
+    "reviewCount": 629,
+    "phone": "(608) 262-1440",
+    "website": "uwbadgers.com",
+    "checkins": 2710,
+    "hours": {
+      "Mon": "Varies",
+      "Tue": "Varies",
+      "Wed": "Varies",
+      "Thu": "Varies",
+      "Fri": "Varies",
+      "Sat": "Varies",
+      "Sun": "Varies"
+    },
+    "amenities": [
+      "Home of Wisconsin Badgers (NCAA)",
+      "Multi-purpose Arena",
+      "Premium Seating"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 41,
+    "name": "Community Ice Center (Siren Arena)",
+    "address": "24165 State Rd 35",
+    "city": "Siren",
+    "state": "WI",
+    "lat": 45.7876,
+    "lng": -92.3811,
+    "type": "STANDARD",
+    "isPublic": true,
+    "rating": 3.9,
+    "reviewCount": 773,
+    "phone": "(715) 349-1111",
+    "website": "www.sirenhockey.com",
+    "checkins": 2127,
+    "hours": {
+      "Mon": "Varies",
+      "Tue": "Varies",
+      "Wed": "Varies",
+      "Thu": "Varies",
+      "Fri": "Varies",
+      "Sat": "Varies",
+      "Sun": "Varies"
+    },
+    "amenities": [
+      "1 Sheet",
+      "Community Concessions",
+      "Rental Center"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 42,
+    "name": "Fond du Lac Blue Line Family Ice Center",
+    "address": "550 Fond Du Lac Ave",
+    "city": "Fond du Lac",
+    "state": "WI",
+    "lat": 43.7684,
+    "lng": -88.4344,
+    "type": "STANDARD",
+    "isPublic": true,
+    "rating": 4.9,
+    "reviewCount": 755,
+    "phone": "(920) 923-3742",
+    "website": "www.fdlblueline.com",
+    "checkins": 2309,
+    "hours": {
+      "Mon": "Varies",
+      "Tue": "Varies",
+      "Wed": "Varies",
+      "Thu": "Varies",
+      "Fri": "Varies",
+      "Sat": "Varies",
+      "Sun": "Varies"
+    },
+    "amenities": [
+      "3 Indoor Sheets",
+      "Pro Shop",
+      "Skate Rental",
+      "Concessions"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 43,
+    "name": "Champion Center",
+    "address": "5000 W Champion Dr",
+    "city": "Grand Chute",
+    "state": "WI",
+    "lat": 44.2581,
+    "lng": -88.4812,
+    "type": "STANDARD",
+    "isPublic": true,
+    "rating": 4.3,
+    "reviewCount": 820,
+    "phone": "(920) 750-7080",
+    "website": "championcenterwi.com",
+    "checkins": 1286,
+    "hours": {
+      "Mon": "Varies",
+      "Tue": "Varies",
+      "Wed": "Varies",
+      "Thu": "Varies",
+      "Fri": "Varies",
+      "Sat": "Varies",
+      "Sun": "Varies"
+    },
+    "amenities": [
+      "Multi-sport facility",
+      "1 NHL Sheet",
+      "1 Seasonal Sheet",
+      "Event Space"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 44,
+    "name": "Appleton Ice Arena",
+    "address": "1717 E Witzke Blvd",
+    "city": "Appleton",
+    "state": "WI",
+    "lat": 44.2819,
+    "lng": -88.3815,
+    "type": "STANDARD",
+    "isPublic": true,
+    "rating": 4.7,
+    "reviewCount": 437,
+    "phone": "(920) 830-7679",
+    "website": "www.appletonice.org",
+    "checkins": 2651,
+    "hours": {
+      "Mon": "Varies",
+      "Tue": "Varies",
+      "Wed": "Varies",
+      "Thu": "Varies",
+      "Fri": "Varies",
+      "Sat": "Varies",
+      "Sun": "Varies"
+    },
+    "amenities": [
+      "1 Sheet",
+      "Skate Rental",
+      "Concessions",
+      "Meeting Rooms"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 45,
+    "name": "KB Willett Ice Arena",
+    "address": "1000 Minnesota Ave",
+    "city": "Stevens Point",
+    "state": "WI",
+    "lat": 44.5292,
+    "lng": -89.5604,
+    "type": "STANDARD",
+    "isPublic": true,
+    "rating": 3.8,
+    "reviewCount": 396,
+    "phone": "(715) 346-1576",
+    "website": "www.stevenspoint.com",
+    "checkins": 776,
+    "hours": {
+      "Mon": "Varies",
+      "Tue": "Varies",
+      "Wed": "Varies",
+      "Thu": "Varies",
+      "Fri": "Varies",
+      "Sat": "Varies",
+      "Sun": "Varies"
+    },
+    "amenities": [
+      "1 Olympic Size Sheet",
+      "Seating for 1800",
+      "Skate Rental",
+      "Concessions"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 46,
+    "name": "Mosinee Recreation Center",
+    "address": "701 11th St",
+    "city": "Mosinee",
+    "state": "WI",
+    "lat": 44.7925,
+    "lng": -89.7112,
+    "type": "STANDARD",
+    "isPublic": true,
+    "rating": 3.8,
+    "reviewCount": 129,
+    "phone": "(715) 693-3652",
+    "website": "www.mosineehockey.com",
+    "checkins": 2771,
+    "hours": {
+      "Mon": "Varies",
+      "Tue": "Varies",
+      "Wed": "Varies",
+      "Thu": "Varies",
+      "Fri": "Varies",
+      "Sat": "Varies",
+      "Sun": "Varies"
+    },
+    "amenities": [
+      "1 Sheet",
+      "Historic Indoor Barn",
+      "Concessions"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 47,
+    "name": "South Suburbs Ice Arena",
+    "address": "2301 17th Ave",
+    "city": "South Milwaukee",
+    "state": "WI",
+    "lat": 42.9112,
+    "lng": -87.8715,
+    "type": "STANDARD",
+    "isPublic": true,
+    "rating": 4.8,
+    "reviewCount": 235,
+    "phone": "(414) 768-8000",
+    "website": "www.smislands.com",
+    "checkins": 231,
+    "hours": {
+      "Mon": "Varies",
+      "Tue": "Varies",
+      "Wed": "Varies",
+      "Thu": "Varies",
+      "Fri": "Varies",
+      "Sat": "Varies",
+      "Sun": "Varies"
+    },
+    "amenities": [
+      "1 Sheet",
+      "Youth Team Home",
+      "Skate Rental"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 48,
+    "name": "Janesville Ice Arena",
+    "address": "821 Beloit Ave",
+    "city": "Janesville",
+    "state": "WI",
+    "lat": 42.6655,
+    "lng": -89.0118,
+    "type": "STANDARD",
+    "isPublic": true,
+    "rating": 4.9,
+    "reviewCount": 445,
+    "phone": "(608) 755-3015",
+    "website": "www.janesvillewi.gov",
+    "checkins": 682,
+    "hours": {
+      "Mon": "Varies",
+      "Tue": "Varies",
+      "Wed": "Varies",
+      "Thu": "Varies",
+      "Fri": "Varies",
+      "Sat": "Varies",
+      "Sun": "Varies"
+    },
+    "amenities": [
+      "1 Sheet",
+      "Skate Rental",
+      "Concessions",
+      "Home of Janesville Jets (NAHL)"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 49,
+    "name": "Rec Center Ice Rink",
+    "address": "401 East Ave",
+    "city": "Waukesha",
+    "state": "WI",
+    "lat": 43.0081,
+    "lng": -88.2254,
+    "type": "STANDARD",
+    "isPublic": true,
+    "rating": 4.2,
+    "reviewCount": 593,
+    "phone": "(262) 524-3737",
+    "website": "www.waukesha-wi.gov",
+    "checkins": 1892,
+    "hours": {
+      "Mon": "Varies",
+      "Tue": "Varies",
+      "Wed": "Varies",
+      "Thu": "Varies",
+      "Fri": "Varies",
+      "Sat": "Varies",
+      "Sun": "Varies"
+    },
+    "amenities": [
+      "1 Sheet",
+      "Skate Rental",
+      "Concessions"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 50,
+    "name": "Wildcat Centre",
+    "address": "701 Wildcat Way",
+    "city": "River Falls",
+    "state": "WI",
+    "lat": 44.8566,
+    "lng": -92.6124,
+    "type": "STANDARD",
+    "isPublic": true,
+    "rating": 4.4,
+    "reviewCount": 595,
+    "phone": "(715) 426-1412",
+    "website": "www.rfhockey.com",
+    "checkins": 2029,
+    "hours": {
+      "Mon": "Varies",
+      "Tue": "Varies",
+      "Wed": "Varies",
+      "Thu": "Varies",
+      "Fri": "Varies",
+      "Sat": "Varies",
+      "Sun": "Varies"
+    },
+    "amenities": [
+      "1 Sheet",
+      "Community Hockey Hub",
+      "Concessions"
+    ],
+    "events": [],
+    "reviews": []
   }
 ]

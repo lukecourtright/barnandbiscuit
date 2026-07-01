@@ -4,4 +4,4 @@ __pycache__/
 .env
 venv/
 .venv/
-pending_rinks.json
+dev.db

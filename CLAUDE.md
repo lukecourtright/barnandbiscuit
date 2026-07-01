@@ -22,44 +22,149 @@ pip install -r requirements.txt
 
 Deploy to Railway via `railway.toml`. Auto-deploys on push to `main`.
 
-No required environment variables in v1.
+`DATABASE_URL` — Postgres connection string, auto-injected by the Railway Postgres addon once linked to the web service. Not required locally: if unset, the app falls back to a local `dev.db` SQLite file (gitignored).
 
 ## Brand Name
 
-The brand name is TBD. Change `this.BRAND` at the top of `static/index.html` and the `<title>` tag when the name is finalized.
+The brand name is TBD — "HockeyLifers" domain was taken, "Barn & Biscuit" is the current placeholder. To rename:
+1. Change `this.BRAND = 'Barn & Biscuit'` near the top of `static/index.html`
+2. Update `<title>` in the same file
+3. That's it — all wordmark rendering derives from `this.BRAND`
+
+---
 
 ## Architecture
 
-**Backend (`main.py`):**
+### File Structure
+
+```
+barnbiscuit/
+├── main.py                    # FastAPI app + SQLModel models
+├── rinks.json                 # Curated rink data — source of truth, synced into the DB on startup
+├── rinks_import_template.csv  # CSV template for bulk-adding rinks (fill in, run import script)
+├── scripts/
+│   └── import_rinks_csv.py   # Merges a filled CSV batch into rinks.json
+├── dev.db                     # Local SQLite fallback when DATABASE_URL is unset (gitignored)
+├── requirements.txt
+├── railway.toml
+├── run.bat
+└── static/
+    ├── index.html           # Entire frontend SPA
+    ├── brand-tokens.css     # CSS custom properties (Neon Night palette)
+    └── logo/                # Favicons + SVG marks
+```
+
+### Backend (`main.py`)
+
+Data is stored in a database (Postgres in production via Railway addon, local SQLite fallback otherwise) accessed through SQLModel. `rinks.json` remains the human/AI-edited source of truth — on every startup, `sync_rinks_from_file()` creates tables if missing and upserts (by `id`) every rink from `rinks.json` into the `Rink` table, so pushing an updated `rinks.json` to `main` is enough to update production data on the next deploy.
+
 - `GET /` → serves `static/index.html`
-- `GET /api/rinks` → reads and returns `rinks.json`
-- `POST /api/rinks/submit` → appends community-submitted rinks to `pending_rinks.json` (not public until moderated)
-- `/static` → static file mount
+- `GET /api/rinks` → queries the `Rink` table, returns all rows as JSON (same shape as before)
+- `POST /api/rinks/submit` → inserts community-submitted rinks into the `PendingRink` table (`id`, `submittedAt`, raw `data` JSON blob) — not public until moderated, no validation yet
+- `/static` → static file mount for CSS, logos, etc.
 
-**Frontend (`static/index.html`):**
-- Vanilla JS SPA, no bundler or framework
-- `RinkFinder` class with `setState()` → `render()` pattern
-- Leaflet.js 1.9.4 + CartoDB Dark Matter tiles (free, no API key)
-- `brand-tokens.css` provides CSS custom properties for all colors/fonts/radii
-- Single breakpoint at 768px (mobile vs desktop)
+### Frontend (`static/index.html`)
 
-**Data (`rinks.json`):**
-- 15 seed rinks; edit by hand to add/remove rinks
-- `openNow` is computed dynamically in the browser from `hours` + current local time
+Vanilla JS SPA — no bundler, no framework.
 
-**Brand system (`static/brand-tokens.css`, `static/logo/`):**
-- Copied from `design_handoff_brand_system/` — do not edit; re-copy from source if updated
-- Dark theme activated via `<html data-theme="dark">`
+**`RinkFinder` class** manages all state and rendering:
+- `this.rinks` — fetched from `/api/rinks` on init
+- `this.state` — single state object (search, filters, selectedRinkId, drawerOpen, activeTab, locationStatus, mobileView, checkinsById, etc.)
+- `setState(partial | fn)` — merges partial state and calls `render(prev)`
+- `render(prev)` — diffs against prev state, updates the DOM in targeted sections
 
-## Adding Rinks
+**Three dynamic render sections** (rebuilt via `innerHTML` on change):
+- `#rink-list` + `#mobile-rink-list` — rink cards, rebuilt on filter/search/selection changes
+- `#drawer-body` — Info/Events/Reviews tab content, rebuilt on selection/tab/checkin changes
+- Modals — toggled via `display` on `showReport`/`showAddRink` state
 
-Edit `rinks.json` directly. Schema:
-- `id`, `name`, `address`, `city`, `state`, `lat`, `lng`
-- `type`: `"NHL"` | `"OLYMPIC"` | `"SYNTHETIC"` | `"STANDARD"`
-- `isPublic`: boolean
-- `rating`, `reviewCount`, `checkins`
-- `phone`, `website` (without https://)
-- `hours`: object with Mon–Sun string values (e.g. `"6am–10pm"` or `"Closed"`)
-- `amenities`: string array
-- `events`: `[{ title, date }]`
-- `reviews`: `[{ author, rating, text, date }]`
+**All other DOM updates** (location label, toggle state, filter chip active class, distance label, count) are targeted property sets, not full re-renders.
+
+**Map** (Leaflet.js 1.9.4 + CartoDB Dark Matter tiles, free, no API key):
+- Custom teardrop `divIcon` pins: cyan default, gold when selected
+- `updateMarkers()` called on filter/search/selection changes — adds/removes markers from the map to match the filtered list
+- `map.invalidateSize()` called after drawer opens/closes so Leaflet redraws to the new viewport width
+- `map.panTo()` called when a rink is selected
+
+**Geolocation flow:**
+1. `requestLocation()` called on init and on nav button click
+2. On grant: flies to user coords, zoom 10, adds cyan circle marker, sorts by distance
+3. On deny: "Location Off" label, distance filter/sort gracefully hidden
+
+**`openNow`** is computed dynamically in the browser from `hours[day]` + current local time — not stored in `rinks.json`.
+
+**Responsive breakpoint:** 768px
+- Below: sidebar hidden, nav links hidden, floating Map/List toggle, full-screen list overlay (`#mobile-list`)
+- Above: 355px sidebar, 400px detail drawer
+
+### Data (`rinks.json`)
+
+Source of truth for rink data — edit by hand to add/remove/update. Synced into the `Rink` table (Postgres/SQLite, see Backend above) on every app startup, by upsert on `id`. `openNow` is not stored — it's derived at runtime in the browser.
+
+**Current count:** ~50 rinks (15 original seeds, 4 West Coast NHL facilities, 31 IL/WI batch added 2026-06-30). Duplicate to resolve: id 3 (`Johnny's IceHouse West`, placeholder address `1800 W Fulton St`) conflicts with id 21 (user-researched, `2551 W Madison St`) — delete id 3 from `rinks.json`.
+
+**Bulk import workflow:**
+1. Copy `rinks_import_template.csv`, fill in one region's worth of rinks, save as a new file.
+2. Run `python scripts/import_rinks_csv.py path/to/batch.csv` — appends to `rinks.json` with sequential `id`s.
+3. Push `rinks.json` to `main` → Railway auto-deploys and syncs to Postgres on startup.
+
+**CSV field notes (learned from IL/WI batch):**
+- `type` — use `NHL`, `OLYMPIC`, `SYNTHETIC`, or `STANDARD`. `Indoor` also accepted (maps to `STANDARD`). Use `OLYMPIC` for rinks that explicitly have an Olympic-size (200×100 ft) sheet.
+- `amenities` — comma-separated or semicolon-separated, both work (auto-detected).
+- `website` — `https://` and `http://` prefixes are stripped automatically.
+- `hours_*` — use `"Varies"` when hours change seasonally/weekly (stored as-is and displayed). Leave blank to default to `"Call for hours"`.
+- `events`/`reviews`/`rating`/`reviewCount`/`checkins` — not in the CSV. Rating/counts get randomized illustrative placeholders; events/reviews start empty.
+
+**⚠️ Before next Railway deploy:** add the Postgres addon in the Railway dashboard and link it to the web service so `DATABASE_URL` is injected. Until then, production falls back to ephemeral SQLite and data resets on each deploy.
+
+**Schema** (mirrors the `Rink` SQLModel in `main.py` field-for-field — `hours`/`amenities`/`events`/`reviews` are stored as JSON columns, everything else as real columns):
+```json
+{
+  "id": 1,
+  "name": "Rink Name",
+  "address": "123 Ice Ln",
+  "city": "Boston",
+  "state": "MA",
+  "lat": 42.35,
+  "lng": -71.15,
+  "type": "NHL",           // "NHL" | "OLYMPIC" | "SYNTHETIC" | "STANDARD"
+  "isPublic": true,
+  "rating": 4.6,
+  "reviewCount": 312,
+  "phone": "(617) 555-0000",
+  "website": "example.com",   // without https://
+  "checkins": 847,
+  "hours": {
+    "Mon": "6am–10pm",
+    "Tue": "6am–10pm",
+    "Wed": "6am–10pm",
+    "Thu": "6am–10pm",
+    "Fri": "6am–10pm",
+    "Sat": "8am–8pm",
+    "Sun": "Closed"           // or "Private" for members-only
+  },
+  "amenities": ["Pro Shop", "Locker Rooms"],
+  "events": [{ "title": "Public Skate", "date": "Sat 1–3 PM" }],
+  "reviews": [{ "author": "Name", "rating": 5, "text": "Great rink.", "date": "2d ago" }]
+}
+```
+
+### Brand System (`static/brand-tokens.css`, `static/logo/`)
+
+- Copied from `C:\Users\lukec\Desktop\SpendTools\design_handoff_brand_system\` — do not edit in place; re-copy from source if the design system is updated
+- Dark theme activated by `<html data-theme="dark">` on the root element
+- All colors in `index.html` use `var(--token-name)` from this file
+- Key tokens: `--bg` (#0A0E1A), `--surface` (#131A2B), `--surface-2` (#1C2540), `--border` (#2A3450), `--color-primary` (cyan #14CFCF), `--font-display` (Space Grotesk), `--font-body` (Hanken Grotesk), `--font-mono` (Space Mono)
+
+---
+
+## Not Yet Implemented
+
+- User accounts / authentication
+- Google Places API integration (rink data currently curated by hand in `rinks.json`)
+- Admin UI for moderating community-submitted rinks (sit in the `PendingRink` table, unvalidated)
+- Server-persisted check-ins and reviews (session-only in v1)
+- Schema migrations (tables are created via `SQLModel.metadata.create_all()`, no Alembic yet)
+- Rink photo carousels
+- Community and News sections (nav links present but inactive)
+- "Submit an Event" and "Write a Review" buttons (UI only, no backend)
