@@ -1,0 +1,10 @@
+name,address,city,state,lat,lng,type,isPublic,phone,website,amenities,hours_mon,hours_tue,hours_wed,hours_thu,hours_fri,hours_sat,hours_sun
+Akins Ford Arena,300 N Thomas Street,Athens,GA,33.9597,-83.3737,STANDARD,True,,https://classiccenter.com/414/Akins-Ford-Arena,"FPHL Arena, UGA Ice Dawgs, Multipurpose Venue",,,,,,,
+Atlanta Ice House,2600 Prado Lane,Marietta,GA,34.0128,-84.5503,NHL,True,(404) 800-2150,https://atlantaicehouse.com/,"NHL Sheet, Training Sheet, Public Skating, Hockey, Locker Rooms, Pool",6:00 AM - 11:30 PM,6:00 AM - 11:30 PM,6:00 AM - 11:30 PM,6:00 AM - 11:30 PM,6:00 AM - 11:30 PM,6:00 AM - 11:30 PM,6:00 AM - 11:30 PM
+Atlanta IceForum,2300 Satellite Boulevard,Duluth,GA,33.9580,-84.0938,NHL,True,(770) 813-1010,https://www.iceforum.com/,"2 NHL Sheets, Pro Shop, Snack Bar, Restaurant, Skate Rentals, Locker Rooms",,,,,,,
+Center Ice Arena,5750 Roswell Road,Sandy Springs,GA,33.9114,-84.3799,NHL,True,(404) 549-8425,https://www.centericearena.org/,"1 NHL Sheet, Public Skating, Stick Time, Hockey, Learn to Skate",,,,,,,
+Columbus Ice Rink,400 4th Street,Columbus,GA,32.4567,-84.9879,NHL,True,(706) 225-4500,https://www.columbusga.gov/icerink,"Public Skating, Club Hockey, Figure Skating, Learn to Skate, Birthday Parties",,,,,,,
+Enmarket Arena,620 Stiles Avenue,Savannah,GA,32.0778,-81.1121,STANDARD,True,(912) 468-5177,https://enmarketarena.com/,"ECHL Arena, Public Skating, Multipurpose Venue, Concessions",,,,,,,
+Gas South Arena,6400 Sugarloaf Parkway,Duluth,GA,33.9915,-84.0940,STANDARD,True,(770) 813-7500,https://www.gassouthdistrict.com/venues/detail/arena,"ECHL Arena, Removable Ice Rink, Multipurpose Venue, Food and Beverage",,,,,,,
+Macon Coliseum,200 Coliseum Drive,Macon,GA,32.8374,-83.6199,STANDARD,True,(478) 803-1592,https://maconmayhem.com/,"SPHL Arena, Multipurpose Venue, Ice-Level Suites",,,,,,,
+The ICE Complex,1345 Atlanta Highway,Cumming,GA,34.1790,-84.1380,NHL,True,(678) 845-0103,https://theice.info/,"Public Skating, Hockey, Figure Skating, Learn to Skate, Camps, Party Rooms",,,,,,,

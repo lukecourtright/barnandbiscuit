@@ -1,0 +1,6 @@
+name,address,city,state,lat,lng,type,isPublic,phone,website,amenities,hours_mon,hours_tue,hours_wed,hours_thu,hours_fri,hours_sat,hours_sun
+Bon Secours Wellness Arena,650 North Academy Street,Greenville,SC,34.8523,-82.3970,STANDARD,True,(864) 241-3800,https://www.bonsecoursarena.com/,"ECHL Arena, Multipurpose Venue, Concessions",,,,,,,
+Carolina Ice Palace,7665 Northwoods Blvd,North Charleston,SC,32.9385,-80.0476,NHL,True,(843) 572-2717,https://carolinaicepalace.com/,"2 NHL Sheets, Pro Shop, Concessions, Restaurant, Meeting Rooms",,,,,,,
+Flight Adventure Park Irmo,1019 Broad Stone Rd,Irmo,SC,34.0846,-81.1839,NHL,True,(803) 732-1900,https://flightadventurepark.com/irmo/,"Year-Round Ice Rink, Public Skating, Youth Hockey, Adult Hockey, Figure Skating",,,,,,,
+North Charleston Coliseum,5001 Coliseum Drive,North Charleston,SC,32.8650,-80.0220,STANDARD,True,(843) 529-5000,https://www.northcharlestoncoliseumpac.com/,"ECHL Arena, Multipurpose Venue, Concessions",,,,,,,
+The Pavilion Recreation Complex,400 Scottswood Road,Taylors,SC,34.9125,-82.3040,NHL,True,(864) 322-7529,https://pavilion.greenvillerec.com/ice-skating/,"Ice Arena, Public Skating, Hockey, Inline Rink, Meeting Rooms",,,,,,,
