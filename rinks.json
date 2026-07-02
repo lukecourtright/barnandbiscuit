@@ -3142,5 +3142,290 @@
     ],
     "events": [],
     "reviews": []
+  },
+  {
+    "id": 92,
+    "name": "Class of 1923 Ice Rink",
+    "address": "3130 Walnut Street",
+    "city": "Philadelphia",
+    "state": "PA",
+    "lat": 39.9522,
+    "lng": -75.1865,
+    "type": "NHL",
+    "isPublic": true,
+    "rating": 4.2,
+    "reviewCount": 438,
+    "phone": "(215) 898-1923",
+    "website": "icerink.business-services.upenn.edu",
+    "checkins": 871,
+    "hours": {
+      "Mon": "Call for hours",
+      "Tue": "Call for hours",
+      "Wed": "Call for hours",
+      "Thu": "Call for hours",
+      "Fri": "Call for hours",
+      "Sat": "6:00 PM - 7:00 PM",
+      "Sun": "1:00 PM - 2:00 PM"
+    },
+    "amenities": [
+      "Skate Rental",
+      "Locker Rooms"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 93,
+    "name": "Pegula Ice Arena",
+    "address": "250 University Drive",
+    "city": "State College",
+    "state": "PA",
+    "lat": 40.8013,
+    "lng": -77.8502,
+    "type": "NHL",
+    "isPublic": true,
+    "rating": 4.3,
+    "reviewCount": 647,
+    "phone": null,
+    "website": "pegulaicearena.com",
+    "checkins": 1510,
+    "hours": {
+      "Mon": "Varies",
+      "Tue": "Varies",
+      "Wed": "Varies",
+      "Thu": "Varies",
+      "Fri": "Varies",
+      "Sat": "Varies",
+      "Sun": "Varies"
+    },
+    "amenities": [
+      "2 Sheets",
+      "Locker Rooms",
+      "Concessions"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 94,
+    "name": "RMU Island Sports Center",
+    "address": "7600 Grand Ave",
+    "city": "Pittsburgh",
+    "state": "PA",
+    "lat": 40.5188,
+    "lng": -80.1515,
+    "type": "NHL",
+    "isPublic": true,
+    "rating": 4.6,
+    "reviewCount": 825,
+    "phone": "(412) 397-3335",
+    "website": "www.rmuislandsports.com",
+    "checkins": 2687,
+    "hours": {
+      "Mon": "Varies",
+      "Tue": "Varies",
+      "Wed": "Varies",
+      "Thu": "Varies",
+      "Fri": "Varies",
+      "Sat": "Varies",
+      "Sun": "Varies"
+    },
+    "amenities": [
+      "2 NHL Sheets",
+      "Pro Shop",
+      "Fitness Center",
+      "Bistro"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 95,
+    "name": "Baierl Ice Complex",
+    "address": "103 Marshall Dr",
+    "city": "Warrendale",
+    "state": "PA",
+    "lat": 40.6688,
+    "lng": -80.1015,
+    "type": "NHL",
+    "isPublic": true,
+    "rating": 4.6,
+    "reviewCount": 437,
+    "phone": "(724) 772-0022",
+    "website": "www.baierltoyotaicecomplex.com",
+    "checkins": 235,
+    "hours": {
+      "Mon": "9:00 AM - 11:00 PM",
+      "Tue": "9:00 AM - 11:00 PM",
+      "Wed": "9:00 AM - 11:00 PM",
+      "Thu": "9:00 AM - 11:00 PM",
+      "Fri": "9:00 AM - 11:00 PM",
+      "Sat": "9:00 AM - 11:00 PM",
+      "Sun": "9:00 AM - 11:00 PM"
+    },
+    "amenities": [
+      "Pro Shop",
+      "Locker Rooms",
+      "Concessions"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 96,
+    "name": "Steel Ice Center",
+    "address": "320 East 1st Street",
+    "city": "Bethlehem",
+    "state": "PA",
+    "lat": 40.6138,
+    "lng": -75.3739,
+    "type": "NHL",
+    "isPublic": true,
+    "rating": 4.8,
+    "reviewCount": 67,
+    "phone": "(610) 625-4774",
+    "website": "steelicecenter.com",
+    "checkins": 2384,
+    "hours": {
+      "Mon": "8:00 AM - 10:00 PM",
+      "Tue": "8:00 AM - 10:00 PM",
+      "Wed": "8:00 AM - 10:00 PM",
+      "Thu": "8:00 AM - 10:00 PM",
+      "Fri": "8:00 AM - 10:00 PM",
+      "Sat": "8:00 AM - 10:00 PM",
+      "Sun": "8:00 AM - 10:00 PM"
+    },
+    "amenities": [
+      "Locker Rooms",
+      "Concessions"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 97,
+    "name": "Twin Ponds East",
+    "address": "3904 Corey Rd",
+    "city": "Harrisburg",
+    "state": "PA",
+    "lat": 40.2738,
+    "lng": -76.8236,
+    "type": "NHL",
+    "isPublic": true,
+    "rating": 4.0,
+    "reviewCount": 414,
+    "phone": "(717) 558-7663",
+    "website": "twinponds.com",
+    "checkins": 1648,
+    "hours": {
+      "Mon": "Varies",
+      "Tue": "Varies",
+      "Wed": "Varies",
+      "Thu": "Varies",
+      "Fri": "Varies",
+      "Sat": "Varies",
+      "Sun": "Varies"
+    },
+    "amenities": [
+      "2 NHL Sheets",
+      "Pro Shop",
+      "Locker Rooms"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 98,
+    "name": "Erie Insurance Arena",
+    "address": "809 French Street",
+    "city": "Erie",
+    "state": "PA",
+    "lat": 42.1279,
+    "lng": -80.0809,
+    "type": "NHL",
+    "isPublic": true,
+    "rating": 4.2,
+    "reviewCount": 242,
+    "phone": "(814) 455-7779",
+    "website": "www.erieinsurancearena.com",
+    "checkins": 880,
+    "hours": {
+      "Mon": "Varies",
+      "Tue": "Varies",
+      "Wed": "Varies",
+      "Thu": "Varies",
+      "Fri": "Varies",
+      "Sat": "Varies",
+      "Sun": "Varies"
+    },
+    "amenities": [
+      "Concessions",
+      "Locker Rooms"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 99,
+    "name": "Toyota Sportsplex",
+    "address": "38 Coal St",
+    "city": "Wilkes-Barre",
+    "state": "PA",
+    "lat": 41.2417,
+    "lng": -75.8691,
+    "type": "NHL",
+    "isPublic": true,
+    "rating": 4.9,
+    "reviewCount": 373,
+    "phone": "(570) 208-9471",
+    "website": "toyotasportsplex.com",
+    "checkins": 1872,
+    "hours": {
+      "Mon": "Varies",
+      "Tue": "Varies",
+      "Wed": "Varies",
+      "Thu": "Varies",
+      "Fri": "Varies",
+      "Sat": "Varies",
+      "Sun": "Varies"
+    },
+    "amenities": [
+      "Locker Rooms",
+      "Concessions"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 100,
+    "name": "IceWorks Skating Complex",
+    "address": "3100 Dutton Mill Road",
+    "city": "Aston",
+    "state": "PA",
+    "lat": 39.8573,
+    "lng": -75.425,
+    "type": "NHL",
+    "isPublic": true,
+    "rating": 4.4,
+    "reviewCount": 656,
+    "phone": "(610) 497-2200",
+    "website": "iceworks.net",
+    "checkins": 974,
+    "hours": {
+      "Mon": "Varies",
+      "Tue": "Varies",
+      "Wed": "Varies",
+      "Thu": "Varies",
+      "Fri": "Varies",
+      "Sat": "Varies",
+      "Sun": "Varies"
+    },
+    "amenities": [
+      "Pro Shop",
+      "Locker Rooms",
+      "Concessions"
+    ],
+    "events": [],
+    "reviews": []
   }
 ]

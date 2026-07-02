@@ -1,0 +1,10 @@
+name,address,city,state,lat,lng,type,isPublic,phone,website,amenities,hours_mon,hours_tue,hours_wed,hours_thu,hours_fri,hours_sat,hours_sun
+Class of 1923 Ice Rink,3130 Walnut Street,Philadelphia,PA,39.9522,-75.1865,NHL,True,(215) 898-1923,https://icerink.business-services.upenn.edu,"Skate Rental, Locker Rooms",,,,,,6:00 PM - 7:00 PM,1:00 PM - 2:00 PM
+Pegula Ice Arena,250 University Drive,State College,PA,40.8013,-77.8502,NHL,True,,https://pegulaicearena.com,"2 Sheets, Locker Rooms, Concessions",Varies,Varies,Varies,Varies,Varies,Varies,Varies
+RMU Island Sports Center,7600 Grand Ave,Pittsburgh,PA,40.5188,-80.1515,NHL,True,(412) 397-3335,https://www.rmuislandsports.com,"2 NHL Sheets, Pro Shop, Fitness Center, Bistro",Varies,Varies,Varies,Varies,Varies,Varies,Varies
+Baierl Ice Complex,103 Marshall Dr,Warrendale,PA,40.6688,-80.1015,NHL,True,(724) 772-0022,https://www.baierltoyotaicecomplex.com,"Pro Shop, Locker Rooms, Concessions",9:00 AM - 11:00 PM,9:00 AM - 11:00 PM,9:00 AM - 11:00 PM,9:00 AM - 11:00 PM,9:00 AM - 11:00 PM,9:00 AM - 11:00 PM,9:00 AM - 11:00 PM
+Steel Ice Center,320 East 1st Street,Bethlehem,PA,40.6138,-75.3739,NHL,True,(610) 625-4774,https://steelicecenter.com,"Locker Rooms, Concessions",8:00 AM - 10:00 PM,8:00 AM - 10:00 PM,8:00 AM - 10:00 PM,8:00 AM - 10:00 PM,8:00 AM - 10:00 PM,8:00 AM - 10:00 PM,8:00 AM - 10:00 PM
+Twin Ponds East,3904 Corey Rd,Harrisburg,PA,40.2738,-76.8236,NHL,True,(717) 558-7663,https://twinponds.com,"2 NHL Sheets, Pro Shop, Locker Rooms",Varies,Varies,Varies,Varies,Varies,Varies,Varies
+Erie Insurance Arena,809 French Street,Erie,PA,42.1279,-80.0809,NHL,True,(814) 455-7779,https://www.erieinsurancearena.com,"Concessions, Locker Rooms",Varies,Varies,Varies,Varies,Varies,Varies,Varies
+Toyota Sportsplex,38 Coal St,Wilkes-Barre,PA,41.2417,-75.8691,NHL,True,(570) 208-9471,https://toyotasportsplex.com,"Locker Rooms, Concessions",Varies,Varies,Varies,Varies,Varies,Varies,Varies
+IceWorks Skating Complex,3100 Dutton Mill Road,Aston,PA,39.8573,-75.4250,NHL,True,(610) 497-2200,https://iceworks.net,"Pro Shop, Locker Rooms, Concessions",Varies,Varies,Varies,Varies,Varies,Varies,Varies
