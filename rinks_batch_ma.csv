@@ -1,0 +1,8 @@
+name,address,city,state,lat,lng,type,isPublic,phone,website,amenities,hours_mon,hours_tue,hours_wed,hours_thu,hours_fri,hours_sat,hours_sun
+Fidelity Bank Worcester Ice Center,112 Harding St,Worcester,MA,42.2582,-71.7963,NHL,True,(774) 530-6217,https://worcesterice.com,"2 NHL Sheets, Locker Rooms",,,,,,,
+New England Sports Center,121 Donald Lynch Blvd,Marlborough,MA,42.3650,-71.5963,NHL,True,(508) 229-2700,https://nes.com,"Pro Shop, Locker Rooms, Concessions",6:00 AM - 12:00 AM,6:00 AM - 12:00 AM,6:00 AM - 12:00 AM,6:00 AM - 12:00 AM,6:00 AM - 12:00 AM,6:00 AM - 12:00 AM,6:00 AM - 12:00 AM
+Conte Forum,140 Commonwealth Ave,Chestnut Hill,MA,42.3383,-71.1653,NHL,True,(617) 552-3028,https://bceagles.com,"Locker Rooms, Concessions",Varies,Varies,Varies,Varies,Varies,Varies,Varies
+Olympia Ice Center,125 Capital Dr,West Springfield,MA,42.1385,-72.6200,NHL,True,(413) 736-8100,,Locker Rooms,6:00 AM - 11:00 PM,6:00 AM - 11:00 PM,6:00 AM - 11:00 PM,6:00 AM - 11:00 PM,6:00 AM - 11:00 PM,6:00 AM - 11:00 PM,6:00 AM - 11:00 PM
+Bright-Landry Hockey Center,65 North Harvard Street,Allston,MA,42.3684,-71.1272,NHL,True,,https://gocrimson.com,Locker Rooms,Varies,Varies,Varies,Varies,Varies,Varies,Varies
+Gallo Ice Arena,231 Sandwich Rd,Buzzards Bay,MA,41.7423,-70.5968,NHL,True,(508) 759-8904,https://galloarena.com,"Locker Rooms, Concessions",8:30 AM - 11:00 PM,8:30 AM - 11:00 PM,8:30 AM - 11:00 PM,8:30 AM - 11:00 PM,8:30 AM - 10:00 PM,6:00 AM - 9:00 PM,6:00 AM - 9:00 PM
+Hobomock Arenas,132 Hobomock St,Pembroke,MA,42.0511,-70.8046,NHL,True,(781) 294-0260,https://hobomockarenas.com,Locker Rooms,,,,,,,

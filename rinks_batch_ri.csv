@@ -1,0 +1,6 @@
+name,address,city,state,lat,lng,type,isPublic,phone,website,amenities,hours_mon,hours_tue,hours_wed,hours_thu,hours_fri,hours_sat,hours_sun
+Schneider Arena,331 Huxley Ave,Providence,RI,41.8459,-71.4327,NHL,True,(401) 865-2168,https://friars.com,Locker Rooms,Varies,Varies,Varies,Varies,Varies,Varies,Varies
+Boss Ice Arena,2 Keaney Road,Kingston,RI,41.4831,-71.5360,NHL,True,(401) 874-5480,https://www.bossicearena.com,"Locker Rooms, Concessions",Varies,Varies,Varies,Varies,Varies,Varies,Varies
+Cranston Veterans Memorial Ice Rink,900 Phoenix Avenue,Cranston,RI,41.7597,-71.4846,NHL,True,(401) 944-8690,https://www.cvmrink.com,"2 NHL Sheets, Skate Rental",,,,,,,
+Thayer Ice Arena,975 Sandy Lane,Warwick,RI,41.7068,-71.4154,NHL,True,(401) 739-9769,https://www.warwickri.gov/parks-and-recreation/pages/thayer-warburton-ice-arenas,Locker Rooms,,,,,,,
+Meehan Auditorium,235 Hope St,Providence,RI,41.8314,-71.3990,NHL,True,(401) 863-5100,https://brownbears.com,Locker Rooms,Varies,Varies,Varies,Varies,Varies,Varies,Varies

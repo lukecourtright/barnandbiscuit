@@ -4168,5 +4168,557 @@
     ],
     "events": [],
     "reviews": []
+  },
+  {
+    "id": 125,
+    "name": "Fidelity Bank Worcester Ice Center",
+    "address": "112 Harding St",
+    "city": "Worcester",
+    "state": "MA",
+    "lat": 42.2582,
+    "lng": -71.7963,
+    "type": "NHL",
+    "isPublic": true,
+    "rating": 4.2,
+    "reviewCount": 694,
+    "phone": "(774) 530-6217",
+    "website": "worcesterice.com",
+    "checkins": 2727,
+    "hours": {
+      "Mon": "Call for hours",
+      "Tue": "Call for hours",
+      "Wed": "Call for hours",
+      "Thu": "Call for hours",
+      "Fri": "Call for hours",
+      "Sat": "Call for hours",
+      "Sun": "Call for hours"
+    },
+    "amenities": [
+      "2 NHL Sheets",
+      "Locker Rooms"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 126,
+    "name": "New England Sports Center",
+    "address": "121 Donald Lynch Blvd",
+    "city": "Marlborough",
+    "state": "MA",
+    "lat": 42.365,
+    "lng": -71.5963,
+    "type": "NHL",
+    "isPublic": true,
+    "rating": 3.9,
+    "reviewCount": 398,
+    "phone": "(508) 229-2700",
+    "website": "nes.com",
+    "checkins": 2277,
+    "hours": {
+      "Mon": "6:00 AM - 12:00 AM",
+      "Tue": "6:00 AM - 12:00 AM",
+      "Wed": "6:00 AM - 12:00 AM",
+      "Thu": "6:00 AM - 12:00 AM",
+      "Fri": "6:00 AM - 12:00 AM",
+      "Sat": "6:00 AM - 12:00 AM",
+      "Sun": "6:00 AM - 12:00 AM"
+    },
+    "amenities": [
+      "Pro Shop",
+      "Locker Rooms",
+      "Concessions"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 127,
+    "name": "Conte Forum",
+    "address": "140 Commonwealth Ave",
+    "city": "Chestnut Hill",
+    "state": "MA",
+    "lat": 42.3383,
+    "lng": -71.1653,
+    "type": "NHL",
+    "isPublic": true,
+    "rating": 3.8,
+    "reviewCount": 65,
+    "phone": "(617) 552-3028",
+    "website": "bceagles.com",
+    "checkins": 325,
+    "hours": {
+      "Mon": "Varies",
+      "Tue": "Varies",
+      "Wed": "Varies",
+      "Thu": "Varies",
+      "Fri": "Varies",
+      "Sat": "Varies",
+      "Sun": "Varies"
+    },
+    "amenities": [
+      "Locker Rooms",
+      "Concessions"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 128,
+    "name": "Olympia Ice Center",
+    "address": "125 Capital Dr",
+    "city": "West Springfield",
+    "state": "MA",
+    "lat": 42.1385,
+    "lng": -72.62,
+    "type": "NHL",
+    "isPublic": true,
+    "rating": 4.4,
+    "reviewCount": 464,
+    "phone": "(413) 736-8100",
+    "website": null,
+    "checkins": 218,
+    "hours": {
+      "Mon": "6:00 AM - 11:00 PM",
+      "Tue": "6:00 AM - 11:00 PM",
+      "Wed": "6:00 AM - 11:00 PM",
+      "Thu": "6:00 AM - 11:00 PM",
+      "Fri": "6:00 AM - 11:00 PM",
+      "Sat": "6:00 AM - 11:00 PM",
+      "Sun": "6:00 AM - 11:00 PM"
+    },
+    "amenities": [
+      "Locker Rooms"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 129,
+    "name": "Bright-Landry Hockey Center",
+    "address": "65 North Harvard Street",
+    "city": "Allston",
+    "state": "MA",
+    "lat": 42.3684,
+    "lng": -71.1272,
+    "type": "NHL",
+    "isPublic": true,
+    "rating": 3.8,
+    "reviewCount": 541,
+    "phone": null,
+    "website": "gocrimson.com",
+    "checkins": 2402,
+    "hours": {
+      "Mon": "Varies",
+      "Tue": "Varies",
+      "Wed": "Varies",
+      "Thu": "Varies",
+      "Fri": "Varies",
+      "Sat": "Varies",
+      "Sun": "Varies"
+    },
+    "amenities": [
+      "Locker Rooms"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 130,
+    "name": "Gallo Ice Arena",
+    "address": "231 Sandwich Rd",
+    "city": "Buzzards Bay",
+    "state": "MA",
+    "lat": 41.7423,
+    "lng": -70.5968,
+    "type": "NHL",
+    "isPublic": true,
+    "rating": 4.2,
+    "reviewCount": 558,
+    "phone": "(508) 759-8904",
+    "website": "galloarena.com",
+    "checkins": 2503,
+    "hours": {
+      "Mon": "8:30 AM - 11:00 PM",
+      "Tue": "8:30 AM - 11:00 PM",
+      "Wed": "8:30 AM - 11:00 PM",
+      "Thu": "8:30 AM - 11:00 PM",
+      "Fri": "8:30 AM - 10:00 PM",
+      "Sat": "6:00 AM - 9:00 PM",
+      "Sun": "6:00 AM - 9:00 PM"
+    },
+    "amenities": [
+      "Locker Rooms",
+      "Concessions"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 131,
+    "name": "Hobomock Arenas",
+    "address": "132 Hobomock St",
+    "city": "Pembroke",
+    "state": "MA",
+    "lat": 42.0511,
+    "lng": -70.8046,
+    "type": "NHL",
+    "isPublic": true,
+    "rating": 3.9,
+    "reviewCount": 388,
+    "phone": "(781) 294-0260",
+    "website": "hobomockarenas.com",
+    "checkins": 920,
+    "hours": {
+      "Mon": "Call for hours",
+      "Tue": "Call for hours",
+      "Wed": "Call for hours",
+      "Thu": "Call for hours",
+      "Fri": "Call for hours",
+      "Sat": "Call for hours",
+      "Sun": "Call for hours"
+    },
+    "amenities": [
+      "Locker Rooms"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 132,
+    "name": "Schneider Arena",
+    "address": "331 Huxley Ave",
+    "city": "Providence",
+    "state": "RI",
+    "lat": 41.8459,
+    "lng": -71.4327,
+    "type": "NHL",
+    "isPublic": true,
+    "rating": 4.0,
+    "reviewCount": 248,
+    "phone": "(401) 865-2168",
+    "website": "friars.com",
+    "checkins": 1994,
+    "hours": {
+      "Mon": "Varies",
+      "Tue": "Varies",
+      "Wed": "Varies",
+      "Thu": "Varies",
+      "Fri": "Varies",
+      "Sat": "Varies",
+      "Sun": "Varies"
+    },
+    "amenities": [
+      "Locker Rooms"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 133,
+    "name": "Boss Ice Arena",
+    "address": "2 Keaney Road",
+    "city": "Kingston",
+    "state": "RI",
+    "lat": 41.4831,
+    "lng": -71.536,
+    "type": "NHL",
+    "isPublic": true,
+    "rating": 4.6,
+    "reviewCount": 287,
+    "phone": "(401) 874-5480",
+    "website": "www.bossicearena.com",
+    "checkins": 1822,
+    "hours": {
+      "Mon": "Varies",
+      "Tue": "Varies",
+      "Wed": "Varies",
+      "Thu": "Varies",
+      "Fri": "Varies",
+      "Sat": "Varies",
+      "Sun": "Varies"
+    },
+    "amenities": [
+      "Locker Rooms",
+      "Concessions"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 134,
+    "name": "Cranston Veterans Memorial Ice Rink",
+    "address": "900 Phoenix Avenue",
+    "city": "Cranston",
+    "state": "RI",
+    "lat": 41.7597,
+    "lng": -71.4846,
+    "type": "NHL",
+    "isPublic": true,
+    "rating": 4.3,
+    "reviewCount": 272,
+    "phone": "(401) 944-8690",
+    "website": "www.cvmrink.com",
+    "checkins": 318,
+    "hours": {
+      "Mon": "Call for hours",
+      "Tue": "Call for hours",
+      "Wed": "Call for hours",
+      "Thu": "Call for hours",
+      "Fri": "Call for hours",
+      "Sat": "Call for hours",
+      "Sun": "Call for hours"
+    },
+    "amenities": [
+      "2 NHL Sheets",
+      "Skate Rental"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 135,
+    "name": "Thayer Ice Arena",
+    "address": "975 Sandy Lane",
+    "city": "Warwick",
+    "state": "RI",
+    "lat": 41.7068,
+    "lng": -71.4154,
+    "type": "NHL",
+    "isPublic": true,
+    "rating": 4.3,
+    "reviewCount": 166,
+    "phone": "(401) 739-9769",
+    "website": "www.warwickri.gov/parks-and-recreation/pages/thayer-warburton-ice-arenas",
+    "checkins": 1500,
+    "hours": {
+      "Mon": "Call for hours",
+      "Tue": "Call for hours",
+      "Wed": "Call for hours",
+      "Thu": "Call for hours",
+      "Fri": "Call for hours",
+      "Sat": "Call for hours",
+      "Sun": "Call for hours"
+    },
+    "amenities": [
+      "Locker Rooms"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 136,
+    "name": "Meehan Auditorium",
+    "address": "235 Hope St",
+    "city": "Providence",
+    "state": "RI",
+    "lat": 41.8314,
+    "lng": -71.399,
+    "type": "NHL",
+    "isPublic": true,
+    "rating": 3.9,
+    "reviewCount": 808,
+    "phone": "(401) 863-5100",
+    "website": "brownbears.com",
+    "checkins": 2407,
+    "hours": {
+      "Mon": "Varies",
+      "Tue": "Varies",
+      "Wed": "Varies",
+      "Thu": "Varies",
+      "Fri": "Varies",
+      "Sat": "Varies",
+      "Sun": "Varies"
+    },
+    "amenities": [
+      "Locker Rooms"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 137,
+    "name": "Ingalls Rink",
+    "address": "73 Sachem Street",
+    "city": "New Haven",
+    "state": "CT",
+    "lat": 41.3168,
+    "lng": -72.925,
+    "type": "NHL",
+    "isPublic": true,
+    "rating": 3.9,
+    "reviewCount": 700,
+    "phone": "(203) 432-2489",
+    "website": "yalebulldogs.com",
+    "checkins": 1169,
+    "hours": {
+      "Mon": "Varies",
+      "Tue": "Varies",
+      "Wed": "Varies",
+      "Thu": "Varies",
+      "Fri": "Varies",
+      "Sat": "Varies",
+      "Sun": "Varies"
+    },
+    "amenities": [
+      "Locker Rooms"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 138,
+    "name": "International Skating Center of Connecticut",
+    "address": "1375 Hopmeadow St",
+    "city": "Simsbury",
+    "state": "CT",
+    "lat": 41.9024,
+    "lng": -72.7863,
+    "type": "NHL",
+    "isPublic": true,
+    "rating": 4.7,
+    "reviewCount": 793,
+    "phone": "(860) 651-5400",
+    "website": "www.isccskate.com",
+    "checkins": 1858,
+    "hours": {
+      "Mon": "Varies",
+      "Tue": "Varies",
+      "Wed": "Varies",
+      "Thu": "Varies",
+      "Fri": "Varies",
+      "Sat": "Varies",
+      "Sun": "Varies"
+    },
+    "amenities": [
+      "Pro Shop",
+      "Locker Rooms",
+      "Fitness Center"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 139,
+    "name": "Danbury Ice Arena",
+    "address": "1 Independence Way",
+    "city": "Danbury",
+    "state": "CT",
+    "lat": 41.3952,
+    "lng": -73.4504,
+    "type": "NHL",
+    "isPublic": true,
+    "rating": 4.9,
+    "reviewCount": 722,
+    "phone": "(203) 794-1704",
+    "website": "danburyice.com",
+    "checkins": 2774,
+    "hours": {
+      "Mon": "9:00 AM - 12:00 AM",
+      "Tue": "9:00 AM - 12:00 AM",
+      "Wed": "9:00 AM - 12:00 AM",
+      "Thu": "9:00 AM - 12:00 AM",
+      "Fri": "9:00 AM - 12:00 AM",
+      "Sat": "9:00 AM - 12:00 AM",
+      "Sun": "9:00 AM - 12:00 AM"
+    },
+    "amenities": [
+      "2 NHL Sheets",
+      "Locker Rooms"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 140,
+    "name": "Total Mortgage Arena",
+    "address": "600 Main St",
+    "city": "Bridgeport",
+    "state": "CT",
+    "lat": 41.1732,
+    "lng": -73.1869,
+    "type": "NHL",
+    "isPublic": true,
+    "rating": 4.4,
+    "reviewCount": 536,
+    "phone": null,
+    "website": "www.totalmortgagearena.com",
+    "checkins": 536,
+    "hours": {
+      "Mon": "Varies",
+      "Tue": "Varies",
+      "Wed": "Varies",
+      "Thu": "Varies",
+      "Fri": "Varies",
+      "Sat": "Varies",
+      "Sun": "Varies"
+    },
+    "amenities": [
+      "Concessions",
+      "Pro Shop"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 141,
+    "name": "PeoplesBank Arena",
+    "address": "1 Civic Center Plaza",
+    "city": "Hartford",
+    "state": "CT",
+    "lat": 41.7685,
+    "lng": -72.677,
+    "type": "NHL",
+    "isPublic": true,
+    "rating": 4.8,
+    "reviewCount": 742,
+    "phone": "(860) 249-6333",
+    "website": "www.peoplesbankarena.com",
+    "checkins": 2606,
+    "hours": {
+      "Mon": "Varies",
+      "Tue": "Varies",
+      "Wed": "Varies",
+      "Thu": "Varies",
+      "Fri": "Varies",
+      "Sat": "Varies",
+      "Sun": "Varies"
+    },
+    "amenities": [
+      "Concessions",
+      "Pro Shop"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 142,
+    "name": "Terry Conners Rink",
+    "address": "1125 Cove Rd",
+    "city": "Stamford",
+    "state": "CT",
+    "lat": 41.0489,
+    "lng": -73.5071,
+    "type": "NHL",
+    "isPublic": true,
+    "rating": 3.8,
+    "reviewCount": 408,
+    "phone": "(203) 977-4728",
+    "website": "www.tcrink.com",
+    "checkins": 387,
+    "hours": {
+      "Mon": "Varies",
+      "Tue": "Varies",
+      "Wed": "Varies",
+      "Thu": "Varies",
+      "Fri": "Varies",
+      "Sat": "Varies",
+      "Sun": "Varies"
+    },
+    "amenities": [
+      "Locker Rooms"
+    ],
+    "events": [],
+    "reviews": []
   }
 ]

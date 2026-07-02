@@ -1,0 +1,7 @@
+name,address,city,state,lat,lng,type,isPublic,phone,website,amenities,hours_mon,hours_tue,hours_wed,hours_thu,hours_fri,hours_sat,hours_sun
+Ingalls Rink,73 Sachem Street,New Haven,CT,41.3168,-72.9250,NHL,True,(203) 432-2489,https://yalebulldogs.com,Locker Rooms,Varies,Varies,Varies,Varies,Varies,Varies,Varies
+International Skating Center of Connecticut,1375 Hopmeadow St,Simsbury,CT,41.9024,-72.7863,NHL,True,(860) 651-5400,https://www.isccskate.com,"Pro Shop, Locker Rooms, Fitness Center",Varies,Varies,Varies,Varies,Varies,Varies,Varies
+Danbury Ice Arena,1 Independence Way,Danbury,CT,41.3952,-73.4504,NHL,True,(203) 794-1704,https://danburyice.com,"2 NHL Sheets, Locker Rooms",9:00 AM - 12:00 AM,9:00 AM - 12:00 AM,9:00 AM - 12:00 AM,9:00 AM - 12:00 AM,9:00 AM - 12:00 AM,9:00 AM - 12:00 AM,9:00 AM - 12:00 AM
+Total Mortgage Arena,600 Main St,Bridgeport,CT,41.1732,-73.1869,NHL,True,,https://www.totalmortgagearena.com,"Concessions, Pro Shop",Varies,Varies,Varies,Varies,Varies,Varies,Varies
+PeoplesBank Arena,1 Civic Center Plaza,Hartford,CT,41.7685,-72.6770,NHL,True,(860) 249-6333,https://www.peoplesbankarena.com,"Concessions, Pro Shop",Varies,Varies,Varies,Varies,Varies,Varies,Varies
+Terry Conners Rink,1125 Cove Rd,Stamford,CT,41.0489,-73.5071,NHL,True,(203) 977-4728,http://www.tcrink.com,Locker Rooms,Varies,Varies,Varies,Varies,Varies,Varies,Varies
