@@ -1,0 +1,6 @@
+name,address,city,state,lat,lng,type,isPublic,phone,website,amenities,hours_mon,hours_tue,hours_wed,hours_thu,hours_fri,hours_sat,hours_sun
+Wichita Ice Center,505 W Maple St,Wichita,KS,37.6805,-97.3442,NHL,True,(316) 337-9199,https://www.wichitaicecenter.com,"Ice Arena, Public Skate, Hockey Leagues, Figure Skating",,,,,,,
+Kansas City Ice Center,19900 Johnson Dr,Shawnee,KS,39.0248,-94.8197,NHL,True,(913) 441-3033,https://www.kcicecenter.com,"2 NHL Sheets, Locker Rooms, Public Skate, Youth Hockey, Adult Hockey",,,,,,,
+AdventHealth Sports Park at Bluhawk,16201 Shawnee Dr,Overland Park,KS,38.8837,-94.7171,STANDARD,True,,https://bluhawksports.com,"Ice Rink, Courts, Turf Field, Locker Rooms, Esports",,,,,,,
+INTRUST Bank Arena,500 E Waterman St,Wichita,KS,37.6831,-97.3314,NHL,True,(316) 440-9000,https://www.intrustbankarena.com,"ECHL Arena, Hockey Configuration, Concessions, Suites",,,,,,,
+Stormont Vail Events Center,1 Expocentre Dr,Topeka,KS,39.0305,-95.6808,NHL,True,(785) 235-1986,https://www.stormontvaileventscenter.com,"Multi-purpose Arena, Public Ice Skating, Hockey Configuration",,,,,,,

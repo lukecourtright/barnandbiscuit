@@ -1,0 +1,7 @@
+name,address,city,state,lat,lng,type,isPublic,phone,website,amenities,hours_mon,hours_tue,hours_wed,hours_thu,hours_fri,hours_sat,hours_sun
+Arctic Edge Ice Arena,14613 N Kelly Ave,Edmond,OK,35.6193,-97.4977,NHL,True,(405) 748-5454,https://arctic-edge.com,"2 NHL Sheets, Locker Rooms, Concessions, Pro Shop",,,,,,,
+Blazers Ice Centre,8000 S I-35 Service Rd,Oklahoma City,OK,35.3830,-97.4850,NHL,True,,https://blazersicecentre.com,"Ice Sheet, Pro Shop, Snack Bar, VIP Suite, Hockey",,,,,,,
+Oilers Ice Center,6413 S Mingo Rd,Tulsa,OK,36.0717,-95.8684,NHL,True,(918) 252-0011,https://oilersicecenter.net,"Ice Sheet, Hockey, Curling, Public Skate, Rentals",8:00 AM - 11:30 PM,8:00 AM - 11:30 PM,8:00 AM - 11:30 PM,8:00 AM - 11:30 PM,8:00 AM - 11:30 PM,8:00 AM - 9:00 PM,8:00 AM - 9:00 PM
+WeStreet Ice Center,4143 S Yale Ave,Tulsa,OK,36.1035,-95.9216,NHL,True,(918) 252-0011,https://westreeticecenter.com,"2 Ice Sheets, Pro Shop, Arcade, Simulator Rooms, Bar & Grill",8:00 AM - 11:30 PM,8:00 AM - 11:30 PM,8:00 AM - 11:30 PM,8:00 AM - 11:30 PM,8:00 AM - 11:30 PM,8:00 AM - 9:00 PM,8:00 AM - 9:00 PM
+BOK Center,200 S Denver Ave,Tulsa,OK,36.1527,-95.9963,NHL,True,(918) 894-4200,https://www.bokcenter.com,"ECHL Arena, Hockey Configuration, Concessions, Suites",,,,,,,
+Expo Square Pavilion,4145 E 21st St,Tulsa,OK,36.1332,-95.9283,STANDARD,True,(918) 744-1113,https://www.exposquare.com,"Multi-purpose Pavilion, Event Ice Capability",,,,,,,

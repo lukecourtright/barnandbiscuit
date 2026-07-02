@@ -1,0 +1,4 @@
+name,address,city,state,lat,lng,type,isPublic,phone,website,amenities,hours_mon,hours_tue,hours_wed,hours_thu,hours_fri,hours_sat,hours_sun
+Arkansas Skatium,1311 S Bowman Rd,Little Rock,AR,34.7389,-92.4043,STANDARD,True,(501) 227-4333,https://arkansasskatium.com,"Ice Sheet, Roller Rink, Pro Shop, Hockey, Broomball",,,,,,,
+The Jones Center,922 E Emma Ave,Springdale,AR,36.1867,-94.1195,STANDARD,True,(479) 756-8090,https://thejonescenter.org,"Ice Arena, Hockey, Pools, Gymnasium, Fitness Center",,,,,,,
+Simmons Bank Arena,1 Simmons Bank Arena Dr,North Little Rock,AR,34.7550,-92.2655,NHL,True,(501) 975-9000,https://simmonsbankarena.com,"Multi-purpose Arena, Hockey Configuration, Concessions",,,,,,,

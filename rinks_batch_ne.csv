@@ -1,0 +1,9 @@
+name,address,city,state,lat,lng,type,isPublic,phone,website,amenities,hours_mon,hours_tue,hours_wed,hours_thu,hours_fri,hours_sat,hours_sun
+Baxter Arena,2425 S 67th St,Omaha,NE,41.2365,-96.0146,NHL,True,(402) 554-6200,https://www.baxterarena.com,"College Hockey Arena, Concessions, Suites",,,,,,,
+Liberty First Credit Union Arena,7300 Q St,Ralston,NE,41.2052,-96.0250,NHL,True,(402) 934-9966,https://www.libertyfirstcreditunionarena.com,"USHL Arena, Hockey Configuration, Concessions",,,,,,,
+Motto McLean Ice Arena,5015 S 45th St,Omaha,NE,41.2071,-95.9824,STANDARD,True,(402) 444-4955,https://parks.cityofomaha.org/motto-mclean-ice-arena/,"Ice Sheet, Public Skate, Hockey, Rentals",,,,,,,
+Moylan Tranquility Iceplex,12550 W Maple Rd,Omaha,NE,41.2866,-96.1099,NHL,True,(402) 431-0023,https://www.moylaniceplex.com,"Ice Sheets, Public Skate, Hockey, Figure Skating",,,,,,,
+Sidner Ice Arena,1558 E Military Ave,Fremont,NE,41.4382,-96.4741,STANDARD,True,(402) 753-0200,https://www.fremonticearena.com,"Ice Sheet, Public Skate, Youth Hockey, Broomball, Curling",,,,,,,
+John Breslow Ice Hockey Center,433 V St,Lincoln,NE,40.8176,-96.7130,NHL,True,(402) 472-2758,https://www.breslowhockeycenter.com,"NHL Sheet, Public Skate, Hockey, Curling, Broomball",,,,,,,
+The Ice Box,1800 Transformation Dr,Lincoln,NE,40.8280,-96.6924,NHL,True,(402) 474-7827,https://www.iceboxlincoln.com,"USHL Arena, Public Skating, Youth Hockey, Concessions",,,,,,,
+Viaero Center,609 Platte Rd,Kearney,NE,40.6753,-99.0840,NHL,True,(308) 338-8144,https://kearneyevents.net,"USHL Arena, Hockey Configuration, Concessions",,,,,,,
