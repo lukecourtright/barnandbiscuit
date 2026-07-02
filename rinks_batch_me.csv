@@ -1,0 +1,6 @@
+name,address,city,state,lat,lng,type,isPublic,phone,website,amenities,hours_mon,hours_tue,hours_wed,hours_thu,hours_fri,hours_sat,hours_sun
+Cross Insurance Arena,1 Civic Center Square,Portland,ME,43.6555,-70.2593,NHL,True,(207) 791-2200,https://www.crossarenaportland.com,"Concessions, Pro Shop",Varies,Varies,Varies,Varies,Varies,Varies,Varies
+Falmouth Family Ice Center,20 Hat Trick Dr,Falmouth,ME,43.7199,-70.2367,NHL,True,(207) 781-4200,https://familyice.org,"Locker Rooms, Concessions",,,,,,,
+Alfond Arena,5701 College Avenue,Orono,ME,44.8871,-68.6699,NHL,True,(207) 581-1102,https://goblackbears.com,"Locker Rooms, Concessions",Varies,Varies,Varies,Varies,Varies,Varies,Varies
+The Colisee,190 Birch St,Lewiston,ME,44.0956,-70.2052,NHL,True,(207) 783-2009,https://www.thecolisee.com,"Concessions, Pro Shop",Varies,Varies,Varies,Varies,Varies,Varies,Varies
+Sawyer Arena,107 13th Street,Bangor,ME,44.8027,-68.7887,STANDARD,True,(207) 947-0071,https://www.bangormaine.gov/676/Sawyer-Arena,Locker Rooms,12:30 PM - 1:30 PM,12:30 PM - 1:30 PM,12:30 PM - 1:30 PM,12:30 PM - 1:30 PM,12:30 PM - 1:30 PM,,

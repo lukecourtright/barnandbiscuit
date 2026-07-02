@@ -1,0 +1,7 @@
+name,address,city,state,lat,lng,type,isPublic,phone,website,amenities,hours_mon,hours_tue,hours_wed,hours_thu,hours_fri,hours_sat,hours_sun
+SNHU Arena,555 Elm Street,Manchester,NH,42.9866,-71.4618,NHL,True,(603) 644-5000,https://www.snhuarena.com,"Concessions, Pro Shop",Varies,Varies,Varies,Varies,Varies,Varies,Varies
+Ice Den Arena,600 Quality Dr,Hooksett,NH,43.0475,-71.4562,NHL,True,,https://theiceden.com,"Locker Rooms, Concessions",Varies,Varies,Varies,Varies,Varies,Varies,Varies
+Whittemore Center Arena,128 Main Street,Durham,NH,43.1397,-70.9344,NHL,True,(603) 862-4000,https://unhwildcats.com,"Locker Rooms, Concessions",Varies,Varies,Varies,Varies,Varies,Varies,Varies
+Conway Arena,8 Riverside St,Nashua,NH,42.7485,-71.4996,NHL,True,(603) 595-2400,,Locker Rooms,,,,,,,
+Everett Arena,15 Loudon Road,Concord,NH,43.2123,-71.5157,STANDARD,True,(603) 228-2784,https://www.concordnh.gov/496/Everett-Arena,Locker Rooms,,,,,,,
+Icenter Salem,60 Lowell Rd,Salem,NH,42.7654,-71.2487,NHL,True,(603) 893-4448,https://www.icentersalem.com,"Locker Rooms, Concessions",6:00 AM - 11:00 PM,6:00 AM - 11:00 PM,6:00 AM - 11:00 PM,6:00 AM - 11:00 PM,3:30 PM - 9:30 PM,Open 24 Hours,6:00 AM - 11:00 PM

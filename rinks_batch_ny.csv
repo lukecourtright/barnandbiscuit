@@ -1,0 +1,8 @@
+name,address,city,state,lat,lng,type,isPublic,phone,website,amenities,hours_mon,hours_tue,hours_wed,hours_thu,hours_fri,hours_sat,hours_sun
+LECOM Harborcenter,100 Washington St,Buffalo,NY,42.8764,-78.8768,NHL,True,(716) 855-4767,https://www.rinksatharborcenter.com,"2 NHL Sheets, Pro Shop, Concessions",5:30 AM - 1:00 AM,5:30 AM - 1:00 AM,5:30 AM - 1:00 AM,5:30 AM - 1:00 AM,5:30 AM - 1:00 AM,5:30 AM - 1:00 AM,5:30 AM - 1:00 AM
+Tim Hortons Iceplex,2700 Brighton Henrietta Townline Road,Rochester,NY,43.0983,-77.6024,NHL,True,,https://timhortonsiceplex.com,"4 NHL Sheets, Pro Shop, Concessions",,,,,,,
+Rochester Ice Center,80 Lyndon Rd,Fairport,NY,43.0920,-77.4008,NHL,True,(585) 223-2160,https://rochestericecenter.com,"2 NHL Sheets, Locker Rooms",,,,,,,
+Meachem Ice Rink,121 W Seneca Tpk,Syracuse,NY,43.0008,-76.1458,STANDARD,True,(315) 492-0179,,Locker Rooms,,,,,,,
+Albany County Hockey Facility,18 Hockey Lane,Albany,NY,42.7472,-73.8139,NHL,True,(518) 452-7396,https://www.albanycountyny.gov/departments/recreation/hockey-facility,"Locker Rooms, Concessions",Varies,Varies,Varies,Varies,Varies,Varies,Varies
+Northwell Health Ice Center,200 Merrick Ave,East Meadow,NY,40.7444,-73.5865,NHL,True,,https://www.northwellhealthicecenter.com,"2 NHL Sheets, Pro Shop, Fitness Center",Varies,Varies,Varies,Varies,Varies,Varies,Varies
+Aviator Sports & Events Center,3159 Flatbush Ave,Brooklyn,NY,40.5896,-73.8991,NHL,True,(718) 758-7500,https://www.aviatorsports.com,"2 NHL Sheets, Pro Shop, Concessions",9:00 AM - 8:00 PM,9:00 AM - 8:00 PM,9:00 AM - 8:00 PM,9:00 AM - 8:00 PM,9:00 AM - 8:00 PM,9:00 AM - 8:00 PM,9:00 AM - 8:00 PM
