@@ -1,0 +1,5 @@
+name,address,city,state,lat,lng,type,isPublic,phone,website,amenities,hours_mon,hours_tue,hours_wed,hours_thu,hours_fri,hours_sat,hours_sun
+Lexington Ice Center,560 Eureka Springs Dr,Lexington,KY,37.9976,-84.4564,NHL,True,(859) 269-5686,https://www.lexingtonicecenter.com,Locker Rooms,Varies,Varies,Varies,Varies,Varies,Varies,Varies
+Iceland Sports Complex,1701 Ups Dr,Louisville,KY,38.2532,-85.5572,NHL,True,(502) 425-7444,https://icelandlouisville.com,Locker Rooms,Varies,Varies,Varies,Varies,Varies,Varies,Varies
+Alpine Ice Arena,1825 Gardiner Ln,Louisville,KY,38.2080,-85.6828,NHL,True,(502) 459-9500,https://alpineicearena.com,Locker Rooms,Varies,Varies,Varies,Varies,Varies,Varies,Varies
+Northern Kentucky Ice Center,2638 Crescent Springs Road,Crescent Springs,KY,39.0491,-84.5835,NHL,True,(859) 344-1981,https://www.nkyicecenter.com,"2 Sheets, Locker Rooms",Varies,Varies,Varies,Varies,Varies,Varies,Varies

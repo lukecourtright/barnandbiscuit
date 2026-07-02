@@ -1,0 +1,5 @@
+name,address,city,state,lat,lng,type,isPublic,phone,website,amenities,hours_mon,hours_tue,hours_wed,hours_thu,hours_fri,hours_sat,hours_sun
+Ford Ice Center Bellevue,7638 Hwy 70 S,Nashville,TN,36.0813,-86.9511,NHL,True,(615) 744-6640,https://www.nhl.com/predators/fordicecenter/bellevue,"2 NHL Sheets, Pro Shop, Locker Rooms",6:00 AM - 11:00 PM,6:00 AM - 11:00 PM,6:00 AM - 11:00 PM,6:00 AM - 11:00 PM,6:00 AM - 11:00 PM,6:00 AM - 11:00 PM,6:00 AM - 11:00 PM
+Centennial Sportsplex,222 25th Ave N,Nashville,TN,36.1476,-86.8087,NHL,True,(615) 862-8480,https://www.nashville.gov/departments/parks/centennial-sportsplex,Locker Rooms,5:00 AM - 9:00 PM,5:00 AM - 9:00 PM,5:00 AM - 9:00 PM,5:00 AM - 9:00 PM,5:00 AM - 7:00 PM,8:00 AM - 5:00 PM,10:00 AM - 4:00 PM
+Cool Sports,110 S Watt Rd,Knoxville,TN,35.8730,-84.1637,NHL,True,(865) 218-4500,https://coolsportstn.com,Locker Rooms,10:00 AM - 9:00 PM,10:00 AM - 9:00 PM,10:00 AM - 9:00 PM,10:00 AM - 9:00 PM,10:00 AM - 9:00 PM,9:00 AM - 7:00 PM,10:30 AM - 8:00 PM
+Ice Chalet,100 Lebanon St,Knoxville,TN,35.9417,-83.9801,NHL,True,(865) 588-1858,https://chaleticerinks.com,Locker Rooms,Varies,Varies,Varies,Varies,Varies,Varies,Varies

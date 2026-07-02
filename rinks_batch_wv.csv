@@ -1,0 +1,4 @@
+name,address,city,state,lat,lng,type,isPublic,phone,website,amenities,hours_mon,hours_tue,hours_wed,hours_thu,hours_fri,hours_sat,hours_sun
+South Charleston Memorial Ice Arena,20 RHL Boulevard,South Charleston,WV,38.3259,-81.7149,NHL,True,(304) 744-4423,https://memorialicearena.cityofsouthcharleston.com,Locker Rooms,Varies,Varies,Varies,Varies,Varies,Varies,Varies
+Morgantown Ice Arena,1001 Mississippi Street,Morgantown,WV,39.6104,-79.9584,NHL,True,(304) 292-6865,https://www.boparc.org/boparc-ice-arena.html,Locker Rooms,Varies,Varies,Varies,Varies,Varies,Varies,Varies
+WesBanco Arena,2 14th Street,Wheeling,WV,40.0653,-80.7244,NHL,True,(304) 233-7000,https://www.wesbancoarena.com,Concessions,Varies,Varies,Varies,Varies,Varies,Varies,Varies

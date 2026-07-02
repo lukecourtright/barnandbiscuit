@@ -5300,5 +5300,338 @@
     ],
     "events": [],
     "reviews": []
+  },
+  {
+    "id": 162,
+    "name": "South Charleston Memorial Ice Arena",
+    "address": "20 RHL Boulevard",
+    "city": "South Charleston",
+    "state": "WV",
+    "lat": 38.3259,
+    "lng": -81.7149,
+    "type": "NHL",
+    "isPublic": true,
+    "rating": 4.8,
+    "reviewCount": 365,
+    "phone": "(304) 744-4423",
+    "website": "memorialicearena.cityofsouthcharleston.com",
+    "checkins": 493,
+    "hours": {
+      "Mon": "Varies",
+      "Tue": "Varies",
+      "Wed": "Varies",
+      "Thu": "Varies",
+      "Fri": "Varies",
+      "Sat": "Varies",
+      "Sun": "Varies"
+    },
+    "amenities": [
+      "Locker Rooms"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 163,
+    "name": "Morgantown Ice Arena",
+    "address": "1001 Mississippi Street",
+    "city": "Morgantown",
+    "state": "WV",
+    "lat": 39.6104,
+    "lng": -79.9584,
+    "type": "NHL",
+    "isPublic": true,
+    "rating": 4.4,
+    "reviewCount": 495,
+    "phone": "(304) 292-6865",
+    "website": "www.boparc.org/boparc-ice-arena.html",
+    "checkins": 2254,
+    "hours": {
+      "Mon": "Varies",
+      "Tue": "Varies",
+      "Wed": "Varies",
+      "Thu": "Varies",
+      "Fri": "Varies",
+      "Sat": "Varies",
+      "Sun": "Varies"
+    },
+    "amenities": [
+      "Locker Rooms"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 164,
+    "name": "WesBanco Arena",
+    "address": "2 14th Street",
+    "city": "Wheeling",
+    "state": "WV",
+    "lat": 40.0653,
+    "lng": -80.7244,
+    "type": "NHL",
+    "isPublic": true,
+    "rating": 3.8,
+    "reviewCount": 487,
+    "phone": "(304) 233-7000",
+    "website": "www.wesbancoarena.com",
+    "checkins": 861,
+    "hours": {
+      "Mon": "Varies",
+      "Tue": "Varies",
+      "Wed": "Varies",
+      "Thu": "Varies",
+      "Fri": "Varies",
+      "Sat": "Varies",
+      "Sun": "Varies"
+    },
+    "amenities": [
+      "Concessions"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 165,
+    "name": "Lexington Ice Center",
+    "address": "560 Eureka Springs Dr",
+    "city": "Lexington",
+    "state": "KY",
+    "lat": 37.9976,
+    "lng": -84.4564,
+    "type": "NHL",
+    "isPublic": true,
+    "rating": 3.8,
+    "reviewCount": 701,
+    "phone": "(859) 269-5686",
+    "website": "www.lexingtonicecenter.com",
+    "checkins": 2454,
+    "hours": {
+      "Mon": "Varies",
+      "Tue": "Varies",
+      "Wed": "Varies",
+      "Thu": "Varies",
+      "Fri": "Varies",
+      "Sat": "Varies",
+      "Sun": "Varies"
+    },
+    "amenities": [
+      "Locker Rooms"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 166,
+    "name": "Iceland Sports Complex",
+    "address": "1701 Ups Dr",
+    "city": "Louisville",
+    "state": "KY",
+    "lat": 38.2532,
+    "lng": -85.5572,
+    "type": "NHL",
+    "isPublic": true,
+    "rating": 4.1,
+    "reviewCount": 200,
+    "phone": "(502) 425-7444",
+    "website": "icelandlouisville.com",
+    "checkins": 718,
+    "hours": {
+      "Mon": "Varies",
+      "Tue": "Varies",
+      "Wed": "Varies",
+      "Thu": "Varies",
+      "Fri": "Varies",
+      "Sat": "Varies",
+      "Sun": "Varies"
+    },
+    "amenities": [
+      "Locker Rooms"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 167,
+    "name": "Alpine Ice Arena",
+    "address": "1825 Gardiner Ln",
+    "city": "Louisville",
+    "state": "KY",
+    "lat": 38.208,
+    "lng": -85.6828,
+    "type": "NHL",
+    "isPublic": true,
+    "rating": 4.2,
+    "reviewCount": 176,
+    "phone": "(502) 459-9500",
+    "website": "alpineicearena.com",
+    "checkins": 509,
+    "hours": {
+      "Mon": "Varies",
+      "Tue": "Varies",
+      "Wed": "Varies",
+      "Thu": "Varies",
+      "Fri": "Varies",
+      "Sat": "Varies",
+      "Sun": "Varies"
+    },
+    "amenities": [
+      "Locker Rooms"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 168,
+    "name": "Northern Kentucky Ice Center",
+    "address": "2638 Crescent Springs Road",
+    "city": "Crescent Springs",
+    "state": "KY",
+    "lat": 39.0491,
+    "lng": -84.5835,
+    "type": "NHL",
+    "isPublic": true,
+    "rating": 4.1,
+    "reviewCount": 871,
+    "phone": "(859) 344-1981",
+    "website": "www.nkyicecenter.com",
+    "checkins": 2246,
+    "hours": {
+      "Mon": "Varies",
+      "Tue": "Varies",
+      "Wed": "Varies",
+      "Thu": "Varies",
+      "Fri": "Varies",
+      "Sat": "Varies",
+      "Sun": "Varies"
+    },
+    "amenities": [
+      "2 Sheets",
+      "Locker Rooms"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 169,
+    "name": "Ford Ice Center Bellevue",
+    "address": "7638 Hwy 70 S",
+    "city": "Nashville",
+    "state": "TN",
+    "lat": 36.0813,
+    "lng": -86.9511,
+    "type": "NHL",
+    "isPublic": true,
+    "rating": 4.8,
+    "reviewCount": 881,
+    "phone": "(615) 744-6640",
+    "website": "www.nhl.com/predators/fordicecenter/bellevue",
+    "checkins": 614,
+    "hours": {
+      "Mon": "6:00 AM - 11:00 PM",
+      "Tue": "6:00 AM - 11:00 PM",
+      "Wed": "6:00 AM - 11:00 PM",
+      "Thu": "6:00 AM - 11:00 PM",
+      "Fri": "6:00 AM - 11:00 PM",
+      "Sat": "6:00 AM - 11:00 PM",
+      "Sun": "6:00 AM - 11:00 PM"
+    },
+    "amenities": [
+      "2 NHL Sheets",
+      "Pro Shop",
+      "Locker Rooms"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 170,
+    "name": "Centennial Sportsplex",
+    "address": "222 25th Ave N",
+    "city": "Nashville",
+    "state": "TN",
+    "lat": 36.1476,
+    "lng": -86.8087,
+    "type": "NHL",
+    "isPublic": true,
+    "rating": 4.8,
+    "reviewCount": 493,
+    "phone": "(615) 862-8480",
+    "website": "www.nashville.gov/departments/parks/centennial-sportsplex",
+    "checkins": 1100,
+    "hours": {
+      "Mon": "5:00 AM - 9:00 PM",
+      "Tue": "5:00 AM - 9:00 PM",
+      "Wed": "5:00 AM - 9:00 PM",
+      "Thu": "5:00 AM - 9:00 PM",
+      "Fri": "5:00 AM - 7:00 PM",
+      "Sat": "8:00 AM - 5:00 PM",
+      "Sun": "10:00 AM - 4:00 PM"
+    },
+    "amenities": [
+      "Locker Rooms"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 171,
+    "name": "Cool Sports",
+    "address": "110 S Watt Rd",
+    "city": "Knoxville",
+    "state": "TN",
+    "lat": 35.873,
+    "lng": -84.1637,
+    "type": "NHL",
+    "isPublic": true,
+    "rating": 4.3,
+    "reviewCount": 475,
+    "phone": "(865) 218-4500",
+    "website": "coolsportstn.com",
+    "checkins": 1864,
+    "hours": {
+      "Mon": "10:00 AM - 9:00 PM",
+      "Tue": "10:00 AM - 9:00 PM",
+      "Wed": "10:00 AM - 9:00 PM",
+      "Thu": "10:00 AM - 9:00 PM",
+      "Fri": "10:00 AM - 9:00 PM",
+      "Sat": "9:00 AM - 7:00 PM",
+      "Sun": "10:30 AM - 8:00 PM"
+    },
+    "amenities": [
+      "Locker Rooms"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 172,
+    "name": "Ice Chalet",
+    "address": "100 Lebanon St",
+    "city": "Knoxville",
+    "state": "TN",
+    "lat": 35.9417,
+    "lng": -83.9801,
+    "type": "NHL",
+    "isPublic": true,
+    "rating": 4.8,
+    "reviewCount": 866,
+    "phone": "(865) 588-1858",
+    "website": "chaleticerinks.com",
+    "checkins": 1135,
+    "hours": {
+      "Mon": "Varies",
+      "Tue": "Varies",
+      "Wed": "Varies",
+      "Thu": "Varies",
+      "Fri": "Varies",
+      "Sat": "Varies",
+      "Sun": "Varies"
+    },
+    "amenities": [
+      "Locker Rooms"
+    ],
+    "events": [],
+    "reviews": []
   }
 ]
