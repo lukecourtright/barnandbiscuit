@@ -104,7 +104,7 @@ Vanilla JS SPA — no bundler, no framework.
 
 Source of truth for rink data — edit by hand to add/remove/update. Synced into the `Rink` table (Postgres/SQLite, see Backend above) on every app startup: rows are upserted by `id`, and any DB row whose `id` is no longer present in `rinks.json` is deleted, so removals in the file propagate too. `openNow` is not stored — it's derived at runtime in the browser.
 
-**Current count:** ~171 rinks (15 original seeds, 4 West Coast NHL facilities, 30 IL/WI batch added 2026-06-30, 13 MN batch added 2026-07-02, 12 MI batch added 2026-07-02, 7 IN + 9 OH batches added 2026-07-02, 9 PA batch added 2026-07-02, 7 NY + 6 VT + 6 NH + 5 ME batches added 2026-07-02, 7 MA + 5 RI + 6 CT batches added 2026-07-02, 5 NJ + 5 MD + 3 DE + 5 VA + 1 DC batches added 2026-07-02, 3 WV + 4 KY + 4 TN batches added 2026-07-02).
+**Current count:** ~311 rinks (15 original seeds, 4 West Coast NHL facilities, 30 IL/WI batch added 2026-06-30, 13 MN batch added 2026-07-02, 12 MI batch added 2026-07-02, 7 IN + 9 OH batches added 2026-07-02, 9 PA batch added 2026-07-02, 7 NY + 6 VT + 6 NH + 5 ME batches added 2026-07-02, 7 MA + 5 RI + 6 CT batches added 2026-07-02, 5 NJ + 5 MD + 3 DE + 5 VA + 1 DC batches added 2026-07-02, 3 WV + 4 KY + 4 TN batches added 2026-07-02, 16 NC batch added 2026-07-02, 5 SC + 9 GA batches added 2026-07-02, 5 MS + 3 AL batches added 2026-07-02, 27 TX + 7 LA + 28 FL batches added 2026-07-02, 18 IA + 5 KS + 8 NE + 6 OK + 3 AR batches added 2026-07-02).
 
 **Bulk import workflow:**
 1. Copy `rinks_import_template.csv`, fill in one region's worth of rinks, save as a new file.
@@ -112,11 +112,12 @@ Source of truth for rink data — edit by hand to add/remove/update. Synced into
 3. Push `rinks.json` to `main` → Railway auto-deploys and syncs to Postgres on startup.
 
 **CSV field notes (learned from IL/WI batch):**
-- `type` — use `NHL`, `OLYMPIC`, `SYNTHETIC`, or `STANDARD`. `Indoor` also accepted (maps to `STANDARD`). Use `OLYMPIC` for rinks that explicitly have an Olympic-size (200×100 ft) sheet.
+- `type` — use `NHL`, `OLYMPIC`, `SYNTHETIC`, or `STANDARD`. `Indoor` also accepted (maps to `STANDARD`). Use `OLYMPIC` for rinks that explicitly have an Olympic-size (200×100 ft) sheet. Any other value (e.g. `Arena`, `Ice Rink`) silently falls back to `STANDARD` in the import script — prefer setting `STANDARD` explicitly in the CSV for multi-purpose/pro arenas rather than relying on the fallback.
 - `amenities` — comma-separated or semicolon-separated, both work (auto-detected).
 - `website` — `https://` and `http://` prefixes are stripped automatically.
 - `hours_*` — use `"Varies"` when hours change seasonally/weekly (stored as-is and displayed). Leave blank to default to `"Call for hours"`.
 - `events`/`reviews`/`rating`/`reviewCount`/`checkins` — not in the CSV. Rating/counts get randomized illustrative placeholders; events/reviews start empty.
+- Watch for the same address appearing twice under different names (e.g. a rink under an old name and its current naming-rights name) — that's usually one rink double-listed, not two distinct facilities. Co-located but genuinely distinct facilities (e.g. a pro team's game arena and a separate public rec rink in the same complex) are fine to keep as separate entries.
 
 **Schema** (mirrors the `Rink` SQLModel in `main.py` field-for-field — `hours`/`amenities`/`events`/`reviews` are stored as JSON columns, everything else as real columns):
 ```json
