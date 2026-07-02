@@ -1,0 +1,8 @@
+name,address,city,state,lat,lng,type,isPublic,phone,website,amenities,hours_mon,hours_tue,hours_wed,hours_thu,hours_fri,hours_sat,hours_sun
+Fuel Tank at Fishers,9022 E 126th St,Fishers,IN,39.9746,-86.0093,NHL,True,(317) 849-9930,https://www.indyfueltank.com,"2 NHL Sheets, Pro Shop, Concessions, Arcade",,,,,,,
+PSM Icehouse,3869 Ice Way,Fort Wayne,IN,41.1124,-85.1462,NHL,True,(260) 387-6614,https://psmicehouse.com,"3 NHL Sheets, Pro Shop, Locker Rooms",8:00 AM - 10:00 PM,8:00 AM - 10:00 PM,8:00 AM - 10:00 PM,8:00 AM - 10:00 PM,8:00 AM - 10:00 PM,8:00 AM - 10:00 PM,9:00 AM - 8:00 PM
+Compton Family Ice Arena,100 Compton Family Ice Arena Dr,Notre Dame,IN,41.6938,-86.2311,NHL,True,(574) 631-1166,https://fightingirish.com/comptonicearena/,"2 Sheets, Locker Rooms, Concessions",Varies,Varies,Varies,Varies,Varies,Varies,Varies
+Perry Park Ice Rink,415 E Stop 11 Rd,Indianapolis,IN,39.6519,-86.1519,STANDARD,True,(317) 865-1833,https://parks.indy.gov/facilities/perry-park-family-center/,Locker Rooms,12:00 PM - 6:00 PM,12:00 PM - 6:00 PM,12:00 PM - 6:00 PM,12:00 PM - 6:00 PM,12:00 PM - 6:00 PM,Closed,Closed
+Carmel Ice Skadium,1040 3rd Ave SW,Carmel,IN,39.9647,-86.1310,NHL,True,(317) 844-8889,https://www.carmeliceskadium.com,"2 NHL Sheets, Pro Shop, Concessions",8:00 AM - 10:00 PM,8:00 AM - 10:00 PM,8:00 AM - 10:00 PM,8:00 AM - 10:00 PM,8:00 AM - 10:00 PM,8:00 AM - 10:00 PM,8:00 AM - 10:00 PM
+Arctic Zone Iceplex,16616 Southpark Dr,Westfield,IN,40.0291,-86.1391,NHL,True,(317) 896-2155,https://thearcticzone.net,"Pro Shop, Skate Rental, Concessions",Varies,Varies,Varies,Varies,Varies,Varies,Varies
+Swonder Ice Arena,209 N Boeke Rd,Evansville,IN,37.9796,-87.5203,NHL,True,(812) 479-0989,https://www.skateswonder.com,"2 NHL Sheets, Locker Rooms",,,,,,,
