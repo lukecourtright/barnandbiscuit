@@ -1,0 +1,6 @@
+name,address,city,state,lat,lng,type,isPublic,phone,website,amenities,hours_mon,hours_tue,hours_wed,hours_thu,hours_fri,hours_sat,hours_sun
+Mid-South Ice House,10705 Ridgeway Industrial Drive,Olive Branch,MS,34.9510,-89.8390,NHL,True,(901) 881-8544,https://midsouthicehouse.com/,"NHL Sheet, Public Skating, Youth Hockey, Adult Hockey, Figure Skating, Curling, Skate Rentals",,,,,,,
+Landers Center,4560 Venture Drive,Southaven,MS,34.9278,-89.9966,STANDARD,True,(662) 280-9120,https://www.landerscenter.com/,"FPHL Arena, Multipurpose Venue, Concessions, Event Seating",,,,,,,
+Mississippi Coast Coliseum and Convention Center,2350 Beach Boulevard,Biloxi,MS,30.3935,-88.9748,STANDARD,True,(228) 594-3700,https://www.mscoastcoliseum.com/,"FPHL Arena, Multipurpose Venue, Concessions, Event Seating",,,,,,,
+Cadence Bank Arena and Conference Center,375 East Main Street,Tupelo,MS,34.2587,-88.6997,STANDARD,True,(662) 841-6573,https://www.cb-arena.com/,"Multipurpose Arena, Convertible Ice Floor, Concessions, Event Seating",,,,,,,
+The Ice Park,2280 Lakeland Drive,Flowood,MS,32.3329,-90.1029,STANDARD,True,(601) 936-0002,,"Ice Skating, Family Entertainment",,,,,,,

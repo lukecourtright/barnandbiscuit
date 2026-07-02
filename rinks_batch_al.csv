@@ -1,0 +1,4 @@
+name,address,city,state,lat,lng,type,isPublic,phone,website,amenities,hours_mon,hours_tue,hours_wed,hours_thu,hours_fri,hours_sat,hours_sun
+Benton H. Wilcoxon Municipal Ice Sports Center,3185 Leeman Ferry Rd SW,Huntsville,AL,34.7021,-86.5922,NHL,True,(256) 883-3774,https://www.icesportscenter.com/,"Public Skating, Hockey, Figure Skating, Curling, Pro Shop, Restaurant",,,,,,,
+Pelham Civic Complex & Ice Arena,500 Amphitheater Road,Pelham,AL,33.3314,-86.7913,NHL,True,(205) 620-6448,https://pelhamciviccomplex.com/,"2 NHL Sheets, Public Skating, Youth Hockey, Adult Hockey, Figure Skating, Event Space",,,,,,,
+Propst Arena at Von Braun Center,700 Monroe Street SW,Huntsville,AL,34.7270,-86.5890,STANDARD,True,(256) 518-6160,https://www.vonbrauncenter.com/propst-arena-in-huntsville/,"SPHL Arena, Multipurpose Venue, Concessions, Event Seating",,,,,,,
