@@ -1,0 +1,2 @@
+name,address,city,state,lat,lng,type,isPublic,phone,website,amenities,hours_mon,hours_tue,hours_wed,hours_thu,hours_fri,hours_sat,hours_sun
+Fort Dupont Ice Arena,3779 Ely Place SE,Washington,DC,38.8825,-76.9494,NHL,True,(202) 204-2290,http://fdia.org,Locker Rooms,10:00 AM - 8:00 PM,10:00 AM - 8:00 PM,10:00 AM - 8:00 PM,10:00 AM - 8:00 PM,10:00 AM - 8:00 PM,10:00 AM - 5:00 PM,Closed

@@ -104,7 +104,7 @@ Vanilla JS SPA — no bundler, no framework.
 
 Source of truth for rink data — edit by hand to add/remove/update. Synced into the `Rink` table (Postgres/SQLite, see Backend above) on every app startup: rows are upserted by `id`, and any DB row whose `id` is no longer present in `rinks.json` is deleted, so removals in the file propagate too. `openNow` is not stored — it's derived at runtime in the browser.
 
-**Current count:** ~141 rinks (15 original seeds, 4 West Coast NHL facilities, 30 IL/WI batch added 2026-06-30, 13 MN batch added 2026-07-02, 12 MI batch added 2026-07-02, 7 IN + 9 OH batches added 2026-07-02, 9 PA batch added 2026-07-02, 7 NY + 6 VT + 6 NH + 5 ME batches added 2026-07-02, 7 MA + 5 RI + 6 CT batches added 2026-07-02).
+**Current count:** ~160 rinks (15 original seeds, 4 West Coast NHL facilities, 30 IL/WI batch added 2026-06-30, 13 MN batch added 2026-07-02, 12 MI batch added 2026-07-02, 7 IN + 9 OH batches added 2026-07-02, 9 PA batch added 2026-07-02, 7 NY + 6 VT + 6 NH + 5 ME batches added 2026-07-02, 7 MA + 5 RI + 6 CT batches added 2026-07-02, 5 NJ + 5 MD + 3 DE + 5 VA + 1 DC batches added 2026-07-02).
 
 **Bulk import workflow:**
 1. Copy `rinks_import_template.csv`, fill in one region's worth of rinks, save as a new file.

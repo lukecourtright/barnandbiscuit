@@ -1,0 +1,6 @@
+name,address,city,state,lat,lng,type,isPublic,phone,website,amenities,hours_mon,hours_tue,hours_wed,hours_thu,hours_fri,hours_sat,hours_sun
+Piney Orchard Ice Arena,8781 Piney Orchard Pkwy,Odenton,MD,39.0688,-76.7152,NHL,True,(410) 672-7013,https://www.pineyicerink.com,"2 NHL Sheets, Locker Rooms",6:00 AM - 11:00 PM,6:00 AM - 11:00 PM,6:00 AM - 11:00 PM,6:00 AM - 11:00 PM,6:00 AM - 11:00 PM,6:00 AM - 11:00 PM,6:00 AM - 11:00 PM
+Rockville Ice Arena,50 Southlawn Ct,Rockville,MD,39.1036,-77.1294,NHL,True,(301) 315-5650,https://www.rockvilleicearena.com,Locker Rooms,Varies,Varies,Varies,Varies,Varies,Varies,Varies
+Mount Pleasant Ice Arena,6101 Hillen Rd,Baltimore,MD,39.3689,-76.5778,NHL,True,(443) 984-4075,https://www.baltimorecity.gov/bcrp/special-facilities/mt-pleasant-ice-arena,Locker Rooms,Varies,Varies,Varies,Varies,Varies,Varies,Varies
+Ice World,1300 Governors Ct,Abingdon,MD,39.4464,-76.2909,NHL,True,,https://www.iceworld.com,"2 NHL Sheets, Locker Rooms",Varies,Varies,Varies,Varies,Varies,Varies,Varies
+Reisterstown Sportsplex,401 Mitchell Drive,Reisterstown,MD,39.4720,-76.8433,NHL,True,(410) 429-4242,,Locker Rooms,Varies,Varies,Varies,Varies,Varies,Varies,Varies

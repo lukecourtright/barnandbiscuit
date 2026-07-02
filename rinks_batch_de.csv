@@ -1,0 +1,4 @@
+name,address,city,state,lat,lng,type,isPublic,phone,website,amenities,hours_mon,hours_tue,hours_wed,hours_thu,hours_fri,hours_sat,hours_sun
+Fred Rust Ice Arena,547 South College Ave,Newark,DE,39.6694,-75.7529,NHL,True,,https://bluehens.com,Locker Rooms,Varies,Varies,Varies,Varies,Varies,Varies,Varies
+The Patriot Ice Center,101 John F Campbell Dr,Newark,DE,39.6820,-75.7285,OLYMPIC,True,(302) 266-0777,https://www.patrioticecenter.com,"NHL & Olympic Sheets, Locker Rooms",Varies,Varies,Varies,Varies,Varies,Varies,Varies
+Skating Club of Wilmington,1301 Carruthers Lane,Wilmington,DE,39.7696,-75.5387,NHL,True,(302) 656-5005,https://skatewilm.com,Locker Rooms,6:00 AM - 10:00 PM,6:00 AM - 10:00 PM,6:00 AM - 10:00 PM,6:00 AM - 10:00 PM,6:00 AM - 10:00 PM,8:00 AM - 10:00 PM,8:00 AM - 10:00 PM

@@ -1,0 +1,6 @@
+name,address,city,state,lat,lng,type,isPublic,phone,website,amenities,hours_mon,hours_tue,hours_wed,hours_thu,hours_fri,hours_sat,hours_sun
+Prince William Ice Center,5180 Dale Blvd,Woodbridge,VA,38.6279,-77.3061,NHL,True,(703) 730-8423,https://www.innovativesportsva.com,Locker Rooms,Varies,Varies,Varies,Varies,Varies,Varies,Varies
+Ashburn Ice House,21595 Smith Switch Rd,Ashburn,VA,39.0191,-77.4671,NHL,True,(703) 858-0300,https://www.ashburnice.com,"Locker Rooms, Concessions",6:00 AM - 10:30 PM,6:00 AM - 10:30 PM,6:00 AM - 10:30 PM,6:00 AM - 10:30 PM,6:00 AM - 10:30 PM,5:30 AM - 10:30 PM,5:30 AM - 10:30 PM
+Richmond Ice Zone,636 Johnston Willis Dr,North Chesterfield,VA,37.5035,-77.5941,NHL,True,(804) 378-7465,https://www.richmondskating.com,Locker Rooms,Varies,Varies,Varies,Varies,Varies,Varies,Varies
+Iceland Family Skating Center,4915 Broad St,Virginia Beach,VA,36.8446,-76.1474,NHL,True,(757) 490-3999,,Locker Rooms,Varies,Varies,Varies,Varies,Varies,Varies,Varies
+Scope Arena,201 E Brambleton Ave,Norfolk,VA,36.8533,-76.2869,NHL,True,,,Concessions,Varies,Varies,Varies,Varies,Varies,Varies,Varies

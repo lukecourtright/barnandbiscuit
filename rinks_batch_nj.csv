@@ -1,0 +1,6 @@
+name,address,city,state,lat,lng,type,isPublic,phone,website,amenities,hours_mon,hours_tue,hours_wed,hours_thu,hours_fri,hours_sat,hours_sun
+RWJBarnabas Health Hockey House,25 Lafayette Street,Newark,NJ,40.7334,-74.1711,NHL,True,(973) 757-6020,http://barnabashealthhockeyhouse.com,"Locker Rooms, Concessions",Varies,Varies,Varies,Varies,Varies,Varies,Varies
+Ice Vault Arena,10 Nevins Dr,Wayne,NJ,40.9644,-74.2281,NHL,True,(973) 628-1500,https://www.icevault.com,"3 NHL Sheets, Pro Shop, Locker Rooms",Varies,Varies,Varies,Varies,Varies,Varies,Varies
+Mennen Sports Arena,161 Hanover Ave,Morristown,NJ,40.8155,-74.4752,NHL,True,(973) 326-7651,https://www.morrisparks.net/mennen-landing/,Locker Rooms,Varies,Varies,Varies,Varies,Varies,Varies,Varies
+Ice House,111 Midtown Bridge St,Hackensack,NJ,40.8835,-74.0389,NHL,True,(201) 487-8444,https://www.icehousenj.com,"4 NHL Sheets, Pro Shop, Locker Rooms",Varies,Varies,Varies,Varies,Varies,Varies,Varies
+Hollydell Ice Arena,601 Hollydell Dr,Sewell,NJ,39.7461,-75.1084,NHL,True,(856) 589-5599,https://www.hollydellicearena.com,"Locker Rooms, Concessions",6:00 AM - 11:00 PM,6:00 AM - 11:00 PM,6:00 AM - 11:00 PM,6:00 AM - 11:00 PM,6:00 AM - 11:00 PM,6:00 AM - 11:00 PM,6:00 AM - 11:00 PM

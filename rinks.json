@@ -4720,5 +4720,585 @@
     ],
     "events": [],
     "reviews": []
+  },
+  {
+    "id": 143,
+    "name": "RWJBarnabas Health Hockey House",
+    "address": "25 Lafayette Street",
+    "city": "Newark",
+    "state": "NJ",
+    "lat": 40.7334,
+    "lng": -74.1711,
+    "type": "NHL",
+    "isPublic": true,
+    "rating": 4.0,
+    "reviewCount": 463,
+    "phone": "(973) 757-6020",
+    "website": "barnabashealthhockeyhouse.com",
+    "checkins": 2213,
+    "hours": {
+      "Mon": "Varies",
+      "Tue": "Varies",
+      "Wed": "Varies",
+      "Thu": "Varies",
+      "Fri": "Varies",
+      "Sat": "Varies",
+      "Sun": "Varies"
+    },
+    "amenities": [
+      "Locker Rooms",
+      "Concessions"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 144,
+    "name": "Ice Vault Arena",
+    "address": "10 Nevins Dr",
+    "city": "Wayne",
+    "state": "NJ",
+    "lat": 40.9644,
+    "lng": -74.2281,
+    "type": "NHL",
+    "isPublic": true,
+    "rating": 4.2,
+    "reviewCount": 371,
+    "phone": "(973) 628-1500",
+    "website": "www.icevault.com",
+    "checkins": 2401,
+    "hours": {
+      "Mon": "Varies",
+      "Tue": "Varies",
+      "Wed": "Varies",
+      "Thu": "Varies",
+      "Fri": "Varies",
+      "Sat": "Varies",
+      "Sun": "Varies"
+    },
+    "amenities": [
+      "3 NHL Sheets",
+      "Pro Shop",
+      "Locker Rooms"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 145,
+    "name": "Mennen Sports Arena",
+    "address": "161 Hanover Ave",
+    "city": "Morristown",
+    "state": "NJ",
+    "lat": 40.8155,
+    "lng": -74.4752,
+    "type": "NHL",
+    "isPublic": true,
+    "rating": 4.7,
+    "reviewCount": 781,
+    "phone": "(973) 326-7651",
+    "website": "www.morrisparks.net/mennen-landing/",
+    "checkins": 2805,
+    "hours": {
+      "Mon": "Varies",
+      "Tue": "Varies",
+      "Wed": "Varies",
+      "Thu": "Varies",
+      "Fri": "Varies",
+      "Sat": "Varies",
+      "Sun": "Varies"
+    },
+    "amenities": [
+      "Locker Rooms"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 146,
+    "name": "Ice House",
+    "address": "111 Midtown Bridge St",
+    "city": "Hackensack",
+    "state": "NJ",
+    "lat": 40.8835,
+    "lng": -74.0389,
+    "type": "NHL",
+    "isPublic": true,
+    "rating": 4.5,
+    "reviewCount": 219,
+    "phone": "(201) 487-8444",
+    "website": "www.icehousenj.com",
+    "checkins": 1886,
+    "hours": {
+      "Mon": "Varies",
+      "Tue": "Varies",
+      "Wed": "Varies",
+      "Thu": "Varies",
+      "Fri": "Varies",
+      "Sat": "Varies",
+      "Sun": "Varies"
+    },
+    "amenities": [
+      "4 NHL Sheets",
+      "Pro Shop",
+      "Locker Rooms"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 147,
+    "name": "Hollydell Ice Arena",
+    "address": "601 Hollydell Dr",
+    "city": "Sewell",
+    "state": "NJ",
+    "lat": 39.7461,
+    "lng": -75.1084,
+    "type": "NHL",
+    "isPublic": true,
+    "rating": 4.4,
+    "reviewCount": 74,
+    "phone": "(856) 589-5599",
+    "website": "www.hollydellicearena.com",
+    "checkins": 1406,
+    "hours": {
+      "Mon": "6:00 AM - 11:00 PM",
+      "Tue": "6:00 AM - 11:00 PM",
+      "Wed": "6:00 AM - 11:00 PM",
+      "Thu": "6:00 AM - 11:00 PM",
+      "Fri": "6:00 AM - 11:00 PM",
+      "Sat": "6:00 AM - 11:00 PM",
+      "Sun": "6:00 AM - 11:00 PM"
+    },
+    "amenities": [
+      "Locker Rooms",
+      "Concessions"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 148,
+    "name": "Piney Orchard Ice Arena",
+    "address": "8781 Piney Orchard Pkwy",
+    "city": "Odenton",
+    "state": "MD",
+    "lat": 39.0688,
+    "lng": -76.7152,
+    "type": "NHL",
+    "isPublic": true,
+    "rating": 3.8,
+    "reviewCount": 730,
+    "phone": "(410) 672-7013",
+    "website": "www.pineyicerink.com",
+    "checkins": 648,
+    "hours": {
+      "Mon": "6:00 AM - 11:00 PM",
+      "Tue": "6:00 AM - 11:00 PM",
+      "Wed": "6:00 AM - 11:00 PM",
+      "Thu": "6:00 AM - 11:00 PM",
+      "Fri": "6:00 AM - 11:00 PM",
+      "Sat": "6:00 AM - 11:00 PM",
+      "Sun": "6:00 AM - 11:00 PM"
+    },
+    "amenities": [
+      "2 NHL Sheets",
+      "Locker Rooms"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 149,
+    "name": "Rockville Ice Arena",
+    "address": "50 Southlawn Ct",
+    "city": "Rockville",
+    "state": "MD",
+    "lat": 39.1036,
+    "lng": -77.1294,
+    "type": "NHL",
+    "isPublic": true,
+    "rating": 4.7,
+    "reviewCount": 595,
+    "phone": "(301) 315-5650",
+    "website": "www.rockvilleicearena.com",
+    "checkins": 1640,
+    "hours": {
+      "Mon": "Varies",
+      "Tue": "Varies",
+      "Wed": "Varies",
+      "Thu": "Varies",
+      "Fri": "Varies",
+      "Sat": "Varies",
+      "Sun": "Varies"
+    },
+    "amenities": [
+      "Locker Rooms"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 150,
+    "name": "Mount Pleasant Ice Arena",
+    "address": "6101 Hillen Rd",
+    "city": "Baltimore",
+    "state": "MD",
+    "lat": 39.3689,
+    "lng": -76.5778,
+    "type": "NHL",
+    "isPublic": true,
+    "rating": 4.3,
+    "reviewCount": 873,
+    "phone": "(443) 984-4075",
+    "website": "www.baltimorecity.gov/bcrp/special-facilities/mt-pleasant-ice-arena",
+    "checkins": 2358,
+    "hours": {
+      "Mon": "Varies",
+      "Tue": "Varies",
+      "Wed": "Varies",
+      "Thu": "Varies",
+      "Fri": "Varies",
+      "Sat": "Varies",
+      "Sun": "Varies"
+    },
+    "amenities": [
+      "Locker Rooms"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 151,
+    "name": "Ice World",
+    "address": "1300 Governors Ct",
+    "city": "Abingdon",
+    "state": "MD",
+    "lat": 39.4464,
+    "lng": -76.2909,
+    "type": "NHL",
+    "isPublic": true,
+    "rating": 4.9,
+    "reviewCount": 434,
+    "phone": null,
+    "website": "www.iceworld.com",
+    "checkins": 1866,
+    "hours": {
+      "Mon": "Varies",
+      "Tue": "Varies",
+      "Wed": "Varies",
+      "Thu": "Varies",
+      "Fri": "Varies",
+      "Sat": "Varies",
+      "Sun": "Varies"
+    },
+    "amenities": [
+      "2 NHL Sheets",
+      "Locker Rooms"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 152,
+    "name": "Reisterstown Sportsplex",
+    "address": "401 Mitchell Drive",
+    "city": "Reisterstown",
+    "state": "MD",
+    "lat": 39.472,
+    "lng": -76.8433,
+    "type": "NHL",
+    "isPublic": true,
+    "rating": 4.4,
+    "reviewCount": 691,
+    "phone": "(410) 429-4242",
+    "website": null,
+    "checkins": 1041,
+    "hours": {
+      "Mon": "Varies",
+      "Tue": "Varies",
+      "Wed": "Varies",
+      "Thu": "Varies",
+      "Fri": "Varies",
+      "Sat": "Varies",
+      "Sun": "Varies"
+    },
+    "amenities": [
+      "Locker Rooms"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 153,
+    "name": "Fred Rust Ice Arena",
+    "address": "547 South College Ave",
+    "city": "Newark",
+    "state": "DE",
+    "lat": 39.6694,
+    "lng": -75.7529,
+    "type": "NHL",
+    "isPublic": true,
+    "rating": 4.8,
+    "reviewCount": 204,
+    "phone": null,
+    "website": "bluehens.com",
+    "checkins": 1996,
+    "hours": {
+      "Mon": "Varies",
+      "Tue": "Varies",
+      "Wed": "Varies",
+      "Thu": "Varies",
+      "Fri": "Varies",
+      "Sat": "Varies",
+      "Sun": "Varies"
+    },
+    "amenities": [
+      "Locker Rooms"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 154,
+    "name": "The Patriot Ice Center",
+    "address": "101 John F Campbell Dr",
+    "city": "Newark",
+    "state": "DE",
+    "lat": 39.682,
+    "lng": -75.7285,
+    "type": "OLYMPIC",
+    "isPublic": true,
+    "rating": 4.5,
+    "reviewCount": 846,
+    "phone": "(302) 266-0777",
+    "website": "www.patrioticecenter.com",
+    "checkins": 2215,
+    "hours": {
+      "Mon": "Varies",
+      "Tue": "Varies",
+      "Wed": "Varies",
+      "Thu": "Varies",
+      "Fri": "Varies",
+      "Sat": "Varies",
+      "Sun": "Varies"
+    },
+    "amenities": [
+      "NHL & Olympic Sheets",
+      "Locker Rooms"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 155,
+    "name": "Skating Club of Wilmington",
+    "address": "1301 Carruthers Lane",
+    "city": "Wilmington",
+    "state": "DE",
+    "lat": 39.7696,
+    "lng": -75.5387,
+    "type": "NHL",
+    "isPublic": true,
+    "rating": 4.7,
+    "reviewCount": 211,
+    "phone": "(302) 656-5005",
+    "website": "skatewilm.com",
+    "checkins": 1460,
+    "hours": {
+      "Mon": "6:00 AM - 10:00 PM",
+      "Tue": "6:00 AM - 10:00 PM",
+      "Wed": "6:00 AM - 10:00 PM",
+      "Thu": "6:00 AM - 10:00 PM",
+      "Fri": "6:00 AM - 10:00 PM",
+      "Sat": "8:00 AM - 10:00 PM",
+      "Sun": "8:00 AM - 10:00 PM"
+    },
+    "amenities": [
+      "Locker Rooms"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 156,
+    "name": "Prince William Ice Center",
+    "address": "5180 Dale Blvd",
+    "city": "Woodbridge",
+    "state": "VA",
+    "lat": 38.6279,
+    "lng": -77.3061,
+    "type": "NHL",
+    "isPublic": true,
+    "rating": 4.3,
+    "reviewCount": 268,
+    "phone": "(703) 730-8423",
+    "website": "www.innovativesportsva.com",
+    "checkins": 2332,
+    "hours": {
+      "Mon": "Varies",
+      "Tue": "Varies",
+      "Wed": "Varies",
+      "Thu": "Varies",
+      "Fri": "Varies",
+      "Sat": "Varies",
+      "Sun": "Varies"
+    },
+    "amenities": [
+      "Locker Rooms"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 157,
+    "name": "Ashburn Ice House",
+    "address": "21595 Smith Switch Rd",
+    "city": "Ashburn",
+    "state": "VA",
+    "lat": 39.0191,
+    "lng": -77.4671,
+    "type": "NHL",
+    "isPublic": true,
+    "rating": 4.6,
+    "reviewCount": 240,
+    "phone": "(703) 858-0300",
+    "website": "www.ashburnice.com",
+    "checkins": 994,
+    "hours": {
+      "Mon": "6:00 AM - 10:30 PM",
+      "Tue": "6:00 AM - 10:30 PM",
+      "Wed": "6:00 AM - 10:30 PM",
+      "Thu": "6:00 AM - 10:30 PM",
+      "Fri": "6:00 AM - 10:30 PM",
+      "Sat": "5:30 AM - 10:30 PM",
+      "Sun": "5:30 AM - 10:30 PM"
+    },
+    "amenities": [
+      "Locker Rooms",
+      "Concessions"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 158,
+    "name": "Richmond Ice Zone",
+    "address": "636 Johnston Willis Dr",
+    "city": "North Chesterfield",
+    "state": "VA",
+    "lat": 37.5035,
+    "lng": -77.5941,
+    "type": "NHL",
+    "isPublic": true,
+    "rating": 4.0,
+    "reviewCount": 784,
+    "phone": "(804) 378-7465",
+    "website": "www.richmondskating.com",
+    "checkins": 1801,
+    "hours": {
+      "Mon": "Varies",
+      "Tue": "Varies",
+      "Wed": "Varies",
+      "Thu": "Varies",
+      "Fri": "Varies",
+      "Sat": "Varies",
+      "Sun": "Varies"
+    },
+    "amenities": [
+      "Locker Rooms"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 159,
+    "name": "Iceland Family Skating Center",
+    "address": "4915 Broad St",
+    "city": "Virginia Beach",
+    "state": "VA",
+    "lat": 36.8446,
+    "lng": -76.1474,
+    "type": "NHL",
+    "isPublic": true,
+    "rating": 4.5,
+    "reviewCount": 292,
+    "phone": "(757) 490-3999",
+    "website": null,
+    "checkins": 1202,
+    "hours": {
+      "Mon": "Varies",
+      "Tue": "Varies",
+      "Wed": "Varies",
+      "Thu": "Varies",
+      "Fri": "Varies",
+      "Sat": "Varies",
+      "Sun": "Varies"
+    },
+    "amenities": [
+      "Locker Rooms"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 160,
+    "name": "Scope Arena",
+    "address": "201 E Brambleton Ave",
+    "city": "Norfolk",
+    "state": "VA",
+    "lat": 36.8533,
+    "lng": -76.2869,
+    "type": "NHL",
+    "isPublic": true,
+    "rating": 4.5,
+    "reviewCount": 63,
+    "phone": null,
+    "website": null,
+    "checkins": 813,
+    "hours": {
+      "Mon": "Varies",
+      "Tue": "Varies",
+      "Wed": "Varies",
+      "Thu": "Varies",
+      "Fri": "Varies",
+      "Sat": "Varies",
+      "Sun": "Varies"
+    },
+    "amenities": [
+      "Concessions"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 161,
+    "name": "Fort Dupont Ice Arena",
+    "address": "3779 Ely Place SE",
+    "city": "Washington",
+    "state": "DC",
+    "lat": 38.8825,
+    "lng": -76.9494,
+    "type": "NHL",
+    "isPublic": true,
+    "rating": 4.9,
+    "reviewCount": 719,
+    "phone": "(202) 204-2290",
+    "website": "fdia.org",
+    "checkins": 2669,
+    "hours": {
+      "Mon": "10:00 AM - 8:00 PM",
+      "Tue": "10:00 AM - 8:00 PM",
+      "Wed": "10:00 AM - 8:00 PM",
+      "Thu": "10:00 AM - 8:00 PM",
+      "Fri": "10:00 AM - 8:00 PM",
+      "Sat": "10:00 AM - 5:00 PM",
+      "Sun": "Closed"
+    },
+    "amenities": [
+      "Locker Rooms"
+    ],
+    "events": [],
+    "reviews": []
   }
 ]
