@@ -2257,5 +2257,383 @@
     ],
     "events": [],
     "reviews": []
+  },
+  {
+    "id": 64,
+    "name": "USA Hockey Arena",
+    "address": "14900 Beck Rd",
+    "city": "Plymouth",
+    "state": "MI",
+    "lat": 42.3894,
+    "lng": -83.5064,
+    "type": "NHL",
+    "isPublic": true,
+    "rating": 4.3,
+    "reviewCount": 227,
+    "phone": "(734) 453-6400",
+    "website": "www.usahockeyarena.com",
+    "checkins": 673,
+    "hours": {
+      "Mon": "8:30 AM - 9:00 PM",
+      "Tue": "8:30 AM - 9:00 PM",
+      "Wed": "8:30 AM - 9:00 PM",
+      "Thu": "8:30 AM - 9:00 PM",
+      "Fri": "8:30 AM - 9:00 PM",
+      "Sat": "7:30 AM - 9:00 PM",
+      "Sun": "7:30 AM - 9:00 PM"
+    },
+    "amenities": [
+      "2 NHL Sheets",
+      "Pro Shop",
+      "Locker Rooms"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 65,
+    "name": "Yost Ice Arena",
+    "address": "1116 S State St",
+    "city": "Ann Arbor",
+    "state": "MI",
+    "lat": 42.2687,
+    "lng": -83.7406,
+    "type": "NHL",
+    "isPublic": true,
+    "rating": 4.8,
+    "reviewCount": 683,
+    "phone": "(734) 764-4600",
+    "website": "mgoblue.com/sports/2017/6/16/facilities-yost-arena-html",
+    "checkins": 1512,
+    "hours": {
+      "Mon": "Varies",
+      "Tue": "Varies",
+      "Wed": "Varies",
+      "Thu": "Varies",
+      "Fri": "Varies",
+      "Sat": "Varies",
+      "Sun": "Varies"
+    },
+    "amenities": [
+      "Locker Rooms",
+      "Concessions"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 66,
+    "name": "Munn Ice Arena",
+    "address": "509 Birch Rd",
+    "city": "East Lansing",
+    "state": "MI",
+    "lat": 42.7259,
+    "lng": -84.4913,
+    "type": "NHL",
+    "isPublic": true,
+    "rating": 3.8,
+    "reviewCount": 272,
+    "phone": "(517) 353-4698",
+    "website": "munnicearena.msu.edu",
+    "checkins": 2342,
+    "hours": {
+      "Mon": "Varies",
+      "Tue": "Varies",
+      "Wed": "Varies",
+      "Thu": "Varies",
+      "Fri": "Varies",
+      "Sat": "Varies",
+      "Sun": "Varies"
+    },
+    "amenities": [
+      "Locker Rooms",
+      "Concessions"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 67,
+    "name": "Suburban Ice Macomb",
+    "address": "54755 Broughton Rd",
+    "city": "Macomb",
+    "state": "MI",
+    "lat": 42.7003,
+    "lng": -82.921,
+    "type": "NHL",
+    "isPublic": true,
+    "rating": 4.2,
+    "reviewCount": 310,
+    "phone": "(586) 992-8600",
+    "website": "www.suburbanicemacomb.com",
+    "checkins": 875,
+    "hours": {
+      "Mon": "9:00 AM - 12:00 AM",
+      "Tue": "9:00 AM - 12:00 AM",
+      "Wed": "9:00 AM - 12:00 AM",
+      "Thu": "9:00 AM - 12:00 AM",
+      "Fri": "9:00 AM - 12:00 AM",
+      "Sat": "9:00 AM - 12:00 AM",
+      "Sun": "9:00 AM - 12:00 AM"
+    },
+    "amenities": [
+      "Pro Shop",
+      "Locker Rooms",
+      "Concessions"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 68,
+    "name": "Suburban Ice Farmington Hills",
+    "address": "23996 Freeway Park Drive",
+    "city": "Farmington Hills",
+    "state": "MI",
+    "lat": 42.4656,
+    "lng": -83.4233,
+    "type": "NHL",
+    "isPublic": true,
+    "rating": 4.1,
+    "reviewCount": 495,
+    "phone": "(248) 888-1400",
+    "website": "www.suburbanicefarmingtonhills.com",
+    "checkins": 1574,
+    "hours": {
+      "Mon": "Call for hours",
+      "Tue": "Call for hours",
+      "Wed": "Call for hours",
+      "Thu": "Call for hours",
+      "Fri": "Call for hours",
+      "Sat": "Call for hours",
+      "Sun": "Call for hours"
+    },
+    "amenities": [
+      "Pro Shop",
+      "Locker Rooms",
+      "Concessions"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 69,
+    "name": "Ann Arbor Ice Cube",
+    "address": "2121 Oak Valley Drive",
+    "city": "Ann Arbor",
+    "state": "MI",
+    "lat": 42.2542,
+    "lng": -83.7782,
+    "type": "NHL",
+    "isPublic": true,
+    "rating": 3.9,
+    "reviewCount": 553,
+    "phone": null,
+    "website": "www.biggbycoffeeicecube.com/ann-arbor/home",
+    "checkins": 297,
+    "hours": {
+      "Mon": "Varies",
+      "Tue": "Varies",
+      "Wed": "Varies",
+      "Thu": "Varies",
+      "Fri": "Varies",
+      "Sat": "Varies",
+      "Sun": "Varies"
+    },
+    "amenities": [
+      "Skate Rental",
+      "Concessions"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 70,
+    "name": "Kensington Valley Ice House",
+    "address": "10540 Citation Drive",
+    "city": "Brighton",
+    "state": "MI",
+    "lat": 42.5186,
+    "lng": -83.7449,
+    "type": "NHL",
+    "isPublic": true,
+    "rating": 4.7,
+    "reviewCount": 242,
+    "phone": "(810) 494-5555",
+    "website": "www.kvicehouse.com",
+    "checkins": 1335,
+    "hours": {
+      "Mon": "Call for hours",
+      "Tue": "Call for hours",
+      "Wed": "Call for hours",
+      "Thu": "Call for hours",
+      "Fri": "Call for hours",
+      "Sat": "Call for hours",
+      "Sun": "Call for hours"
+    },
+    "amenities": [
+      "Locker Rooms",
+      "Concessions"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 71,
+    "name": "Lawson Ice Arena",
+    "address": "2009 Howard St",
+    "city": "Kalamazoo",
+    "state": "MI",
+    "lat": 42.2759,
+    "lng": -85.6136,
+    "type": "NHL",
+    "isPublic": true,
+    "rating": 4.8,
+    "reviewCount": 398,
+    "phone": "(269) 387-3050",
+    "website": "wmubroncos.com/facilities/lawson-arena/6",
+    "checkins": 1207,
+    "hours": {
+      "Mon": "Varies",
+      "Tue": "Varies",
+      "Wed": "Varies",
+      "Thu": "Varies",
+      "Fri": "Varies",
+      "Sat": "Varies",
+      "Sun": "Varies"
+    },
+    "amenities": [
+      "Locker Rooms",
+      "Concessions"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 72,
+    "name": "Eddie Edgar Ice Arena",
+    "address": "33841 Lyndon St",
+    "city": "Livonia",
+    "state": "MI",
+    "lat": 42.3891,
+    "lng": -83.3773,
+    "type": "NHL",
+    "isPublic": true,
+    "rating": 3.8,
+    "reviewCount": 272,
+    "phone": "(734) 422-5172",
+    "website": "www.eddieedgar.org",
+    "checkins": 1931,
+    "hours": {
+      "Mon": "9:00 AM - 4:00 PM",
+      "Tue": "9:00 AM - 4:00 PM",
+      "Wed": "9:00 AM - 4:00 PM",
+      "Thu": "9:00 AM - 4:00 PM",
+      "Fri": "9:00 AM - 4:00 PM",
+      "Sat": "Closed",
+      "Sun": "Closed"
+    },
+    "amenities": [
+      "Locker Rooms",
+      "Concessions"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 73,
+    "name": "Detroit Skating Club",
+    "address": "888 Denison Ct",
+    "city": "Bloomfield Hills",
+    "state": "MI",
+    "lat": 42.6077,
+    "lng": -83.2916,
+    "type": "NHL",
+    "isPublic": true,
+    "rating": 3.8,
+    "reviewCount": 857,
+    "phone": "(248) 332-3000",
+    "website": "www.dscclub.com",
+    "checkins": 2035,
+    "hours": {
+      "Mon": "5:30 AM - 12:00 AM",
+      "Tue": "5:30 AM - 12:00 AM",
+      "Wed": "5:30 AM - 12:00 AM",
+      "Thu": "5:30 AM - 12:00 AM",
+      "Fri": "5:30 AM - 12:00 AM",
+      "Sat": "5:30 AM - 12:00 AM",
+      "Sun": "6:30 AM - 11:00 PM"
+    },
+    "amenities": [
+      "Pro Shop",
+      "Locker Rooms"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 74,
+    "name": "Fraser Hockeyland",
+    "address": "34400 Utica Rd",
+    "city": "Fraser",
+    "state": "MI",
+    "lat": 42.5494,
+    "lng": -82.9569,
+    "type": "NHL",
+    "isPublic": true,
+    "rating": 4.4,
+    "reviewCount": 558,
+    "phone": "(586) 294-2400",
+    "website": "www.fraserhockeyland.com",
+    "checkins": 314,
+    "hours": {
+      "Mon": "9:00 AM - 9:00 PM",
+      "Tue": "9:00 AM - 9:00 PM",
+      "Wed": "9:00 AM - 9:00 PM",
+      "Thu": "9:00 AM - 9:00 PM",
+      "Fri": "9:00 AM - 5:00 PM",
+      "Sat": "9:00 AM - 9:00 PM",
+      "Sun": "9:00 AM - 9:00 PM"
+    },
+    "amenities": [
+      "5 NHL Sheets",
+      "Pro Shop",
+      "Concessions",
+      "Arcade"
+    ],
+    "events": [],
+    "reviews": []
+  },
+  {
+    "id": 75,
+    "name": "Arctic Coliseum",
+    "address": "501 Coliseum Dr",
+    "city": "Chelsea",
+    "state": "MI",
+    "lat": 42.302,
+    "lng": -84.0292,
+    "type": "NHL",
+    "isPublic": true,
+    "rating": 4.8,
+    "reviewCount": 215,
+    "phone": "(734) 433-4444",
+    "website": "www.arcticcoliseum.net",
+    "checkins": 2388,
+    "hours": {
+      "Mon": "7:00 AM - 2:00 AM",
+      "Tue": "7:00 AM - 2:00 AM",
+      "Wed": "7:00 AM - 2:00 AM",
+      "Thu": "7:00 AM - 2:00 AM",
+      "Fri": "7:00 AM - 2:00 AM",
+      "Sat": "7:00 AM - 2:00 AM",
+      "Sun": "7:00 AM - 2:00 AM"
+    },
+    "amenities": [
+      "2 NHL Sheets",
+      "Concessions",
+      "Arcade"
+    ],
+    "events": [],
+    "reviews": []
   }
 ]
