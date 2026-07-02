@@ -1,0 +1,8 @@
+name,address,city,state,lat,lng,type,isPublic,phone,website,amenities,hours_mon,hours_tue,hours_wed,hours_thu,hours_fri,hours_sat,hours_sun
+Planet Ice Skating and Hockey Arena,4317 Johnston Street,Lafayette,LA,30.2052,-92.0621,NHL,True,(337) 504-4299,https://planeticerinkla.com/,"1 Hockey Sheet, Public Skating, Hockey, Parties, Concessions",,,,,,,
+George's Pond at Hirsch Coliseum,3207 Pershing Boulevard,Shreveport,LA,32.4787,-93.8157,STANDARD,True,(318) 636-7094,https://www.georgespond34.com/,"NAHL Arena, Ice Hockey, Concessions",,,,,,,
+Raising Cane's River Center Arena,275 South River Road,Baton Rouge,LA,30.4450,-91.1896,STANDARD,True,(225) 389-3030,https://raisingcanesrivercenter.com/,"FPHL Arena, Ice Hockey, Concessions",,,,,,,
+Brookshire Grocery Arena,2000 Brookshire Arena Drive,Bossier City,LA,32.4657,-93.6702,STANDARD,True,(318) 747-2501,https://brookshiregroceryarena.com/,"Ice-capable Arena, Former Hockey Venue, Concessions",,,,,,,
+Cajundome,444 Cajundome Boulevard,Lafayette,LA,30.2182,-92.0394,STANDARD,True,(337) 265-2100,https://www.cajundome.com/,"Ice-capable Arena, Former Hockey Venue, Concessions",,,,,,,
+Monroe Civic Center Arena,401 Lea Joyner Memorial Expressway,Monroe,LA,32.5048,-92.1107,STANDARD,True,(318) 329-2225,https://yourciviccenter.org/,"Ice-capable Arena, Former Hockey Venue, Concessions",,,,,,,
+Rapides Parish Coliseum,5600 Coliseum Boulevard,Alexandria,LA,31.2945,-92.4756,STANDARD,True,(318) 442-9581,https://rpclive.org/,"Ice-capable Arena, Former Hockey Venue, Concessions",,,,,,,
