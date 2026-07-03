@@ -45,7 +45,9 @@ barnbiscuit/
 ├── rinks.json                 # Curated rink data — source of truth, synced into the DB on startup
 ├── rinks_import_template.csv  # CSV template for bulk-adding rinks (fill in, run import script)
 ├── scripts/
-│   └── import_rinks_csv.py   # Merges a filled CSV batch into rinks.json
+│   ├── import_rinks_csv.py   # Merges a filled CSV batch (new rinks) into rinks.json
+│   ├── export_rinks_csv.py   # Dumps all of rinks.json to one CSV for manual review/editing
+│   └── merge_rinks_csv.py    # Applies a hand-edited export back into rinks.json (updates by id, appends blank-id rows)
 ├── dev.db                     # Local SQLite fallback when DATABASE_URL is unset (gitignored)
 ├── requirements.txt
 ├── railway.toml
@@ -104,12 +106,18 @@ Vanilla JS SPA — no bundler, no framework.
 
 Source of truth for rink data — edit by hand to add/remove/update. Synced into the `Rink` table (Postgres/SQLite, see Backend above) on every app startup: rows are upserted by `id`, and any DB row whose `id` is no longer present in `rinks.json` is deleted, so removals in the file propagate too. `openNow` is not stored — it's derived at runtime in the browser.
 
-**Current count:** ~557 rinks, covering all 50 states. Built up via state-by-state CSV batches from 2026-06-30 through 2026-07-02 — see git log for the batch-by-batch history.
+**Current count:** ~658 rinks, covering all 50 states. Built up via state-by-state CSV batches from 2026-06-30 through 2026-07-02, plus a gap-finding merge pass — see git log for the batch-by-batch history.
 
 **Bulk import workflow:**
 1. Copy `rinks_import_template.csv`, fill in one region's worth of rinks, save as a new file.
 2. Run `python scripts/import_rinks_csv.py path/to/batch.csv` — appends to `rinks.json` with sequential `id`s.
 3. Push `rinks.json` to `main` → Railway auto-deploys and syncs to Postgres on startup.
+
+**Manual spot-check / gap-finding workflow:**
+1. Run `python scripts/export_rinks_csv.py` — dumps every rink to `rinks_full_export.csv`, sorted by state/city/name for easy scanning.
+2. Edit that one file by hand: correct any row's fields, or add new rows with a blank `id` for rinks that are missing entirely.
+3. Run `python scripts/merge_rinks_csv.py rinks_full_export.csv` — updates existing rinks by `id` (only reports fields that actually changed) and appends blank-`id` rows as new rinks. Never deletes; round-trips with zero diff if nothing was edited.
+4. Push `rinks.json` to `main` as usual.
 
 **CSV field notes (learned from IL/WI batch):**
 - `type` — use `NHL`, `OLYMPIC`, `SYNTHETIC`, or `STANDARD`. `Indoor` also accepted (maps to `STANDARD`). Use `OLYMPIC` for rinks that explicitly have an Olympic-size (200×100 ft) sheet. Any other value (e.g. `Arena`, `Ice Rink`) silently falls back to `STANDARD` in the import script — prefer setting `STANDARD` explicitly in the CSV for multi-purpose/pro arenas rather than relying on the fallback.
