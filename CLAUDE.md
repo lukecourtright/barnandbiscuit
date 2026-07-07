@@ -63,7 +63,7 @@ barnbiscuit/
 
 ### Backend (`main.py`)
 
-Data is stored in a database (Postgres in production via Railway addon, local SQLite fallback otherwise) accessed through SQLModel. `rinks.json` remains the human/AI-edited source of truth — on every startup, `sync_rinks_from_file()` creates tables if missing, upserts (by `id`) every rink from `rinks.json` into the `Rink` table, and deletes any `Rink` row whose `id` is no longer in the file, so pushing an updated `rinks.json` to `main` (additions, edits, *and* removals) is enough to update production data on the next deploy.
+Data is stored in a database (Postgres in production via Railway addon, local SQLite fallback otherwise) accessed through SQLModel. `rinks.json` remains the human/AI-edited source of truth — on every startup, `SQLModel.metadata.create_all()` creates tables if missing, `ensure_new_columns()` `ALTER TABLE ADD COLUMN`s anything the `Rink` model has that an *already-existing* table doesn't (since `create_all()` only creates missing tables, not missing columns — without this, adding a field to `Rink` crashes startup against a live Postgres table with `UndefinedColumn`), then `sync_rinks_from_file()` upserts (by `id`) every rink from `rinks.json` into the `Rink` table and deletes any row whose `id` is no longer in the file. Pushing an updated `rinks.json` to `main` (additions, edits, *and* removals) is enough to update production data on the next deploy — and adding a new column to the `Rink` model itself is safe to deploy directly, no manual migration step needed.
 
 - `GET /` → serves `static/index.html`
 - `GET /api/rinks` → queries the `Rink` table, returns all rows as JSON (same shape as before)
@@ -193,6 +193,6 @@ Source of truth for rink data — edit by hand to add/remove/update. Synced into
 - Ongoing Google Places sync — the backfill (`scripts/fetch_google_places_data.py`) is a one-time pull, not a scheduled refresh; rinks added after a backfill run (or newly opened Google listings) need a manual re-run to pick up real ratings/reviews/photos, and unmatched rinks keep placeholder content indefinitely until then
 - Admin UI for moderating community-submitted rinks (sit in the `PendingRink` table, unvalidated) — accounts now exist, so this can gate on an `isAdmin`-style check when built
 - Server-persisted *user-submitted* check-ins, reviews, and photos (session-only in v1 — see `myCheckins`/`myReviews`/`myPhotos` above) — accounts now exist to attribute these to, but none of it is wired to the `User` table. This is separate from the Google-sourced reviews/photos in `rinks.json`, which are real but were pulled once, not submitted by app users
-- Schema migrations (tables are created via `SQLModel.metadata.create_all()`, no Alembic yet)
+- Real schema migrations (no Alembic) — `ensure_new_columns()` in `main.py` covers the common case of adding a new nullable column, but column renames/type changes/drops still have no automated path and would need a manual `ALTER TABLE` against the Railway Postgres addon
 - Community and News sections (nav links present but inactive)
 - "Submit an Event" button (UI only, no backend) — "Write a Review" now has a working session-local composer (see above), just not server-persisted
