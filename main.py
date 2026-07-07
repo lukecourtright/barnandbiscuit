@@ -9,7 +9,8 @@ import httpx
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import FileResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
-from sqlalchemy import JSON, Column
+from sqlalchemy import JSON, Column, inspect, text
+from sqlalchemy.schema import CreateColumn
 from sqlmodel import Field, Session, SQLModel, create_engine, select
 from starlette.middleware.sessions import SessionMiddleware
 
@@ -79,6 +80,21 @@ def user_public(user: User) -> dict:
     return {"id": user.id, "email": user.email, "displayName": user.displayName}
 
 
+def ensure_new_columns():
+    # create_all() only creates missing tables, not missing columns on tables
+    # that already exist in production — this adds any model column the live
+    # table doesn't have yet, so schema additions don't need Alembic.
+    inspector = inspect(engine)
+    if "rink" not in inspector.get_table_names():
+        return
+    existing = {col["name"] for col in inspector.get_columns("rink")}
+    with engine.begin() as conn:
+        for column in Rink.__table__.columns:
+            if column.name not in existing:
+                ddl = CreateColumn(column).compile(dialect=engine.dialect)
+                conn.execute(text(f"ALTER TABLE rink ADD COLUMN {ddl}"))
+
+
 def sync_rinks_from_file():
     rinks = json.loads(RINKS_FILE.read_text(encoding="utf-8"))
     with Session(engine) as session:
@@ -93,6 +109,7 @@ def sync_rinks_from_file():
 @app.on_event("startup")
 def on_startup():
     SQLModel.metadata.create_all(engine)
+    ensure_new_columns()
     sync_rinks_from_file()
 
 
