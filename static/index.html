@@ -988,7 +988,6 @@ class RinkFinder {
       <div style="font-size:12px;color:#FFD24D;margin-bottom:10px;">★ ${rink.rating.toFixed(1)} <span style="color:#4B5168;">(${rink.reviewCount})</span></div>
       <button onclick="window.__rlSelectRink(${rink.id})" style="width:100%;padding:8px;background:#07C8C8;color:#06181A;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;">View Details →</button>
     </div>`, { maxWidth: 220 });
-    marker.on('click', () => this.selectRink(rink.id));
     this.markers[rink.id] = marker;
   }
 
