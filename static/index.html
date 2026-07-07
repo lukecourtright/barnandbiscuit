@@ -218,7 +218,7 @@
     <img id="drawer-hero-img" src="" alt="" style="width:100%;height:100%;object-fit:cover;opacity:0.85;display:block;">
     <div style="position:absolute;inset:0;background:linear-gradient(180deg, rgba(10,14,26,0.05) 35%, rgba(10,14,26,0.9) 100%);pointer-events:none;"></div>
     <button onclick="app.setTab('photos')" style="position:absolute;top:10px;left:10px;padding:4px 10px;background:rgba(10,14,26,0.55);border:1px solid rgba(255,255,255,0.15);border-radius:20px;color:#fff;font-size:11px;font-weight:600;font-family:inherit;cursor:pointer;">
-      <span id="drawer-photos-count"></span> photos
+      <span id="drawer-photos-count"></span>
     </button>
     <span id="drawer-photo-attribution" style="position:absolute;bottom:6px;right:10px;font-size:10px;color:rgba(255,255,255,0.65);text-shadow:0 1px 2px rgba(0,0,0,0.6);display:none;"></span>
     <button onclick="app.closeDrawer()" style="position:absolute;top:10px;right:10px;width:30px;height:30px;display:flex;align-items:center;justify-content:center;background:rgba(10,14,26,0.55);border:1px solid rgba(255,255,255,0.15);border-radius:8px;color:#fff;cursor:pointer;">
@@ -333,9 +333,17 @@
 <script>
 class RinkFinder {
   BRAND = 'Barn & Biscuit';
-  BASE_PHOTO_COUNT = 5;
+  BASE_PHOTO_COUNT = 4;
   FEED_NAMES = ['Jordan','Sam','Casey','Morgan','Riley','Taylor','Avery','Quinn','Drew','Reese'];
   FEED_COLORS = ['#14CFCF', '#CB78FF', '#34E0A0', '#FFD24D'];
+  // Brand accent palette used to tint the no-photo rink placeholders
+  PLACEHOLDER_ACCENTS = [
+    { name: 'Cyan',   line: '20,207,207',  dot: '#14CFCF' },
+    { name: 'Violet', line: '203,120,255', dot: '#CB78FF' },
+    { name: 'Mint',   line: '52,224,160',  dot: '#34E0A0' },
+    { name: 'Amber',  line: '255,210,77',  dot: '#FFD24D' },
+    { name: 'Coral',  line: '255,107,125', dot: '#FF6B7D' },
+  ];
 
   state = {
     search: '',
@@ -731,8 +739,12 @@ class RinkFinder {
     const heroIdx = Math.min(s.heroIdx, photos.length - 1);
 
     // Hero
-    document.getElementById('drawer-hero-img').src = photos[heroIdx].url;
-    document.getElementById('drawer-photos-count').textContent = photos.length;
+    const heroImg = document.getElementById('drawer-hero-img');
+    heroImg.src = photos[heroIdx].url;
+    heroImg.style.opacity = photos[heroIdx].placeholder ? '1' : '0.85';
+    const realPhotoCount = photos.filter(p => !p.placeholder).length;
+    document.getElementById('drawer-photos-count').textContent =
+      realPhotoCount ? `${realPhotoCount} photos` : 'No photos yet';
     const attributionEl = document.getElementById('drawer-photo-attribution');
     if (photos[heroIdx].attribution) {
       attributionEl.textContent = `Photo: ${photos[heroIdx].attribution}`;
@@ -775,8 +787,11 @@ class RinkFinder {
       const active = i === heroIdx;
       return `<img src="${p.url}" onclick="app.setHero(${i})" style="width:74px;height:52px;object-fit:cover;border-radius:7px;flex-shrink:0;cursor:pointer;border:1.5px solid ${active ? 'var(--color-primary)' : 'transparent'};opacity:${active ? '1' : '0.65'};">`;
     }).join('');
-    const overflow = photos.length > 3
-      ? `<div onclick="app.setTab('photos')" style="width:74px;height:52px;flex-shrink:0;background:var(--surface);border:1px solid var(--border);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:11px;font-family:var(--font-mono);color:var(--text-faint);cursor:pointer;">+${photos.length - 3}</div>`
+    // Only surface the overflow badge for real photo counts — hidden entirely
+    // in the no-photo placeholder state, where the extra tiles aren't worth a click-through.
+    const realCount = photos.filter(p => !p.placeholder).length;
+    const overflow = realCount > 3
+      ? `<div onclick="app.setTab('photos')" style="width:74px;height:52px;flex-shrink:0;background:var(--surface);border:1px solid var(--border);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:11px;font-family:var(--font-mono);color:var(--text-faint);cursor:pointer;">+${realCount - 3}</div>`
       : '';
     const addTile = `<div onclick="app.addPhoto()" style="width:74px;height:52px;flex-shrink:0;background:transparent;border:1px dashed var(--border);border-radius:7px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;color:var(--color-primary);cursor:pointer;">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
@@ -905,8 +920,12 @@ class RinkFinder {
     const toast = this.state.photoToast
       ? `<div style="margin-bottom:10px;padding:10px 12px;background:rgba(52,224,160,0.07);border:1px solid rgba(52,224,160,0.35);border-radius:10px;text-align:center;font-size:12px;font-weight:600;color:#34E0A0;animation:checkinPop 0.3s ease;">Photo added — thanks for the assist</div>`
       : '';
+    const hasRealPhotos = photos.some(p => !p.placeholder);
+    const footnote = hasRealPhotos
+      ? 'Photos are submitted by the community. Tap one to feature it up top.'
+      : 'No community photos here yet — be the first to share a shot of the ice.';
     return `${toast}<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">${grid}${addTile}</div>
-      <div style="font-size:11px;color:var(--text-faint);margin-top:10px;">Photos are submitted by the community. Tap one to feature it up top.</div>`;
+      <div style="font-size:11px;color:var(--text-faint);margin-top:10px;">${footnote}</div>`;
   }
 
   renderEventsTab(rink) {
@@ -1050,12 +1069,48 @@ class RinkFinder {
 
   // ── Photos ────────────────────────────────────────────────────────────────
 
+  // Deterministic branded rink-diagram placeholder as an inline SVG data URI —
+  // no external image service, no generic gray boxes. seed drives the accent
+  // color and which end holds the puck, so a rink's set of 4 tiles (and any
+  // gallery of rinks) reads as visually distinct.
+  rinkPlaceholder(seed) {
+    const accents = this.PLACEHOLDER_ACCENTS;
+    const a = accents[((seed % accents.length) + accents.length) % accents.length];
+    const L = (o) => `rgba(${a.line},${o})`;
+    const puckLeft = (seed % 2) === 0;
+    const px = puckLeft ? 150 : 330;
+    const W = 480, H = 320;
+    const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='${W}' height='${H}' viewBox='0 0 ${W} ${H}'>`
+      + `<rect width='${W}' height='${H}' fill='#0E1322'/>`
+      + `<ellipse cx='150' cy='96' rx='300' ry='210' fill='${L(0.07)}'/>`
+      + `<ellipse cx='430' cy='300' rx='260' ry='170' fill='rgba(4,6,10,0.45)'/>`
+      + `<line x1='60' y1='120' x2='420' y2='96' stroke='${L(0.05)}' stroke-width='10'/>`
+      + `<rect x='46' y='40' width='388' height='240' rx='84' fill='none' stroke='${L(0.36)}' stroke-width='2'/>`
+      + `<line x1='92' y1='58' x2='92' y2='262' stroke='${L(0.16)}' stroke-width='1.5'/>`
+      + `<line x1='388' y1='58' x2='388' y2='262' stroke='${L(0.16)}' stroke-width='1.5'/>`
+      + `<line x1='188' y1='40' x2='188' y2='280' stroke='${L(0.22)}' stroke-width='2'/>`
+      + `<line x1='292' y1='40' x2='292' y2='280' stroke='${L(0.22)}' stroke-width='2'/>`
+      + `<line x1='240' y1='40' x2='240' y2='280' stroke='${L(0.30)}' stroke-width='2'/>`
+      + `<circle cx='240' cy='160' r='44' fill='none' stroke='${L(0.30)}' stroke-width='2'/>`
+      + `<circle cx='240' cy='160' r='4' fill='${L(0.55)}'/>`
+      + `<circle cx='138' cy='108' r='26' fill='none' stroke='${L(0.20)}' stroke-width='1.5'/>`
+      + `<circle cx='138' cy='212' r='26' fill='none' stroke='${L(0.20)}' stroke-width='1.5'/>`
+      + `<circle cx='342' cy='108' r='26' fill='none' stroke='${L(0.20)}' stroke-width='1.5'/>`
+      + `<circle cx='342' cy='212' r='26' fill='none' stroke='${L(0.20)}' stroke-width='1.5'/>`
+      + `<path d='M92 140 a20 20 0 0 1 0 40' fill='none' stroke='${L(0.24)}' stroke-width='1.5'/>`
+      + `<path d='M388 140 a20 20 0 0 0 0 40' fill='none' stroke='${L(0.24)}' stroke-width='1.5'/>`
+      + `<circle cx='${px}' cy='160' r='14' fill='none' stroke='${a.dot}' stroke-opacity='0.35' stroke-width='2'/>`
+      + `<circle cx='${px}' cy='160' r='7' fill='${a.dot}'/>`
+      + `</svg>`;
+    return 'data:image/svg+xml,' + encodeURIComponent(svg);
+  }
+
   getPhotos(rink) {
     const extra = this.state.myPhotos[rink.id] || [];
     const base = (rink.photos && rink.photos.length)
       ? rink.photos.map((p, i) => ({ seedIdx: i, url: `/api/photos/${rink.id}/${i}`, attribution: p.attribution }))
       : Array.from(Array(this.BASE_PHOTO_COUNT).keys()).map(seedIdx => ({
-          seedIdx, url: `https://picsum.photos/seed/rink-${rink.id}-${seedIdx}/480/320`,
+          seedIdx, url: this.rinkPlaceholder(rink.id + seedIdx), placeholder: true,
         }));
     const extraPhotos = extra.map(seedIdx => ({
       seedIdx, url: `https://picsum.photos/seed/rink-${rink.id}-${seedIdx}/480/320`,
