@@ -56,13 +56,13 @@
   #sidebar { width: 355px; background: var(--bg); border-right: 1px solid var(--hair); display: flex; flex-direction: column; overflow: hidden; flex-shrink: 0; }
 
   /* Drawer */
-  #detail-drawer { position: fixed; right: 0; top: 56px; width: 400px; height: calc(100vh - 56px); background: var(--bg); border-left: 1px solid var(--border); display: flex; flex-direction: column; z-index: 300; animation: slideInRight 0.22s ease; box-shadow: -4px 0 32px rgba(0,0,0,0.5); }
+  #detail-drawer { position: fixed; right: 0; top: 56px; width: 400px; height: calc(100vh - 56px); background: var(--bg); border-left: 1px solid var(--border); display: flex; flex-direction: column; z-index: 1100; animation: slideInRight 0.22s ease; box-shadow: -4px 0 32px rgba(0,0,0,0.5); }
 
   /* Mobile list overlay */
   #mobile-list { position: fixed; top: 56px; left: 0; right: 0; bottom: 0; background: var(--bg); z-index: 100; display: flex; flex-direction: column; overflow: hidden; animation: slideUp 0.2s ease; }
 
   /* Modal overlay */
-  .modal-overlay { position: fixed; inset: 0; background: rgba(10,14,26,0.88); z-index: 400; display: flex; align-items: center; justify-content: center; padding: 20px; animation: fadeIn 0.15s ease; }
+  .modal-overlay { position: fixed; inset: 0; background: rgba(10,14,26,0.88); z-index: 1200; display: flex; align-items: center; justify-content: center; padding: 20px; animation: fadeIn 0.15s ease; }
   .modal-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; width: 100%; padding: 24px; }
 
   /* Chip styles */
@@ -211,24 +211,37 @@
 
 <!-- DETAIL DRAWER (hidden by default) -->
 <div id="detail-drawer" style="display:none;">
-  <!-- Header -->
-  <div style="padding:14px 16px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;gap:10px;flex-shrink:0;background:#0E1322;">
-    <div style="flex:1;min-width:0;">
-      <div id="drawer-name" style="font-family:var(--font-display);font-size:17px;font-weight:700;color:var(--text);line-height:1.3;margin-bottom:5px;"></div>
-      <div id="drawer-meta" style="display:flex;align-items:center;gap:7px;flex-wrap:wrap;"></div>
-    </div>
-    <button onclick="app.closeDrawer()" style="width:30px;height:30px;display:flex;align-items:center;justify-content:center;background:var(--surface-2);border:1px solid var(--border);border-radius:8px;color:var(--text-faint);cursor:pointer;flex-shrink:0;">
+  <!-- Photo Hero (fixed, non-scrolling) -->
+  <div id="drawer-hero" style="position:relative;height:168px;flex-shrink:0;overflow:hidden;background:var(--surface-2);">
+    <img id="drawer-hero-img" src="" alt="" style="width:100%;height:100%;object-fit:cover;opacity:0.85;display:block;">
+    <div style="position:absolute;inset:0;background:linear-gradient(180deg, rgba(10,14,26,0.05) 35%, rgba(10,14,26,0.9) 100%);pointer-events:none;"></div>
+    <button onclick="app.setTab('photos')" style="position:absolute;top:10px;left:10px;padding:4px 10px;background:rgba(10,14,26,0.55);border:1px solid rgba(255,255,255,0.15);border-radius:20px;color:#fff;font-size:11px;font-weight:600;font-family:inherit;cursor:pointer;">
+      <span id="drawer-photos-count"></span> photos
+    </button>
+    <button onclick="app.closeDrawer()" style="position:absolute;top:10px;right:10px;width:30px;height:30px;display:flex;align-items:center;justify-content:center;background:rgba(10,14,26,0.55);border:1px solid rgba(255,255,255,0.15);border-radius:8px;color:#fff;cursor:pointer;">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
     </button>
+    <div style="position:absolute;left:14px;right:14px;bottom:10px;">
+      <div id="drawer-name" style="font-family:var(--font-display);font-size:18px;font-weight:700;color:#fff;line-height:1.25;margin-bottom:5px;text-shadow:0 1px 3px rgba(0,0,0,0.5);"></div>
+      <div id="drawer-meta" style="display:flex;align-items:center;gap:7px;flex-wrap:wrap;"></div>
+    </div>
   </div>
-  <!-- Tabs -->
-  <div id="drawer-tabs" style="display:flex;border-bottom:1px solid var(--border);background:#0E1322;flex-shrink:0;">
-    <button class="drawer-tab active" data-tab="info" onclick="app.setTab('info')">Info</button>
-    <button class="drawer-tab" data-tab="events" onclick="app.setTab('events')">Events</button>
-    <button class="drawer-tab" data-tab="reviews" onclick="app.setTab('reviews')">Reviews</button>
+
+  <!-- Scroll container: everything below the hero -->
+  <div id="drawer-scroll" style="flex:1;overflow-y:auto;background:var(--bg);">
+    <div id="drawer-thumbs" style="display:flex;gap:8px;padding:12px 16px;overflow-x:auto;"></div>
+    <div id="drawer-checkin-row" style="display:flex;gap:8px;padding:0 16px 14px;"></div>
+    <div id="drawer-feed" style="margin:0 16px 14px;"></div>
+
+    <!-- Sticky tab bar -->
+    <div id="drawer-tabs" style="position:sticky;top:0;z-index:1;display:flex;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:#0E1322;">
+      <button class="drawer-tab active" data-tab="info" onclick="app.setTab('info')">Info</button>
+      <button class="drawer-tab" data-tab="photos" onclick="app.setTab('photos')">Photos</button>
+      <button class="drawer-tab" data-tab="reviews" onclick="app.setTab('reviews')">Reviews</button>
+      <button class="drawer-tab" data-tab="schedule" onclick="app.setTab('schedule')">Schedule</button>
+    </div>
+    <div id="drawer-body" style="padding:16px;"></div>
   </div>
-  <!-- Tab body -->
-  <div id="drawer-body" style="flex:1;overflow-y:auto;padding:16px;background:var(--bg);"></div>
 </div>
 
 <!-- REPORT MODAL -->
@@ -317,6 +330,9 @@
 <script>
 class RinkFinder {
   BRAND = 'Barn & Biscuit';
+  BASE_PHOTO_COUNT = 5;
+  FEED_NAMES = ['Jordan','Sam','Casey','Morgan','Riley','Taylor','Avery','Quinn','Drew','Reese'];
+  FEED_COLORS = ['#14CFCF', '#CB78FF', '#34E0A0', '#FFD24D'];
 
   state = {
     search: '',
@@ -331,6 +347,14 @@ class RinkFinder {
     locationStatus: 'idle',
     checkinsById: {},
     checkinConfirm: false,
+    heroIdx: 0,
+    myCheckins: {},
+    myReviews: {},
+    myPhotos: {},
+    reviewOpen: false,
+    reviewRating: 0,
+    reviewToast: false,
+    photoToast: false,
     currentUser: null,
     showAuth: false,
     authMode: 'login',
@@ -699,14 +723,24 @@ class RinkFinder {
     const dist = s.userLocation ? this.haversine(s.userLocation.lat, s.userLocation.lng, rink.lat, rink.lng) : null;
     const checkinCount = (s.checkinsById[rink.id] || 0);
     const totalCheckins = rink.checkins + checkinCount;
+    const checkedIn = !!s.myCheckins[rink.id];
+    const photos = this.getPhotos(rink);
+    const heroIdx = Math.min(s.heroIdx, photos.length - 1);
 
-    // Header
+    // Hero
+    document.getElementById('drawer-hero-img').src = photos[heroIdx].url;
+    document.getElementById('drawer-photos-count').textContent = photos.length;
     document.getElementById('drawer-name').textContent = rink.name;
     const accessPill = rink.isPublic
       ? `<span style="padding:2px 8px;background:rgba(52,224,160,0.1);border:1px solid rgba(52,224,160,0.3);border-radius:20px;font-size:10px;font-weight:600;color:#34E0A0;white-space:nowrap;">Public</span>`
       : `<span style="padding:2px 8px;background:rgba(255,210,77,0.1);border:1px solid rgba(255,210,77,0.3);border-radius:20px;font-size:10px;font-weight:600;color:#FFC83D;white-space:nowrap;">Private</span>`;
     document.getElementById('drawer-meta').innerHTML =
       `${this.badgeHTML(rink.type)}<span style="font-size:12px;color:#FFD24D;font-weight:600;">★ ${rink.rating.toFixed(1)}</span><span style="font-size:11px;color:var(--neutral-700);">(${rink.reviewCount} reviews)</span>${accessPill}`;
+
+    // Thumb rail, check-in + directions row, live feed (visible across all tabs)
+    document.getElementById('drawer-thumbs').innerHTML = this.renderThumbRail(photos, heroIdx);
+    document.getElementById('drawer-checkin-row').innerHTML = this.renderCheckinRow(rink, totalCheckins, s.checkinConfirm);
+    document.getElementById('drawer-feed').innerHTML = this.renderFeedCard(rink, openNow, checkedIn);
 
     // Tabs active state
     document.querySelectorAll('.drawer-tab').forEach(btn => {
@@ -716,31 +750,84 @@ class RinkFinder {
     // Tab body
     const body = document.getElementById('drawer-body');
     if (s.activeTab === 'info') {
-      body.innerHTML = this.renderInfoTab(rink, dist, totalCheckins, s.checkinConfirm);
-      document.getElementById('checkin-btn')?.addEventListener('click', () => this.checkin());
-      document.getElementById('report-link')?.addEventListener('click', () => this.showReport());
-    } else if (s.activeTab === 'events') {
-      body.innerHTML = this.renderEventsTab(rink);
+      body.innerHTML = this.renderInfoTab(rink, dist);
+    } else if (s.activeTab === 'photos') {
+      body.innerHTML = this.renderPhotosTab(photos, heroIdx);
     } else if (s.activeTab === 'reviews') {
-      body.innerHTML = this.renderReviewsTab(rink);
+      body.innerHTML = this.renderReviewsTab(rink, s);
+    } else if (s.activeTab === 'schedule') {
+      body.innerHTML = this.renderEventsTab(rink);
     }
   }
 
-  renderInfoTab(rink, dist, totalCheckins, checkinConfirm) {
-    const days = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
-    const today = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][new Date().getDay()];
+  renderThumbRail(photos, heroIdx) {
+    const rail = photos.slice(0, 3).map((p, i) => {
+      const active = i === heroIdx;
+      return `<img src="${p.url}" onclick="app.setHero(${i})" style="width:74px;height:52px;object-fit:cover;border-radius:7px;flex-shrink:0;cursor:pointer;border:1.5px solid ${active ? 'var(--color-primary)' : 'transparent'};opacity:${active ? '1' : '0.65'};">`;
+    }).join('');
+    const overflow = photos.length > 3
+      ? `<div onclick="app.setTab('photos')" style="width:74px;height:52px;flex-shrink:0;background:var(--surface);border:1px solid var(--border);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:11px;font-family:var(--font-mono);color:var(--text-faint);cursor:pointer;">+${photos.length - 3}</div>`
+      : '';
+    const addTile = `<div onclick="app.addPhoto()" style="width:74px;height:52px;flex-shrink:0;background:transparent;border:1px dashed var(--border);border-radius:7px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;color:var(--color-primary);cursor:pointer;">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+      <span style="font-size:9px;font-weight:600;">Add</span>
+    </div>`;
+    return rail + overflow + addTile;
+  }
 
-    const checkinSection = checkinConfirm
-      ? `<div style="background:rgba(52,224,160,0.07);border:1px solid rgba(52,224,160,0.35);border-radius:12px;padding:14px;text-align:center;margin-bottom:14px;animation:checkinPop 0.3s ease;">
-          <div style="font-size:26px;margin-bottom:4px;">🏒</div>
-          <div style="font-size:14px;font-weight:700;color:#34E0A0;font-family:var(--font-display);">Checked In!</div>
-          <div style="font-size:12px;color:var(--text-faint);margin-top:3px;">Welcome to the ice</div>
+  renderCheckinRow(rink, totalCheckins, checkinConfirm) {
+    const checkinEl = checkinConfirm
+      ? `<div style="flex:1;background:rgba(52,224,160,0.07);border:1px solid rgba(52,224,160,0.35);border-radius:10px;padding:10px;text-align:center;animation:checkinPop 0.3s ease;">
+          <div style="font-size:13px;font-weight:700;color:#34E0A0;font-family:var(--font-display);">Checked In!</div>
+          <div style="font-size:11px;color:var(--text-faint);margin-top:2px;">Welcome to the ice</div>
         </div>`
-      : `<button id="checkin-btn" style="width:100%;padding:12px 16px;background:rgba(20,207,207,0.07);border:1.5px solid var(--color-primary);border-radius:12px;color:var(--color-primary);font-size:14px;font-weight:600;font-family:inherit;cursor:pointer;margin-bottom:14px;display:flex;align-items:center;justify-content:center;gap:8px;">
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+      : `<button onclick="app.checkin()" style="flex:1;padding:10px 12px;background:rgba(20,207,207,0.07);border:1.5px solid var(--color-primary);border-radius:10px;color:var(--color-primary);font-size:13px;font-weight:600;font-family:inherit;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
           I Skate Here
           <span style="font-size:11px;font-family:var(--font-mono);opacity:0.6;font-weight:400;">(${totalCheckins})</span>
         </button>`;
+    const directions = `<a href="https://www.google.com/maps/dir/?api=1&destination=${rink.lat},${rink.lng}" target="_blank" rel="noopener" style="padding:10px 14px;background:var(--surface);border:1px solid var(--border);border-radius:10px;color:var(--text-muted);font-size:13px;font-weight:500;font-family:inherit;text-decoration:none;display:flex;align-items:center;gap:6px;white-space:nowrap;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2" stroke-linecap="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        Directions
+      </a>`;
+    return checkinEl + directions;
+  }
+
+  renderFeedCard(rink, openNow, checkedIn) {
+    let rows = this.getMockFeed(rink);
+    if (checkedIn) rows = rows.slice(0, 3);
+    const isActive = openNow || checkedIn;
+    const total = rows.length + (checkedIn ? 1 : 0);
+    const statusHTML = isActive
+      ? `<span style="width:6px;height:6px;border-radius:50%;background:#34E0A0;animation:pulse 1.2s infinite;"></span><span style="font-size:11px;font-weight:600;color:#34E0A0;">${total} on the ice now</span>`
+      : `<span style="width:6px;height:6px;border-radius:50%;background:#4B5168;"></span><span style="font-size:11px;font-weight:600;color:var(--text-faint);">Quiet right now</span>`;
+
+    const youRow = checkedIn
+      ? `<div style="display:flex;align-items:center;gap:8px;">
+          <div style="width:24px;height:24px;border-radius:50%;background:rgba(20,207,207,0.15);border:1px solid var(--color-primary);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--color-primary);flex-shrink:0;">Y</div>
+          <span style="font-size:12px;font-weight:600;color:var(--text);">You</span><span style="font-size:12px;color:var(--text-faint);">checked in</span>
+          <span style="margin-left:auto;font-size:10px;font-family:var(--font-mono);color:#34E0A0;">Just now</span>
+        </div>`
+      : '';
+
+    const rowsHTML = rows.map(row => {
+      const timeStr = row.mins < 60 ? `${row.mins}m ago` : `${Math.floor(row.mins / 60)}h ago`;
+      return `<div style="display:flex;align-items:center;gap:8px;">
+        <div style="width:24px;height:24px;border-radius:50%;background:${row.color}22;border:1px solid ${row.color}55;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:${row.color};flex-shrink:0;">${row.name.charAt(0)}</div>
+        <span style="font-size:12px;font-weight:600;color:var(--text);">${this.esc(row.name)}</span><span style="font-size:12px;color:var(--text-faint);">checked in</span>
+        <span style="margin-left:auto;font-size:10px;font-family:var(--font-mono);color:var(--neutral-700);">${timeStr}</span>
+      </div>`;
+    }).join('');
+
+    return `<div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:11px 12px;">
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:9px;">${statusHTML}</div>
+      <div style="display:flex;flex-direction:column;gap:8px;">${youRow}${rowsHTML}</div>
+    </div>`;
+  }
+
+  renderInfoTab(rink, dist) {
+    const days = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+    const today = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][new Date().getDay()];
 
     const distStr = dist !== null ? `<div style="font-size:11px;color:var(--color-primary);margin-top:3px;font-family:var(--font-mono);">${dist.toFixed(1)} mi away</div>` : '';
 
@@ -757,8 +844,7 @@ class RinkFinder {
       `<span style="padding:3px 10px;background:var(--surface);border:1px solid var(--border);border-radius:20px;font-size:12px;color:var(--text-muted);">${this.esc(a)}</span>`
     ).join('');
 
-    return `${checkinSection}
-      <div style="display:flex;gap:10px;margin-bottom:14px;align-items:flex-start;">
+    return `<div style="display:flex;gap:10px;margin-bottom:14px;align-items:flex-start;">
         <div style="width:32px;height:32px;background:var(--surface);border:1px solid var(--border);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--color-primary);margin-top:1px;">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
         </div>
@@ -769,14 +855,14 @@ class RinkFinder {
         </div>
       </div>
       <div style="display:flex;gap:8px;margin-bottom:14px;">
-        <a href="tel:${rink.phone.replace(/\D/g,'')}" style="flex:1;display:flex;align-items:center;gap:7px;padding:9px 11px;background:var(--surface);border:1px solid var(--border);border-radius:9px;text-decoration:none;min-width:0;">
+        ${rink.phone ? `<a href="tel:${rink.phone.replace(/\D/g,'')}" style="flex:1;display:flex;align-items:center;gap:7px;padding:9px 11px;background:var(--surface);border:1px solid var(--border);border-radius:9px;text-decoration:none;min-width:0;">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2" stroke-linecap="round" style="flex-shrink:0;"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 15a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.59 4.34h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 11.9a16 16 0 0 0 6.06 6.06l1.62-1.62a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
           <span style="font-size:12px;color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${this.esc(rink.phone)}</span>
-        </a>
-        <a href="https://${rink.website}" target="_blank" rel="noopener" style="flex:1;display:flex;align-items:center;gap:7px;padding:9px 11px;background:var(--surface);border:1px solid var(--border);border-radius:9px;text-decoration:none;min-width:0;">
+        </a>` : ''}
+        ${rink.website ? `<a href="https://${rink.website}" target="_blank" rel="noopener" style="flex:1;display:flex;align-items:center;gap:7px;padding:9px 11px;background:var(--surface);border:1px solid var(--border);border-radius:9px;text-decoration:none;min-width:0;">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2" stroke-linecap="round" style="flex-shrink:0;"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
           <span style="font-size:12px;color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${this.esc(rink.website)}</span>
-        </a>
+        </a>` : ''}
       </div>
       <div style="margin-bottom:14px;">
         <div style="font-size:10px;font-weight:600;color:var(--neutral-700);text-transform:uppercase;letter-spacing:0.09em;margin-bottom:7px;">Hours</div>
@@ -787,8 +873,24 @@ class RinkFinder {
         <div style="display:flex;flex-wrap:wrap;gap:5px;">${amenitiesHTML}</div>
       </div>
       <div style="padding-top:14px;border-top:1px solid var(--hair);">
-        <button id="report-link" style="font-size:12px;color:var(--text-faint);background:none;border:none;cursor:pointer;font-family:inherit;font-weight:500;">Report an issue with this listing</button>
+        <button onclick="app.showReport()" style="font-size:12px;color:var(--text-faint);background:none;border:none;cursor:pointer;font-family:inherit;font-weight:500;">Report an issue with this listing</button>
       </div>`;
+  }
+
+  renderPhotosTab(photos, heroIdx) {
+    const grid = photos.map((p, i) => {
+      const active = i === heroIdx;
+      return `<img src="${p.url}" onclick="app.setHero(${i})" style="width:100%;height:110px;object-fit:cover;border-radius:9px;cursor:pointer;border:${active ? '2px solid var(--color-primary)' : '2px solid transparent'};">`;
+    }).join('');
+    const addTile = `<div onclick="app.addPhoto()" style="height:110px;background:transparent;border:1px dashed var(--border);border-radius:9px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:var(--color-primary);cursor:pointer;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+      <span style="font-size:11px;font-weight:600;">Add your photo</span>
+    </div>`;
+    const toast = this.state.photoToast
+      ? `<div style="margin-bottom:10px;padding:10px 12px;background:rgba(52,224,160,0.07);border:1px solid rgba(52,224,160,0.35);border-radius:10px;text-align:center;font-size:12px;font-weight:600;color:#34E0A0;animation:checkinPop 0.3s ease;">Photo added — thanks for the assist</div>`
+      : '';
+    return `${toast}<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">${grid}${addTile}</div>
+      <div style="font-size:11px;color:var(--text-faint);margin-top:10px;">Photos are submitted by the community. Tap one to feature it up top.</div>`;
   }
 
   renderEventsTab(rink) {
@@ -804,8 +906,9 @@ class RinkFinder {
     return `${eventsHTML}<button style="width:100%;padding:11px;background:transparent;border:1px dashed var(--border);border-radius:10px;color:var(--text-faint);font-size:13px;font-family:inherit;cursor:pointer;margin-top:4px;">+ Submit an Event</button>`;
   }
 
-  renderReviewsTab(rink) {
-    const reviewsHTML = rink.reviews.map(rv =>
+  renderReviewsTab(rink, s) {
+    const sessionReviews = s.myReviews[rink.id] || [];
+    const reviewsHTML = [...sessionReviews, ...rink.reviews].map(rv =>
       `<div style="padding:13px;background:var(--surface);border:1px solid var(--border);border-radius:10px;margin-bottom:8px;">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
           <div style="display:flex;align-items:center;gap:8px;">
@@ -820,13 +923,33 @@ class RinkFinder {
         <p style="font-size:13px;color:var(--text-muted);line-height:1.55;margin:0;">${this.esc(rv.text)}</p>
       </div>`
     ).join('');
+
+    const toast = s.reviewToast
+      ? `<div style="padding:10px 12px;background:rgba(52,224,160,0.07);border:1px solid rgba(52,224,160,0.35);border-radius:10px;text-align:center;font-size:12px;font-weight:600;color:#34E0A0;margin-bottom:10px;animation:checkinPop 0.3s ease;">Review posted — thanks for the report from the ice</div>`
+      : '';
+
+    const composer = s.reviewOpen
+      ? `<div style="background:var(--surface);border:1px solid var(--color-primary);border-radius:12px;padding:14px;margin-top:4px;margin-bottom:14px;">
+          <div style="font-size:10px;font-weight:600;color:var(--neutral-700);text-transform:uppercase;letter-spacing:0.09em;margin-bottom:8px;">Your Review</div>
+          <div style="display:flex;gap:4px;margin-bottom:10px;">${[1,2,3,4,5].map(n =>
+            `<span onclick="app.setReviewRating(${n})" style="font-size:21px;cursor:pointer;color:${n <= s.reviewRating ? '#FFD24D' : 'var(--border)'};">★</span>`
+          ).join('')}</div>
+          <textarea id="review-text" placeholder="How's the ice? Locker rooms, parking, staff…" style="width:100%;min-height:64px;padding:10px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:12.5px;font-family:inherit;outline:none;resize:vertical;margin-bottom:10px;"></textarea>
+          <div style="display:flex;gap:8px;">
+            <button onclick="app.cancelReview()" style="flex:1;padding:9px;background:transparent;border:1px solid var(--border);border-radius:8px;color:var(--text-muted);font-size:13px;font-family:inherit;cursor:pointer;">Cancel</button>
+            <button onclick="app.postReview()" ${s.reviewRating === 0 ? 'disabled' : ''} style="flex:1;padding:9px;background:${s.reviewRating === 0 ? 'var(--surface-2)' : 'var(--color-primary)'};border:none;border-radius:8px;color:${s.reviewRating === 0 ? 'var(--text-faint)' : '#06181A'};font-size:13px;font-weight:700;font-family:inherit;cursor:${s.reviewRating === 0 ? 'default' : 'pointer'};">Post Review</button>
+          </div>
+        </div>`
+      : `<button onclick="app.openReview()" style="width:100%;padding:11px;background:rgba(20,207,207,0.06);border:1px dashed var(--border);border-radius:10px;color:var(--color-primary);font-size:13px;font-weight:500;font-family:inherit;cursor:pointer;margin-top:4px;margin-bottom:14px;">+ Write a Review</button>`;
+
     return `<div style="text-align:center;padding:16px 0 20px;border-bottom:1px solid var(--hair);margin-bottom:14px;">
         <div style="font-family:var(--font-display);font-size:46px;font-weight:700;color:var(--text);line-height:1;">${rink.rating.toFixed(1)}</div>
         <div style="font-size:18px;color:#FFD24D;margin:6px 0 3px;">${this.stars(rink.rating)}</div>
         <div style="font-size:12px;color:var(--text-faint);">${rink.reviewCount} reviews</div>
       </div>
-      ${reviewsHTML}
-      <button style="width:100%;padding:11px;background:rgba(20,207,207,0.06);border:1px dashed var(--border);border-radius:10px;color:var(--color-primary);font-size:13px;font-weight:500;font-family:inherit;cursor:pointer;margin-top:4px;">+ Write a Review</button>`;
+      ${toast}
+      ${composer}
+      ${reviewsHTML}`;
   }
 
   // ── Map ───────────────────────────────────────────────────────────────────
@@ -883,7 +1006,10 @@ class RinkFinder {
   // ── Actions ───────────────────────────────────────────────────────────────
 
   selectRink(id) {
-    this.setState({ selectedRinkId: id, drawerOpen: true, activeTab: 'info', checkinConfirm: false, mobileView: 'map' });
+    this.setState({
+      selectedRinkId: id, drawerOpen: true, activeTab: 'info', checkinConfirm: false, mobileView: 'map',
+      heroIdx: 0, reviewOpen: false, reviewRating: 0, reviewToast: false, photoToast: false,
+    });
     document.getElementById('mobile-list').style.display = 'none';
   }
 
@@ -898,8 +1024,64 @@ class RinkFinder {
   checkin() {
     const id = this.state.selectedRinkId;
     if (!id) return;
-    this.setState(s => ({ checkinsById: { ...s.checkinsById, [id]: (s.checkinsById[id] || 0) + 1 }, checkinConfirm: true }));
+    this.setState(s => ({
+      checkinsById: { ...s.checkinsById, [id]: (s.checkinsById[id] || 0) + 1 },
+      checkinConfirm: true,
+      myCheckins: { ...s.myCheckins, [id]: true },
+    }));
     setTimeout(() => this.setState({ checkinConfirm: false }), 2500);
+  }
+
+  // ── Photos ────────────────────────────────────────────────────────────────
+
+  getPhotos(rink) {
+    const extra = this.state.myPhotos[rink.id] || [];
+    return [...Array(this.BASE_PHOTO_COUNT).keys(), ...extra].map(seedIdx => ({
+      seedIdx, url: `https://picsum.photos/seed/rink-${rink.id}-${seedIdx}/480/320`,
+    }));
+  }
+
+  setHero(idx) { this.setState({ heroIdx: idx }); }
+
+  addPhoto() {
+    const id = this.state.selectedRinkId;
+    if (!id) return;
+    this.setState(s => {
+      const cur = s.myPhotos[id] || [];
+      const newSeed = this.BASE_PHOTO_COUNT + cur.length;
+      return { myPhotos: { ...s.myPhotos, [id]: [...cur, newSeed] }, heroIdx: newSeed, photoToast: true };
+    });
+    setTimeout(() => this.setState({ photoToast: false }), 2200);
+  }
+
+  // ── Live check-in feed ───────────────────────────────────────────────────
+
+  getMockFeed(rink) {
+    const count = 1 + (rink.id % 4); // 1-4 rows, stable per rink
+    return Array.from({ length: count }, (_, i) => ({
+      name: this.FEED_NAMES[(rink.id + i * 3) % this.FEED_NAMES.length],
+      mins: 3 + ((rink.id * (i + 7)) % 115),
+      color: this.FEED_COLORS[i % this.FEED_COLORS.length],
+    }));
+  }
+
+  // ── Reviews composer ─────────────────────────────────────────────────────
+
+  openReview() { this.setState({ reviewOpen: true, reviewRating: 0 }); }
+  cancelReview() { this.setState({ reviewOpen: false, reviewRating: 0 }); }
+  setReviewRating(n) { this.setState({ reviewRating: n }); }
+
+  postReview() {
+    const id = this.state.selectedRinkId;
+    const s = this.state;
+    if (!id || s.reviewRating === 0) return;
+    const text = document.getElementById('review-text')?.value.trim() || '(No comment)';
+    const review = { author: 'You', rating: s.reviewRating, text, date: 'Just now' };
+    this.setState(st => ({
+      myReviews: { ...st.myReviews, [id]: [review, ...(st.myReviews[id] || [])] },
+      reviewOpen: false, reviewRating: 0, reviewToast: true,
+    }));
+    setTimeout(() => this.setState({ reviewToast: false }), 2500);
   }
 
   requestLocation() {

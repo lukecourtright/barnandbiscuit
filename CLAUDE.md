@@ -74,16 +74,22 @@ Vanilla JS SPA — no bundler, no framework.
 
 **`RinkFinder` class** manages all state and rendering:
 - `this.rinks` — fetched from `/api/rinks` on init
-- `this.state` — single state object (search, filters, selectedRinkId, drawerOpen, activeTab, locationStatus, mobileView, checkinsById, currentUser, showAuth, authMode, etc.)
+- `this.state` — single state object (search, filters, selectedRinkId, drawerOpen, activeTab, locationStatus, mobileView, checkinsById, checkinConfirm, heroIdx, myCheckins, myReviews, myPhotos, reviewOpen, reviewRating, reviewToast, photoToast, currentUser, showAuth, authMode, etc.)
 - `setState(partial | fn)` — merges partial state and calls `render(prev)`
 - `render(prev)` — diffs against prev state, updates the DOM in targeted sections
 
 **Three dynamic render sections** (rebuilt via `innerHTML` on change):
 - `#rink-list` + `#mobile-rink-list` — rink cards, rebuilt on filter/search/selection changes
-- `#drawer-body` — Info/Events/Reviews tab content, rebuilt on selection/tab/checkin changes
+- `#drawer-body` — Info/Photos/Reviews/Schedule tab content, rebuilt on selection/tab/checkin changes (Schedule is a UI label only — it still renders `rink.events` via `renderEventsTab()`)
 - Modals — toggled via `display` on `showReport`/`showAddRink`/`showAuth` state. The auth modal doubles as sign-in/sign-up, switching via `authMode` (`updateAuthUI()` toggles the display-name field, title, and error text)
 
 **All other DOM updates** (location label, toggle state, filter chip active class, distance label, count) are targeted property sets, not full re-renders.
+
+**Detail drawer structure** (`renderDrawer()`, `static/index.html`):
+- Fixed **photo hero** (168px, gradient scrim) with a "{N} photos" chip and close button, overlaid rink name/badges — photos are deterministic placeholder `picsum.photos` URLs seeded by rink id (`getPhotos()`), not real rink photos (see Not Yet Implemented)
+- Below the hero, one scrollable container holds, in order: **thumb rail** (`renderThumbRail()` — click a thumb or the Photos tab to re-feature it as the hero via `heroIdx`), a **check-in + Directions row** (`renderCheckinRow()` — visible across all tabs, unlike the old Info-tab-only button), a **live check-in feed card** (`renderFeedCard()` — deterministic mock rows from `getMockFeed()`, plus a persistent "You" row once `myCheckins[rinkId]` is set), then a **sticky tab bar** (Info/Photos/Reviews/Schedule) and the tab body
+- `myCheckins`/`myReviews`/`myPhotos` are session-only client state overlaid on top of the persisted `rinks.json` data (same pattern as the pre-existing `checkinsById`) — nothing here is sent to the backend
+- The Reviews tab's composer reads its `<textarea>` via `document.getElementById('review-text').value` only at submit time (not mirrored into `state` on every keystroke) to avoid `innerHTML`-driven focus loss, since `renderDrawer()` is not diffed/keyed
 
 **Map** (Leaflet.js 1.9.4 + CartoDB Dark Matter tiles, free, no API key):
 - Custom teardrop `divIcon` pins: cyan default, gold when selected
@@ -172,8 +178,8 @@ Source of truth for rink data — edit by hand to add/remove/update. Synced into
 
 - Google Places API integration (rink data currently curated by hand in `rinks.json`)
 - Admin UI for moderating community-submitted rinks (sit in the `PendingRink` table, unvalidated) — accounts now exist, so this can gate on an `isAdmin`-style check when built
-- Server-persisted check-ins and reviews (session-only in v1) — accounts now exist to attribute these to, but check-ins/reviews still aren't wired to the `User` table
+- Server-persisted check-ins, reviews, and photos (session-only in v1 — see `myCheckins`/`myReviews`/`myPhotos` above) — accounts now exist to attribute these to, but none of it is wired to the `User` table
 - Schema migrations (tables are created via `SQLModel.metadata.create_all()`, no Alembic yet)
-- Rink photo carousels
+- Real rink photos — the drawer's photo hero/thumb rail/Photos tab currently use deterministic placeholder images (`picsum.photos` seeded by rink id), not actual photos of the rinks; no `photos` field exists on the `Rink` model yet
 - Community and News sections (nav links present but inactive)
-- "Submit an Event" and "Write a Review" buttons (UI only, no backend)
+- "Submit an Event" button (UI only, no backend) — "Write a Review" now has a working session-local composer (see above), just not server-persisted
