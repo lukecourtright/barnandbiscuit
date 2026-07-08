@@ -65,6 +65,10 @@
   .modal-overlay { position: fixed; inset: 0; background: rgba(10,14,26,0.88); z-index: 1200; display: flex; align-items: center; justify-content: center; padding: 20px; animation: fadeIn 0.15s ease; }
   .modal-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; width: 100%; padding: 24px; }
 
+  /* Add Photo dropzone */
+  .photo-dropzone { width: 100%; min-height: 176px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 20px; border: 1.5px dashed var(--border); border-radius: 12px; background: var(--bg); cursor: pointer; transition: border-color .15s, background .15s; }
+  .photo-dropzone.drag-over { border-color: var(--color-primary); background: rgba(20,207,207,0.06); }
+
   /* Chip styles */
   .chip { padding: 3px 10px; background: transparent; border: 1px solid var(--border); border-radius: 20px; font-size: 11px; font-weight: 500; color: var(--neutral-600); cursor: pointer; font-family: inherit; white-space: nowrap; }
   .chip.active { background: rgba(20,207,207,0.13); border-color: var(--color-primary); color: var(--color-primary); font-weight: 600; }
@@ -302,6 +306,18 @@
   </div>
 </div>
 
+<!-- ADD PHOTO MODAL -->
+<div id="modal-add-photo" style="display:none;" class="modal-overlay">
+  <div class="modal-card" style="max-width:420px;max-height:88vh;overflow-y:auto;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
+      <div style="font-family:var(--font-display);font-size:18px;font-weight:700;color:var(--text);">Add a Photo</div>
+      <button onclick="app.hideAddPhotoModal()" style="width:28px;height:28px;flex-shrink:0;background:transparent;border:1px solid var(--border);border-radius:8px;color:var(--text-muted);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;">✕</button>
+    </div>
+    <div style="font-size:13px;color:var(--text-faint);margin-bottom:20px;">Share a shot of the ice at <span id="add-photo-rink-name" style="color:var(--text-muted);font-weight:500;"></span></div>
+    <div id="add-photo-dynamic"></div>
+  </div>
+</div>
+
 <!-- AUTH MODAL -->
 <div id="modal-auth" style="display:none;" class="modal-overlay">
   <div class="modal-card" style="max-width:380px;">
@@ -361,7 +377,7 @@ class RinkFinder {
     heroIdx: 0,
     myCheckins: {},
     myReviews: {},
-    myPhotos: {},
+    communityPhotos: {},
     reviewOpen: false,
     reviewRating: 0,
     reviewToast: false,
@@ -370,6 +386,10 @@ class RinkFinder {
     showAuth: false,
     authMode: 'login',
     authError: '',
+    showAddPhoto: false,
+    photoDraftFile: null,
+    photoPreviewUrl: null,
+    photoUploadError: '',
   };
 
   rinks = [];
@@ -661,6 +681,12 @@ class RinkFinder {
     document.getElementById('modal-report').style.display = s.showReport ? 'flex' : 'none';
     document.getElementById('modal-add-rink').style.display = s.showAddRink ? 'flex' : 'none';
     document.getElementById('modal-auth').style.display = s.showAuth ? 'flex' : 'none';
+    document.getElementById('modal-add-photo').style.display = s.showAddPhoto ? 'flex' : 'none';
+    if (s.showAddPhoto && (prev.photoPreviewUrl !== s.photoPreviewUrl || prev.photoUploadError !== s.photoUploadError || !prev.showAddPhoto)) {
+      const rink = this.rinks.find(r => r.id === s.selectedRinkId);
+      document.getElementById('add-photo-rink-name').textContent = rink ? rink.name : '';
+      document.getElementById('add-photo-dynamic').innerHTML = this.renderAddPhotoModal();
+    }
 
     this.updateAuthUI();
   }
@@ -793,7 +819,7 @@ class RinkFinder {
     const overflow = realCount > 3
       ? `<div onclick="app.setTab('photos')" style="width:74px;height:52px;flex-shrink:0;background:var(--surface);border:1px solid var(--border);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:11px;font-family:var(--font-mono);color:var(--text-faint);cursor:pointer;">+${realCount - 3}</div>`
       : '';
-    const addTile = `<div onclick="app.addPhoto()" style="width:74px;height:52px;flex-shrink:0;background:transparent;border:1px dashed var(--border);border-radius:7px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;color:var(--color-primary);cursor:pointer;">
+    const addTile = `<div onclick="app.openAddPhotoModal()" style="width:74px;height:52px;flex-shrink:0;background:transparent;border:1px dashed var(--border);border-radius:7px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;color:var(--color-primary);cursor:pointer;">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
       <span style="font-size:9px;font-weight:600;">Add</span>
     </div>`;
@@ -902,6 +928,43 @@ class RinkFinder {
       </div>`;
   }
 
+  renderAddPhotoModal() {
+    const s = this.state;
+    const hasDraft = !!s.photoPreviewUrl;
+    const errorHTML = s.photoUploadError
+      ? `<div style="font-size:12px;color:#F16A6A;margin-top:10px;">${this.esc(s.photoUploadError)}</div>`
+      : '';
+    const body = hasDraft
+      ? `<div style="position:relative;">
+          <div style="width:100%;height:200px;border-radius:12px;border:1px solid var(--border);background-image:url('${s.photoPreviewUrl}');background-size:cover;background-position:center;"></div>
+          <button onclick="app.removePhotoDraft()" style="position:absolute;top:8px;right:8px;display:flex;align-items:center;gap:5px;padding:6px 9px;background:rgba(14,19,34,0.9);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:12px;font-family:inherit;cursor:pointer;">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg>
+            Remove
+          </button>
+        </div>
+        <div style="margin-top:14px;">
+          <label style="font-size:10px;font-weight:600;color:var(--neutral-700);text-transform:uppercase;letter-spacing:0.09em;display:block;margin-bottom:5px;">Caption (optional)</label>
+          <input id="add-photo-caption" type="text" placeholder="e.g. Fresh cut before public skate" style="width:100%;padding:10px 12px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:14px;font-family:inherit;outline:none;">
+        </div>`
+      : `<label id="add-photo-dropzone" class="photo-dropzone"
+          ondragover="event.preventDefault();event.currentTarget.classList.add('drag-over')"
+          ondragleave="event.currentTarget.classList.remove('drag-over')"
+          ondrop="event.preventDefault();event.currentTarget.classList.remove('drag-over');app.handlePhotoFile(event.dataTransfer.files[0])">
+          <input type="file" accept="image/jpeg,image/png" style="display:none;" onchange="app.handlePhotoFile(event.target.files[0])">
+          <div style="width:44px;height:44px;border-radius:12px;background:rgba(20,207,207,0.1);border:1px solid rgba(20,207,207,0.3);display:flex;align-items:center;justify-content:center;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2" stroke-linecap="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+          </div>
+          <div style="font-size:14px;font-weight:600;color:var(--text);text-align:center;">Drag a photo here, or <span style="color:var(--color-primary);">browse</span></div>
+          <div style="font-size:12px;color:var(--text-faint);">JPG or PNG · from your device</div>
+        </label>
+        <div style="font-size:11px;color:var(--text-faint);line-height:1.5;margin-top:12px;">Photos are shared with the Barn & Biscuit community. Please only upload shots you took yourself.</div>`;
+    return `${body}${errorHTML}
+      <div style="display:flex;gap:8px;margin-top:20px;">
+        <button onclick="app.hideAddPhotoModal()" style="flex:1;padding:10px;background:transparent;border:1px solid var(--border);border-radius:8px;color:var(--text-muted);font-size:14px;font-family:inherit;cursor:pointer;">Cancel</button>
+        <button onclick="app.submitAddPhoto()" ${hasDraft ? '' : 'disabled'} style="flex:1;padding:10px;background:${hasDraft ? 'var(--color-primary)' : 'var(--surface-2)'};border:none;border-radius:8px;color:${hasDraft ? '#06181A' : 'var(--text-faint)'};font-size:14px;font-weight:700;font-family:inherit;cursor:${hasDraft ? 'pointer' : 'default'};">Add Photo</button>
+      </div>`;
+  }
+
   renderPhotosTab(photos, heroIdx) {
     const grid = photos.map((p, i) => {
       const active = i === heroIdx;
@@ -913,12 +976,12 @@ class RinkFinder {
         ${caption}
       </div>`;
     }).join('');
-    const addTile = `<div onclick="app.addPhoto()" style="height:110px;background:transparent;border:1px dashed var(--border);border-radius:9px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:var(--color-primary);cursor:pointer;">
+    const addTile = `<div onclick="app.openAddPhotoModal()" style="height:110px;background:transparent;border:1px dashed var(--border);border-radius:9px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:var(--color-primary);cursor:pointer;">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
       <span style="font-size:11px;font-weight:600;">Add your photo</span>
     </div>`;
     const toast = this.state.photoToast
-      ? `<div style="margin-bottom:10px;padding:10px 12px;background:rgba(52,224,160,0.07);border:1px solid rgba(52,224,160,0.35);border-radius:10px;text-align:center;font-size:12px;font-weight:600;color:#34E0A0;animation:checkinPop 0.3s ease;">Photo added — thanks for the assist</div>`
+      ? `<div style="margin-bottom:10px;padding:10px 12px;background:rgba(52,224,160,0.07);border:1px solid rgba(52,224,160,0.35);border-radius:10px;text-align:center;font-size:12px;font-weight:600;color:#34E0A0;animation:checkinPop 0.3s ease;">Photo submitted — we'll review it before it goes live</div>`
       : '';
     const hasRealPhotos = photos.some(p => !p.placeholder);
     const footnote = hasRealPhotos
@@ -1046,6 +1109,13 @@ class RinkFinder {
       heroIdx: 0, reviewOpen: false, reviewRating: 0, reviewToast: false, photoToast: false,
     });
     document.getElementById('mobile-list').style.display = 'none';
+    if (!this.state.communityPhotos[id]) {
+      fetch(`/api/rinks/${id}/photos`).then(r => r.json()).then(photos => {
+        if (this.state.selectedRinkId === id) {
+          this.setState(s => ({ communityPhotos: { ...s.communityPhotos, [id]: photos } }));
+        }
+      }).catch(() => {});
+    }
   }
 
   closeDrawer() {
@@ -1106,31 +1176,73 @@ class RinkFinder {
   }
 
   getPhotos(rink) {
-    const extra = this.state.myPhotos[rink.id] || [];
+    const community = (this.state.communityPhotos[rink.id] || []).map(p => ({
+      seedIdx: `c${p.id}`, url: `/api/user-photos/${p.id}`, attribution: p.caption || null,
+    }));
     const base = (rink.photos && rink.photos.length)
       ? rink.photos.map((p, i) => ({ seedIdx: i, url: `/api/photos/${rink.id}/${i}`, attribution: p.attribution }))
-      : Array.from(Array(this.BASE_PHOTO_COUNT).keys()).map(seedIdx => ({
-          seedIdx, url: this.rinkPlaceholder(rink.id + seedIdx), placeholder: true,
-        }));
-    const extraPhotos = extra.map(seedIdx => ({
-      seedIdx, url: `https://picsum.photos/seed/rink-${rink.id}-${seedIdx}/480/320`,
+      : [];
+    const real = [...base, ...community];
+    return real.length ? real : Array.from(Array(this.BASE_PHOTO_COUNT).keys()).map(seedIdx => ({
+      seedIdx, url: this.rinkPlaceholder(rink.id + seedIdx), placeholder: true,
     }));
-    return [...base, ...extraPhotos];
   }
 
   setHero(idx) { this.setState({ heroIdx: idx }); }
 
-  addPhoto() {
+  // ── Add a Photo modal ────────────────────────────────────────────────────
+
+  openAddPhotoModal() {
+    if (!this.state.selectedRinkId) return;
+    if (!this.state.currentUser) { this.showAuth('login'); return; }
+    this.setState({ showAddPhoto: true, photoDraftFile: null, photoPreviewUrl: null, photoUploadError: '' });
+  }
+
+  hideAddPhotoModal() {
+    if (this.state.photoPreviewUrl) URL.revokeObjectURL(this.state.photoPreviewUrl);
+    this.setState({ showAddPhoto: false, photoDraftFile: null, photoPreviewUrl: null, photoUploadError: '' });
+    const captionEl = document.getElementById('add-photo-caption');
+    if (captionEl) captionEl.value = '';
+  }
+
+  handlePhotoFile(file) {
+    if (!file) return;
+    if (!['image/jpeg', 'image/png'].includes(file.type)) {
+      this.setState({ photoUploadError: 'Please choose a JPG or PNG photo.' });
+      return;
+    }
+    if (file.size > 8 * 1024 * 1024) {
+      this.setState({ photoUploadError: 'Photo must be under 8MB.' });
+      return;
+    }
+    if (this.state.photoPreviewUrl) URL.revokeObjectURL(this.state.photoPreviewUrl);
+    this.setState({ photoDraftFile: file, photoPreviewUrl: URL.createObjectURL(file), photoUploadError: '' });
+  }
+
+  removePhotoDraft() {
+    if (this.state.photoPreviewUrl) URL.revokeObjectURL(this.state.photoPreviewUrl);
+    this.setState({ photoDraftFile: null, photoPreviewUrl: null, photoUploadError: '' });
+    const captionEl = document.getElementById('add-photo-caption');
+    if (captionEl) captionEl.value = '';
+  }
+
+  async submitAddPhoto() {
     const id = this.state.selectedRinkId;
-    if (!id) return;
-    const rink = this.rinks.find(r => r.id === id);
-    const baseCount = (rink && rink.photos && rink.photos.length) || this.BASE_PHOTO_COUNT;
-    this.setState(s => {
-      const cur = s.myPhotos[id] || [];
-      const newSeed = baseCount + cur.length;
-      return { myPhotos: { ...s.myPhotos, [id]: [...cur, newSeed] }, heroIdx: newSeed, photoToast: true };
-    });
-    setTimeout(() => this.setState({ photoToast: false }), 2200);
+    const file = this.state.photoDraftFile;
+    if (!id || !file) return;
+    const captionEl = document.getElementById('add-photo-caption');
+    const form = new FormData();
+    form.append('file', file);
+    if (captionEl && captionEl.value.trim()) form.append('caption', captionEl.value.trim());
+    const res = await fetch(`/api/rinks/${id}/photos`, { method: 'POST', body: form }).catch(() => null);
+    if (!res || !res.ok) {
+      const err = res ? await res.json().catch(() => ({})) : {};
+      this.setState({ photoUploadError: err.detail || 'Upload failed — try again.' });
+      return;
+    }
+    this.hideAddPhotoModal();
+    this.setState({ activeTab: 'photos', photoToast: true });
+    setTimeout(() => this.setState({ photoToast: false }), 2600);
   }
 
   // ── Live check-in feed ───────────────────────────────────────────────────

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Barn &amp; Biscuit — Photo Review</title>
+<link rel="icon" href="/static/logo/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Hanken+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/brand-tokens.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font-body); background: var(--bg); color: var(--text); min-height: 100vh; padding: 24px; }
+  h1 { font-family: var(--font-display); font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+  .subtitle { font-size: 13px; color: var(--text-faint); margin-bottom: 24px; }
+  #list { display: flex; flex-direction: column; gap: 12px; max-width: 640px; }
+  .card { display: flex; gap: 14px; padding: 14px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; }
+  .card img { width: 96px; height: 96px; object-fit: cover; border-radius: 8px; background: var(--surface-2); flex-shrink: 0; }
+  .meta { flex: 1; min-width: 0; }
+  .rink-name { font-size: 14px; font-weight: 600; color: var(--text); }
+  .rink-loc { font-size: 12px; color: var(--text-faint); margin-bottom: 6px; }
+  .caption { font-size: 13px; color: var(--text-muted); margin-bottom: 6px; }
+  .submitted { font-size: 11px; color: var(--text-faint); margin-bottom: 10px; }
+  .actions { display: flex; gap: 8px; }
+  button { padding: 7px 14px; border-radius: 8px; font-size: 13px; font-weight: 600; font-family: inherit; cursor: pointer; }
+  .approve { background: var(--color-primary); border: none; color: #06181A; }
+  .reject { background: transparent; border: 1px solid var(--border); color: var(--text-muted); }
+  #empty, #denied { font-size: 13px; color: var(--text-faint); }
+  #denied a { color: var(--color-primary); }
+</style>
+</head>
+<body>
+  <h1>Pending Photos</h1>
+  <div class="subtitle">Review community-submitted rink photos before they go live.</div>
+  <div id="denied" style="display:none;">You need to be signed in as an admin to view this page. <a href="/">Go sign in</a>.</div>
+  <div id="empty" style="display:none;">No pending photos right now.</div>
+  <div id="list"></div>
+
+<script>
+async function load() {
+  const res = await fetch('/api/admin/photos');
+  if (res.status === 401 || res.status === 403) {
+    document.getElementById('denied').style.display = 'block';
+    return;
+  }
+  const photos = await res.json();
+  if (!photos.length) {
+    document.getElementById('empty').style.display = 'block';
+    return;
+  }
+  const list = document.getElementById('list');
+  list.innerHTML = photos.map(p => `
+    <div class="card" data-id="${p.id}">
+      <img src="/api/admin/photos/${p.id}/image" alt="">
+      <div class="meta">
+        <div class="rink-name">${esc(p.rinkName)}</div>
+        <div class="rink-loc">${esc(p.rinkCity)}, ${esc(p.rinkState)}</div>
+        ${p.caption ? `<div class="caption">"${esc(p.caption)}"</div>` : ''}
+        <div class="submitted">${esc(p.submitterName)} · ${esc(p.submittedAt)}</div>
+        <div class="actions">
+          <button class="approve" onclick="act(${p.id}, 'approve')">Approve</button>
+          <button class="reject" onclick="act(${p.id}, 'reject')">Reject</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+async function act(id, action) {
+  await fetch(`/api/admin/photos/${id}/${action}`, { method: 'POST' });
+  const card = document.querySelector(`.card[data-id="${id}"]`);
+  if (card) card.remove();
+  if (!document.querySelector('.card')) document.getElementById('empty').style.display = 'block';
+}
+
+function esc(s) {
+  const d = document.createElement('div');
+  d.textContent = s == null ? '' : s;
+  return d.innerHTML;
+}
+
+load();
+</script>
+</body>
+</html>
