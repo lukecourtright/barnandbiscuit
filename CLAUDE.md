@@ -28,6 +28,8 @@ Live at `https://barnandbiscuit-production.up.railway.app`. GitHub repo: `github
 
 `GOOGLE_PLACES_API_KEY` — used by the `/api/photos/{rink_id}/{photo_idx}` proxy to fetch real rink photos from Google Places, and by `scripts/fetch_google_places_data.py` when running the one-time backfill (see Data section below). Not required locally or in prod: if unset, the photo proxy 404s and the frontend falls back to placeholder photos.
 
+`ADMIN_EMAILS` — comma-separated list of email addresses allowed to access `/admin/photos`, the review queue for user-submitted rink photos (approve/reject before they go public). Checked against the logged-in user's email by `require_admin()` in `main.py`. Not required locally or in prod: if unset, nobody can access the admin endpoints (401 if signed out, 403 if signed in as a non-matching email).
+
 ## Brand Name
 
 The brand name is TBD — "HockeyLifers" domain was taken, "Barn & Biscuit" is the current placeholder. To rename:
@@ -57,6 +59,7 @@ barnbiscuit/
 ├── run.bat
 └── static/
     ├── index.html           # Entire frontend SPA
+    ├── admin.html           # Standalone page — review/approve/reject pending user-submitted photos (see ADMIN_EMAILS above)
     ├── brand-tokens.css     # CSS custom properties (Neon Night palette)
     └── logo/                # Favicons + SVG marks
 ```
@@ -70,6 +73,11 @@ Data is stored in a database (Postgres in production via Railway addon, local SQ
 - `GET /api/photos/{rink_id}/{photo_idx}` → looks up `rink.photos[photo_idx].ref` (a Google Places photo resource name) and redirects to a freshly-fetched Google-hosted image URL, with a `Cache-Control` header so browsers don't re-hit this (and therefore Google) on every load. Requires `GOOGLE_PLACES_API_KEY`; 404s otherwise or if the rink/index doesn't exist, which the frontend treats as "no real photo" and falls back to placeholders
 - `POST /api/rinks/submit` → inserts community-submitted rinks into the `PendingRink` table (`id`, `submittedAt`, raw `data` JSON blob) — not public until moderated, no validation yet
 - `POST /api/auth/signup`, `POST /api/auth/login`, `POST /api/auth/logout`, `GET /api/auth/me` → email/password auth against the `User` table (`id`, `email`, `passwordHash` (bcrypt), `displayName`, `createdAt`). Login state is a signed, httponly session cookie (Starlette `SessionMiddleware`, see `SECRET_KEY` above) holding `user_id` — no tokens handled in JS.
+- `POST /api/rinks/{rink_id}/photos` → real user photo upload (multipart `file` + optional `caption`), requires sign-in (401 otherwise). Bytes are stored directly in the `RinkPhoto` table (`id`, `rinkId`, `userId`, `data` as `LargeBinary`, `contentType`, `caption`, `status` (`"pending"` → `"approved"`), `submittedAt`) — no external storage/CDN, same DB as everything else. Validates the rink exists (404), caps uploads at 8MB (413), and sniffs magic bytes to confirm real JPEG/PNG regardless of the client-supplied content type (400 otherwise). Every upload lands as `status="pending"` and is invisible everywhere until an admin approves it.
+- `GET /api/rinks/{rink_id}/photos` → public list of that rink's `status="approved"` `RinkPhoto` rows (`[{id, caption}]`) — what the frontend merges into a rink's photo gallery, see `getPhotos()` below
+- `GET /api/user-photos/{photo_id}` → serves the raw bytes of an approved photo (404 if not approved/doesn't exist), with the same `Cache-Control: public, max-age=3600` treatment as the Google photo proxy above
+- `GET /admin/photos` → serves `static/admin.html`, a small standalone review page (not part of the `RinkFinder` SPA)
+- `GET /api/admin/photos`, `GET /api/admin/photos/{photo_id}/image`, `POST /api/admin/photos/{photo_id}/approve`, `POST /api/admin/photos/{photo_id}/reject` → list/view/approve/reject pending `RinkPhoto` rows, gated by `require_admin()` (see `ADMIN_EMAILS` above). Reject hard-deletes the row — rejected photos aren't retained.
 - `/static` → static file mount for CSS, logos, etc.
 
 ### Frontend (`static/index.html`)
@@ -78,21 +86,21 @@ Vanilla JS SPA — no bundler, no framework.
 
 **`RinkFinder` class** manages all state and rendering:
 - `this.rinks` — fetched from `/api/rinks` on init
-- `this.state` — single state object (search, filters, selectedRinkId, drawerOpen, activeTab, locationStatus, mobileView, checkinsById, checkinConfirm, heroIdx, myCheckins, myReviews, myPhotos, reviewOpen, reviewRating, reviewToast, photoToast, currentUser, showAuth, authMode, etc.)
+- `this.state` — single state object (search, filters, selectedRinkId, drawerOpen, activeTab, locationStatus, mobileView, checkinsById, checkinConfirm, heroIdx, myCheckins, myReviews, communityPhotos, reviewOpen, reviewRating, reviewToast, photoToast, currentUser, showAuth, authMode, showAddPhoto, photoDraftFile, photoPreviewUrl, photoUploadError, etc.)
 - `setState(partial | fn)` — merges partial state and calls `render(prev)`
 - `render(prev)` — diffs against prev state, updates the DOM in targeted sections
 
 **Three dynamic render sections** (rebuilt via `innerHTML` on change):
 - `#rink-list` + `#mobile-rink-list` — rink cards, rebuilt on filter/search/selection changes
 - `#drawer-body` — Info/Photos/Reviews/Schedule tab content, rebuilt on selection/tab/checkin changes (Schedule is a UI label only — it still renders `rink.events` via `renderEventsTab()`)
-- Modals — toggled via `display` on `showReport`/`showAddRink`/`showAuth` state. The auth modal doubles as sign-in/sign-up, switching via `authMode` (`updateAuthUI()` toggles the display-name field, title, and error text)
+- Modals — toggled via `display` on `showReport`/`showAddRink`/`showAuth`/`showAddPhoto` state. The auth modal doubles as sign-in/sign-up, switching via `authMode` (`updateAuthUI()` toggles the display-name field, title, and error text). The Add Photo modal (`renderAddPhotoModal()`) has an empty state (dropzone — drag/drop or browse, JPG/PNG only, wired via inline `ondragover`/`ondragleave`/`ondrop` rather than `addEventListener` since the node is recreated by `innerHTML` each time) and a filled state (object-URL preview via `photoPreviewUrl`, Remove button, optional caption) once a file is chosen via `handlePhotoFile()`
 
 **All other DOM updates** (location label, toggle state, filter chip active class, distance label, count) are targeted property sets, not full re-renders.
 
 **Detail drawer structure** (`renderDrawer()`, `static/index.html`):
-- Fixed **photo hero** (168px, gradient scrim) with a "{N} photos" / "No photos yet" chip and close button, overlaid rink name/badges — `getPhotos()` uses real photos from `rink.photos` (served via the `/api/photos` proxy, with a small attribution caption) when a rink has been matched to Google Places; otherwise it falls back to `rinkPlaceholder(seed)`, a branded top-down rink-diagram SVG generated inline (no network request) and seeded by `rink.id` so a rink's set of `BASE_PHOTO_COUNT` (4) tiles — and each rink's placeholder set relative to others — reads as visually distinct (accent color + puck side vary by seed). These placeholder entries are tagged `placeholder: true`, which the drawer uses to: show the hero at full opacity instead of 0.85, swap the chip/footnote copy to the "no photos yet" variant, and hide the thumb rail's "+N" overflow tile (only shown for real photo counts). Session-added photos (the "Add photo" flow) are still picsum placeholders layered on top of whichever base list is active — that flow is a stand-in for a real upload, not the no-photo state
+- Fixed **photo hero** (168px, gradient scrim) with a "{N} photos" / "No photos yet" chip and close button, overlaid rink name/badges — `getPhotos()` merges Google-sourced photos from `rink.photos` (served via the `/api/photos` proxy, with a small attribution caption) with approved community uploads from `state.communityPhotos[rink.id]` (served via `/api/user-photos/{id}` — fetched from `GET /api/rinks/{id}/photos` when a rink is selected, see `selectRink()`); only when *both* are empty does it fall back to `rinkPlaceholder(seed)`, a branded top-down rink-diagram SVG generated inline (no network request) and seeded by `rink.id` so a rink's set of `BASE_PHOTO_COUNT` (4) tiles — and each rink's placeholder set relative to others — reads as visually distinct (accent color + puck side vary by seed). These placeholder entries are tagged `placeholder: true`, which the drawer uses to: show the hero at full opacity instead of 0.85, swap the chip/footnote copy to the "no photos yet" variant, and hide the thumb rail's "+N" overflow tile (only shown for real photo counts). The thumb rail's and Photos tab's "Add" tiles call `openAddPhotoModal()`, which gates on `currentUser` (opens sign-in instead if signed out) — a real upload goes through `POST /api/rinks/{rink_id}/photos` and lands in a moderation queue (see Backend above), so `submitAddPhoto()` does *not* append it to the gallery or feature it as the hero; it just closes the modal, switches to the Photos tab, and shows a "submitted for review" toast (`photoToast`) so the confirmation is visible regardless of which tab the upload started from
 - Below the hero, one scrollable container holds, in order: **thumb rail** (`renderThumbRail()` — click a thumb or the Photos tab to re-feature it as the hero via `heroIdx`), a **check-in + Directions row** (`renderCheckinRow()` — visible across all tabs, unlike the old Info-tab-only button), a **live check-in feed card** (`renderFeedCard()` — deterministic mock rows from `getMockFeed()`, plus a persistent "You" row once `myCheckins[rinkId]` is set), then a **sticky tab bar** (Info/Photos/Reviews/Schedule) and the tab body
-- `myCheckins`/`myReviews`/`myPhotos` are session-only client state overlaid on top of the persisted `rinks.json` data (same pattern as the pre-existing `checkinsById`) — nothing here is sent to the backend
+- `myCheckins`/`myReviews` are session-only client state overlaid on top of the persisted `rinks.json` data (same pattern as the pre-existing `checkinsById`) — nothing here is sent to the backend. Photos are the exception: uploads are real and server-persisted (see Backend above), just not visible until approved
 - The Reviews tab's composer reads its `<textarea>` via `document.getElementById('review-text').value` only at submit time (not mirrored into `state` on every keystroke) to avoid `innerHTML`-driven focus loss, since `renderDrawer()` is not diffed/keyed
 
 **Map** (Leaflet.js 1.9.4 + CartoDB Dark Matter tiles, free, no API key):
@@ -191,8 +199,8 @@ Source of truth for rink data — edit by hand to add/remove/update. Synced into
 ## Not Yet Implemented
 
 - Ongoing Google Places sync — the backfill (`scripts/fetch_google_places_data.py`) is a one-time pull, not a scheduled refresh; rinks added after a backfill run (or newly opened Google listings) need a manual re-run to pick up real ratings/reviews/photos, and unmatched rinks keep placeholder content indefinitely until then
-- Admin UI for moderating community-submitted rinks (sit in the `PendingRink` table, unvalidated) — accounts now exist, so this can gate on an `isAdmin`-style check when built
-- Server-persisted *user-submitted* check-ins, reviews, and photos (session-only in v1 — see `myCheckins`/`myReviews`/`myPhotos` above) — accounts now exist to attribute these to, but none of it is wired to the `User` table. This is separate from the Google-sourced reviews/photos in `rinks.json`, which are real but were pulled once, not submitted by app users
+- Admin UI for moderating community-submitted rinks (sit in the `PendingRink` table, unvalidated) — the pending-photo review page (`/admin/photos`, gated on `ADMIN_EMAILS`, see Backend above) is a close precedent to extend for this: same `require_admin()` gate, same list/approve/reject shape, just against `PendingRink` instead of `RinkPhoto`
+- Server-persisted *user-submitted* check-ins and reviews (session-only in v1 — see `myCheckins`/`myReviews` above) — accounts now exist to attribute these to, but neither is wired to the `User` table yet. Photos got this treatment already (`POST /api/rinks/{rink_id}/photos` → `RinkPhoto` table → `/admin/photos` review queue → public once approved) and would be the template to follow. This is separate from the Google-sourced reviews/photos in `rinks.json`, which are real but were pulled once, not submitted by app users
 - Real schema migrations (no Alembic) — `ensure_new_columns()` in `main.py` covers the common case of adding a new nullable column, but column renames/type changes/drops still have no automated path and would need a manual `ALTER TABLE` against the Railway Postgres addon
 - Community and News sections (nav links present but inactive)
 - "Submit an Event" button (UI only, no backend) — "Write a Review" now has a working session-local composer (see above), just not server-persisted
