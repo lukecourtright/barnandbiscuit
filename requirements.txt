@@ -6,3 +6,4 @@ itsdangerous
 bcrypt
 httpx
 python-multipart
+python-amazon-paapi

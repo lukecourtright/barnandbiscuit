@@ -76,6 +76,34 @@ class Equipment(SQLModel, table=True):
     reviewList: list = Field(default_factory=list, sa_column=Column(JSON))
 
 
+class EquipmentOffer(SQLModel, table=True):
+    # One row per (product, retailer) live listing, populated/refreshed only
+    # by scripts/fetch_amazon_products.py or scripts/fetch_avantlink_products.py
+    # — never touched by the equipment.json startup sync, so a deploy can't
+    # stomp a live price back to a stale mock value. See CLAUDE.md
+    # "Equipment: live offers" section.
+    id: Optional[int] = Field(default=None, primary_key=True)
+    equipmentId: int
+    retailerName: str
+    network: str
+    sourceProductId: str
+    sourceMerchantId: Optional[str] = None  # network-assigned merchant/advertiser id, needed by some networks (e.g. AvantLink) to re-look-up a specific offer directly instead of re-searching by keyword
+    price: float
+    url: str
+    inStock: bool = True
+    lastCheckedAt: str = Field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
+
+
+class EquipmentPriceSnapshot(SQLModel, table=True):
+    # One row per price check of a given EquipmentOffer over time, so the
+    # site can show a real price history / "lowest in 90 days" instead of
+    # only the current price.
+    id: Optional[int] = Field(default=None, primary_key=True)
+    equipmentOfferId: int
+    price: float
+    checkedAt: str = Field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
+
+
 class PendingRink(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     submittedAt: str = Field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
@@ -129,7 +157,12 @@ def ensure_new_columns():
     # table doesn't have yet, so schema additions don't need Alembic.
     inspector = inspect(engine)
     existing_tables = set(inspector.get_table_names())
-    for table_name, model in (("rink", Rink), ("equipment", Equipment)):
+    for table_name, model in (
+        ("rink", Rink),
+        ("equipment", Equipment),
+        ("equipmentoffer", EquipmentOffer),
+        ("equipmentpricesnapshot", EquipmentPriceSnapshot),
+    ):
         if table_name not in existing_tables:
             continue
         existing = {col["name"] for col in inspector.get_columns(table_name)}
@@ -187,11 +220,45 @@ def get_rinks():
         return [rink.model_dump() for rink in rinks]
 
 
+def serialize_equipment(product: Equipment, session: Session) -> dict:
+    data = product.model_dump()
+    offers = session.exec(
+        select(EquipmentOffer).where(EquipmentOffer.equipmentId == product.id)
+    ).all()
+    if not offers:
+        # No live offers matched yet for this product — serve the curated
+        # mock pricing/retailers from equipment.json untouched.
+        return data
+
+    data["retailers"] = [
+        {"name": o.retailerName, "price": o.price, "url": o.url, "inStock": o.inStock}
+        for o in sorted(offers, key=lambda o: o.price)
+    ]
+
+    best_offer = min(offers, key=lambda o: o.price)
+    snapshots = session.exec(
+        select(EquipmentPriceSnapshot)
+        .where(EquipmentPriceSnapshot.equipmentOfferId == best_offer.id)
+        .order_by(EquipmentPriceSnapshot.checkedAt)
+    ).all()
+    price_history = [s.price for s in snapshots] or [best_offer.price]
+    was_price = price_history[0] if len(price_history) > 1 else None
+    price_is_good = was_price is not None and best_offer.price < was_price
+    data.update({
+        "priceHistory": price_history,
+        "wasPrice": was_price,
+        "priceIsGood": price_is_good,
+        "deal": f"−{round((1 - best_offer.price / was_price) * 100)}%" if price_is_good else None,
+        "note": "Lowest in 90 days" if price_is_good else "Stable price",
+    })
+    return data
+
+
 @app.get("/api/equipment")
 def get_equipment():
     with Session(engine) as session:
         products = session.exec(select(Equipment)).all()
-        return [product.model_dump() for product in products]
+        return [serialize_equipment(product, session) for product in products]
 
 
 @app.get("/api/photos/{rink_id}/{photo_idx}")
