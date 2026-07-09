@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RinkCollective — Guides</title>
+<link rel="icon" href="/static/logo/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Hanken+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/brand-tokens.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--bg); }
+  body { font-family: var(--font-body); color: var(--text); }
+  a { text-decoration: none; }
+  button { font-family: inherit; }
+
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+  /* ── Nav ── */
+  #nav { height: 56px; background: #0E1322; border-bottom: 1px solid var(--border); display: flex; align-items: center; padding: 0 20px; position: sticky; top: 0; z-index: 200; }
+  #nav-links { display: flex; align-items: center; gap: 2px; flex: 1; }
+  .nav-link { padding: 5px 11px; font-size: 13px; font-weight: 500; color: var(--text-faint); border-radius: 6px; }
+  .nav-link:hover { color: var(--text-muted); }
+  .nav-link.active { color: var(--color-primary); font-weight: 600; background: rgba(20,207,207,0.08); }
+  .nav-link.active:hover { color: var(--color-primary); }
+  #nav-signin { font-size: 13px; font-weight: 500; color: var(--text-muted); padding: 5px 6px; }
+  #nav-signin:hover { color: var(--text); }
+  .btn-primary { padding: 6px 14px; background: var(--color-primary); border-radius: 8px; color: var(--on-primary); font-size: 13px; font-weight: 700; white-space: nowrap; display: inline-block; }
+  #hamburger-btn { display: none; align-items: center; justify-content: center; width: 34px; height: 34px; background: transparent; border: 1px solid var(--border); border-radius: 8px; cursor: pointer; }
+
+  /* ── Mobile menu drawer ── */
+  #menu-overlay { position: fixed; inset: 0; z-index: 300; background: rgba(5,7,15,0.6); backdrop-filter: blur(2px); opacity: 0; pointer-events: none; transition: opacity 0.25s ease; }
+  #menu-overlay.open { opacity: 1; pointer-events: auto; }
+  #menu-panel { position: absolute; top: 0; right: 0; height: 100%; width: min(320px, 85vw); background: #0E1322; border-left: 1px solid var(--border); padding: 18px; display: flex; flex-direction: column; gap: 4px; transform: translateX(100%); transition: transform 0.28s ease; box-shadow: -8px 0 32px rgba(0,0,0,0.5); }
+  #menu-overlay.open #menu-panel { transform: translateX(0); }
+  .menu-link { padding: 12px; font-size: 15px; font-weight: 500; color: var(--text); border-radius: 9px; }
+  .menu-link.active { color: var(--color-primary); font-weight: 600; background: rgba(20,207,207,0.08); }
+
+  /* ── Shared layout ── */
+  .wrap { max-width: 1120px; margin: 0 auto; }
+  .section-pad { padding: 46px 40px; }
+  .section-head-row { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 18px; }
+  .section-h2 { font-family: var(--font-display); font-size: 20px; font-weight: 700; color: var(--text); }
+  .result-count { font-family: var(--font-mono); font-size: 12px; color: var(--text-faint); }
+  .guide-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+
+  /* ── Guide / related cards ── */
+  .guide-card-full { text-align: left; display: flex; flex-direction: column; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; cursor: pointer; padding: 0; transition: border-color 0.18s, transform 0.18s; }
+  .guide-card-full:hover { border-color: #3A465F; transform: translateY(-2px); }
+  .guide-card-img { height: 128px; background-size: cover; background-position: center; position: relative; }
+  .guide-card-badge { position: absolute; left: 12px; top: 12px; padding: 3px 9px; background: rgba(10,14,26,0.82); backdrop-filter: blur(4px); border-radius: 20px; font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; }
+  .guide-card-body { padding: 15px 16px 17px; display: flex; flex-direction: column; flex: 1; }
+  .guide-card-title { font-family: var(--font-display); font-size: 15.5px; font-weight: 600; color: var(--text); line-height: 1.32; margin-bottom: 8px; }
+  .guide-card-blurb { font-size: 12.5px; color: var(--text-muted); line-height: 1.5; margin-bottom: 14px; }
+  .guide-card-meta { display: flex; align-items: center; gap: 10px; margin-top: auto; font-family: var(--font-mono); font-size: 10.5px; color: var(--text-faint); }
+  .level-pill { padding: 2px 8px; background: rgba(20,207,207,0.1); border: 1px solid rgba(20,207,207,0.3); border-radius: 20px; color: var(--color-primary); letter-spacing: 0.04em; }
+  .empty-state { padding: 48px 20px; text-align: center; color: var(--text-faint); background: #0E1322; border: 1px dashed var(--border); border-radius: 14px; }
+  .empty-state .empty-title { font-size: 15px; color: var(--text-muted); margin-bottom: 4px; }
+
+  /* ── Landing hero ── */
+  .guides-hero { border-bottom: 1px solid var(--hair); background: radial-gradient(120% 140% at 15% 0%, #10182B 0%, #0A0E1A 60%); }
+  .guides-hero-inner { max-width: 1120px; margin: 0 auto; padding: 56px 40px 52px; display: grid; grid-template-columns: 1fr 0.9fr; gap: 44px; align-items: center; }
+  .guides-eyebrow { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-primary); margin-bottom: 14px; }
+  h1.guides-h1 { font-family: var(--font-display); font-size: 46px; font-weight: 700; color: var(--text); line-height: 1.06; letter-spacing: -0.03em; margin-bottom: 18px; }
+  .guides-hero-sub { font-size: 16.5px; color: var(--text-muted); line-height: 1.6; margin-bottom: 24px; max-width: 480px; }
+  .guides-search-wrap { position: relative; max-width: 440px; }
+  .guides-search-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); display: flex; color: var(--text-faint); pointer-events: none; }
+  #guides-search { width: 100%; height: 46px; padding: 0 14px 0 40px; background: #0E1322; border: 1px solid var(--border); border-radius: 10px; color: var(--text); font-size: 14px; font-family: var(--font-body); outline: none; }
+  #guides-search:focus { border-color: var(--color-primary); }
+
+  /* ── Beginner path card ── */
+  .path-card { background: #111829; border: 1px solid var(--border); border-radius: 16px; padding: 20px; box-shadow: 0 20px 60px rgba(0,0,0,0.4); }
+  .path-card-head { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
+  .path-card-title { font-family: var(--font-display); font-size: 15px; font-weight: 700; color: var(--text); }
+  .path-progress-text { margin-left: auto; font-family: var(--font-mono); font-size: 11px; color: var(--color-primary); }
+  .path-bar-track { height: 4px; background: var(--hair); border-radius: 3px; overflow: hidden; margin-bottom: 16px; }
+  .path-bar-fill { height: 100%; width: 0%; background: var(--color-primary); border-radius: 3px; transition: width 0.3s ease; }
+  .path-steps { display: flex; flex-direction: column; gap: 8px; }
+  .path-step { display: flex; align-items: center; gap: 12px; padding: 10px 11px; background: #0E1322; border: 1px solid #232E48; border-radius: 11px; }
+  .path-check { flex-shrink: 0; width: 26px; height: 26px; border-radius: 50%; border: 1.5px solid var(--border); background: transparent; color: var(--text-faint); font-family: var(--font-mono); font-size: 12px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+  .path-check.done { border: none; background: var(--color-primary); color: var(--on-primary); }
+  .path-step-body { flex: 1; min-width: 0; text-align: left; background: transparent; border: none; cursor: pointer; padding: 0; }
+  .path-step-title { font-size: 13.5px; font-weight: 600; color: var(--text); line-height: 1.3; }
+  .path-step-title.done { text-decoration: line-through; }
+  .path-step-meta { font-family: var(--font-mono); font-size: 10.5px; color: var(--text-faint); margin-top: 3px; letter-spacing: 0.03em; }
+  .path-step-arrow { color: #4B5168; flex-shrink: 0; }
+  .path-signin-hint { font-size: 11.5px; color: var(--text-faint); margin-top: 10px; }
+  .path-signin-hint a { color: var(--color-primary); }
+
+  /* ── Topic cards (landing) ── */
+  .topic-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(190px,1fr)); gap: 14px; }
+  .topic-card { text-align: left; display: flex; flex-direction: column; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 18px; cursor: pointer; transition: border-color 0.18s, transform 0.18s; min-height: 150px; }
+  .topic-card:hover { border-color: #3A465F; transform: translateY(-2px); }
+  .topic-icon-tile { display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 11px; margin-bottom: 13px; }
+  .topic-name { font-family: var(--font-display); font-size: 15.5px; font-weight: 600; color: var(--text); margin-bottom: 5px; }
+  .topic-desc { font-size: 12.5px; color: var(--text-muted); line-height: 1.5; margin-bottom: 12px; }
+  .topic-count { font-family: var(--font-mono); font-size: 11px; color: var(--text-faint); margin-top: auto; }
+
+  /* ── Category header ── */
+  .cat-header-wrap { border-bottom: 1px solid var(--hair); padding: 44px 40px; }
+  .cat-header-inner { max-width: 1120px; margin: 0 auto; }
+  .cat-breadcrumb { display: flex; align-items: center; gap: 7px; font-family: var(--font-mono); font-size: 11.5px; color: var(--text-faint); margin-bottom: 18px; }
+  .cat-breadcrumb a { color: #07C8C8; }
+  .cat-breadcrumb a:hover { color: var(--color-primary); }
+  .cat-header-row { display: flex; align-items: flex-start; gap: 18px; }
+  .cat-icon-tile { display: flex; align-items: center; justify-content: center; width: 56px; height: 56px; border-radius: 14px; flex-shrink: 0; }
+  .cat-name { font-family: var(--font-display); font-size: 32px; font-weight: 700; color: var(--text); letter-spacing: -0.02em; line-height: 1.1; }
+  .cat-desc { font-size: 15px; color: var(--text-muted); line-height: 1.55; margin-top: 8px; max-width: 560px; }
+  .cat-count { font-family: var(--font-mono); font-size: 12px; color: var(--text-faint); margin-top: 10px; }
+  .topic-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; }
+  .topic-chip { padding: 6px 13px; background: transparent; border: 1px solid var(--border); border-radius: 20px; color: var(--text-muted); font-size: 12.5px; font-weight: 500; cursor: pointer; font-family: var(--font-body); }
+  .topic-chip.active { font-weight: 600; }
+
+  /* ── Article ── */
+  .article-header-wrap { border-bottom: 1px solid var(--hair); padding: 44px 40px 40px; }
+  .article-header-inner { max-width: 820px; margin: 0 auto; }
+  .article-breadcrumb { display: flex; align-items: center; gap: 7px; font-family: var(--font-mono); font-size: 11.5px; color: var(--text-faint); margin-bottom: 20px; flex-wrap: wrap; }
+  .article-breadcrumb a { color: #07C8C8; }
+  .article-breadcrumb a:hover { color: var(--color-primary); }
+  .article-topic-eyebrow { font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 12px; }
+  h1.article-title { font-family: var(--font-display); font-size: 34px; font-weight: 700; color: var(--text); letter-spacing: -0.02em; line-height: 1.12; }
+  .article-lede { font-size: 16.5px; color: var(--text-muted); line-height: 1.6; margin-top: 16px; }
+  .article-meta-row { display: flex; align-items: center; gap: 14px; margin-top: 22px; flex-wrap: wrap; font-family: var(--font-mono); font-size: 12px; color: var(--text-faint); }
+  .article-meta-row .sep { color: var(--border); }
+
+  .article-body-grid { max-width: 1120px; margin: 0 auto; padding: 44px 40px 40px; display: grid; grid-template-columns: 220px 1fr; gap: 48px; align-items: start; }
+  .article-body-grid.no-toc { grid-template-columns: 1fr; }
+  .toc { position: sticky; top: 76px; align-self: start; }
+  .toc-label { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-faint); margin-bottom: 12px; }
+  .toc-list { display: flex; flex-direction: column; gap: 2px; border-left: 2px solid var(--hair); }
+  .toc-link { padding: 6px 0 6px 14px; margin-left: -2px; border-left: 2px solid transparent; font-size: 13px; line-height: 1.4; color: #8A93AC; font-weight: 500; display: block; }
+  .toc-link.active { color: var(--text); font-weight: 600; }
+
+  .guide-article { min-width: 0; max-width: 720px; }
+  .article-hero-img { height: 200px; border-radius: 14px; background-size: cover; background-position: center; border: 1px solid var(--border); margin-bottom: 32px; }
+  .article-p { font-size: 16px; color: #C4CBDD; line-height: 1.75; margin-bottom: 18px; }
+  .article-h2 { font-family: var(--font-display); font-size: 23px; font-weight: 700; color: var(--text); letter-spacing: -0.01em; margin-top: 34px; margin-bottom: 14px; scroll-margin-top: 80px; }
+  .callout { border-radius: 12px; padding: 15px 16px; margin: 8px 0 22px; }
+  .callout-tip { background: rgba(52,224,160,0.06); border: 1px solid rgba(52,224,160,0.25); }
+  .callout-warn { background: rgba(255,200,61,0.06); border: 1px solid rgba(255,200,61,0.25); }
+  .callout-head { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+  .callout-label { font-family: var(--font-display); font-size: 13px; font-weight: 700; }
+  .callout-body { font-size: 14px; color: #D6DBEA; line-height: 1.6; }
+
+  .gear-callout { display: flex; gap: 14px; align-items: flex-start; background: var(--surface); border: 1px solid rgba(255,210,77,0.3); border-radius: 14px; padding: 16px; margin: 6px 0 24px; transition: border-color 0.18s; }
+  .gear-callout:hover { border-color: #FFD24D; }
+  .gear-callout-icon { display: flex; align-items: center; justify-content: center; width: 46px; height: 46px; border-radius: 11px; background: rgba(255,210,77,0.12); border: 1px solid rgba(255,210,77,0.3); color: #FFD24D; flex-shrink: 0; }
+  .gear-callout-eyebrow { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: #FFD24D; margin-bottom: 3px; }
+  .gear-callout-title { font-family: var(--font-display); font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 3px; }
+  .gear-callout-text { font-size: 12.5px; color: var(--text-muted); line-height: 1.45; }
+  .gear-callout-arrow { color: #FFD24D; flex-shrink: 0; align-self: center; }
+
+  .coming-soon-panel { padding: 48px 32px; text-align: center; background: #0E1322; border: 1px dashed var(--border); border-radius: 14px; }
+  .coming-soon-title { font-family: var(--font-display); font-size: 17px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
+  .coming-soon-body { font-size: 13.5px; color: var(--text-muted); line-height: 1.55; max-width: 420px; margin: 0 auto; }
+
+  .related-wrap { margin-top: 44px; padding-top: 28px; border-top: 1px solid var(--hair); }
+  .related-title { font-family: var(--font-display); font-size: 19px; font-weight: 700; color: var(--text); margin-bottom: 16px; }
+  .related-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+  .related-card { text-align: left; display: flex; flex-direction: column; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; cursor: pointer; padding: 0; transition: border-color 0.18s; }
+  .related-card:hover { border-color: #3A465F; }
+  .related-card-img { height: 96px; background-size: cover; background-position: center; }
+  .related-card-body { padding: 13px 14px 15px; }
+  .related-card-topic { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 6px; }
+  .related-card-title { font-family: var(--font-display); font-size: 14px; font-weight: 600; color: var(--text); line-height: 1.32; }
+
+  /* ── Footer CTA ── */
+  .footer-cta { background: linear-gradient(120deg, #0E1322, var(--surface)); border-top: 1px solid var(--hair); }
+  .footer-inner { max-width: 1120px; margin: 0 auto; padding: 44px 40px; display: flex; align-items: center; justify-content: space-between; gap: 22px; }
+  .footer-title { font-family: var(--font-display); font-size: 24px; font-weight: 700; color: var(--text); letter-spacing: -0.01em; margin-bottom: 6px; }
+  .footer-body { font-size: 14.5px; color: var(--text-muted); }
+  .footer-cta .btn-primary { padding: 13px 26px; font-size: 15px; }
+
+  @media (max-width: 768px) {
+    #nav-links, #nav-signin { display: none; }
+    #hamburger-btn { display: flex; }
+
+    .section-pad { padding: 34px 20px; }
+    .guide-grid { grid-template-columns: 1fr; }
+    .related-grid { grid-template-columns: 1fr; }
+
+    .guides-hero-inner { grid-template-columns: 1fr; gap: 30px; padding: 34px 20px 36px; }
+    h1.guides-h1 { font-size: 34px; }
+    .guides-hero-sub { font-size: 15px; }
+
+    .topic-grid { grid-template-columns: 1fr; }
+
+    .cat-header-wrap { padding: 30px 20px; }
+
+    .article-header-wrap { padding: 26px 20px 30px; }
+    .article-title { font-size: 28px; }
+    .article-body-grid { grid-template-columns: 1fr; padding: 30px 20px 20px; gap: 0; }
+    .toc { display: none; }
+
+    .footer-inner { padding: 36px 20px; flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="/" style="display:flex;align-items:center;gap:9px;margin-right:24px;flex-shrink:0;">
+    <svg width="24" height="18" viewBox="0 0 80 60" fill="none"><rect x="5" y="5" width="70" height="50" rx="24" stroke="#14CFCF" stroke-width="4"/><line x1="40" y1="5" x2="40" y2="55" stroke="#FFC83D" stroke-width="3" stroke-linecap="round"/><circle cx="40" cy="30" r="9" stroke="#FFC83D" stroke-width="3"/><circle cx="40" cy="30" r="3.2" fill="#FFC83D"/></svg>
+    <span id="nav-wordmark" style="font-family:var(--font-display);font-weight:700;font-size:16px;color:var(--text);letter-spacing:-0.025em;white-space:nowrap;"></span>
+  </a>
+  <div id="nav-links">
+    <a href="/" class="nav-link">Home</a>
+    <a href="/rinks" class="nav-link">Rink Finder</a>
+    <a href="/equipment" class="nav-link">Equipment</a>
+    <a href="/guides" class="nav-link active">Guides</a>
+    <a href="#" class="nav-link">News</a>
+  </div>
+  <div style="display:flex;align-items:center;gap:8px;">
+    <a href="/rinks?auth=login" id="nav-signin">Sign in</a>
+    <a href="/rinks?auth=signup" class="btn-primary">Create account</a>
+    <button id="hamburger-btn" aria-label="Menu" aria-expanded="false">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#B0B8CF" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+  </div>
+</nav>
+
+<!-- MOBILE MENU DRAWER -->
+<div id="menu-overlay">
+  <div id="menu-panel" role="dialog" aria-modal="true" aria-label="Menu">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+      <span style="font-family:var(--font-display);font-weight:700;font-size:15px;color:var(--text);letter-spacing:-0.025em;">Rink<span style="color:#FFC83D;">Collective</span></span>
+      <button id="menu-close-btn" aria-label="Close menu" style="display:flex;align-items:center;justify-content:center;width:34px;height:34px;background:transparent;border:1px solid var(--border);border-radius:8px;cursor:pointer;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#B0B8CF" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <a href="/" class="menu-link">Home</a>
+    <a href="/rinks" class="menu-link">Rink Finder</a>
+    <a href="/equipment" class="menu-link">Equipment</a>
+    <a href="/guides" class="menu-link active">Guides</a>
+    <a href="#" class="menu-link">News</a>
+    <div style="height:1px;background:var(--hair);margin:10px 2px;"></div>
+    <a href="/rinks?auth=login" class="menu-link" style="color:var(--text-muted);">Sign in</a>
+    <a href="/rinks?auth=signup" style="margin-top:4px;padding:13px;text-align:center;background:var(--color-primary);border-radius:9px;color:var(--on-primary);font-size:15px;font-weight:700;">Create account</a>
+  </div>
+</div>
+
+<!-- ================= LANDING ================= -->
+<div id="view-landing">
+  <div class="guides-hero">
+    <div class="guides-hero-inner">
+      <div>
+        <div class="guides-eyebrow">Guides</div>
+        <h1 class="guides-h1">New to hockey?<br>We&rsquo;ve got you.</h1>
+        <p class="guides-hero-sub">No dumb questions here. Follow the beginner path below and you&rsquo;ll go from &ldquo;never laced up&rdquo; to stepping onto the ice with confidence &mdash; one short read at a time.</p>
+        <div class="guides-search-wrap">
+          <span class="guides-search-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></span>
+          <input id="guides-search" placeholder="Search guides — skating, gear, offsides…">
+        </div>
+      </div>
+
+      <div class="path-card">
+        <div class="path-card-head">
+          <span class="path-card-title">The beginner path</span>
+          <span class="path-progress-text" id="path-progress-text">0 of 5 complete</span>
+        </div>
+        <div class="path-bar-track"><div class="path-bar-fill" id="path-bar-fill"></div></div>
+        <div class="path-steps" id="path-steps"></div>
+        <div class="path-signin-hint" id="path-signin-hint"><a href="/rinks?auth=login">Sign in</a> to save your progress across sessions.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="section-pad">
+      <div class="section-head-row">
+        <h2 class="section-h2">Browse by topic</h2>
+      </div>
+      <div class="topic-grid" id="topic-grid"></div>
+    </div>
+
+    <div class="section-pad">
+      <div class="section-head-row">
+        <h2 class="section-h2" id="all-guides-heading">All guides</h2>
+        <span class="result-count" id="all-guides-count"></span>
+      </div>
+      <div class="guide-grid" id="all-guides-grid"></div>
+      <div class="empty-state" id="all-guides-empty" style="display:none;">
+        <div class="empty-title">No guides match &ldquo;<span id="all-guides-empty-query"></span>&rdquo;.</div>
+        <div>Try a broader term like &ldquo;skating&rdquo; or &ldquo;gear&rdquo;.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= CATEGORY ================= -->
+<div id="view-category" style="display:none;">
+  <div class="cat-header-wrap" id="cat-header-wrap">
+    <div class="cat-header-inner">
+      <div class="cat-breadcrumb">
+        <a href="#" id="cat-breadcrumb-home">Guides</a>
+        <span>/</span>
+        <span id="cat-breadcrumb-name" style="color:var(--text-muted);"></span>
+      </div>
+      <div class="cat-header-row">
+        <div class="cat-icon-tile" id="cat-icon-tile"></div>
+        <div>
+          <h1 class="cat-name" id="cat-name"></h1>
+          <p class="cat-desc" id="cat-desc"></p>
+          <div class="cat-count" id="cat-count"></div>
+        </div>
+      </div>
+      <div class="topic-chips" id="topic-chips"></div>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="section-pad">
+      <div class="guide-grid" id="cat-guide-grid"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= ARTICLE ================= -->
+<div id="view-article" style="display:none;">
+  <div class="article-header-wrap">
+    <div class="article-header-inner">
+      <div class="article-breadcrumb">
+        <a href="#" id="article-breadcrumb-home">Guides</a>
+        <span>/</span>
+        <a href="#" id="article-topic-link"></a>
+      </div>
+      <div class="article-topic-eyebrow" id="article-topic-eyebrow"></div>
+      <h1 class="article-title" id="article-title"></h1>
+      <p class="article-lede" id="article-lede"></p>
+      <div class="article-meta-row">
+        <span class="level-pill" id="article-level"></span>
+        <span id="article-readtime"></span>
+        <span class="sep">|</span>
+        <span>Updated Jan 2026</span>
+        <span class="sep">|</span>
+        <span>RinkCollective Team</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="article-body-grid" id="article-toc-body-grid">
+    <aside class="toc" id="article-toc">
+      <div class="toc-label">On this page</div>
+      <div class="toc-list" id="toc-list"></div>
+    </aside>
+    <article class="guide-article">
+      <div class="article-hero-img" id="article-hero-img"></div>
+      <div id="article-body"></div>
+      <div class="coming-soon-panel" id="article-coming-soon" style="display:none;">
+        <div class="coming-soon-title">This guide is still being written</div>
+        <div class="coming-soon-body">We&rsquo;re working on it &mdash; check back soon, or explore another guide in the meantime.</div>
+      </div>
+      <div class="related-wrap" id="related-wrap" style="display:none;">
+        <div class="related-title">Keep going</div>
+        <div class="related-grid" id="related-grid"></div>
+      </div>
+    </article>
+  </div>
+</div>
+
+<!-- FOOTER CTA -->
+<div class="footer-cta">
+  <div class="footer-inner">
+    <div>
+      <div class="footer-title">Learn it. Then live at the rink.</div>
+      <div class="footer-body">Save guides, track your beginner path, and get new how-tos as they drop.</div>
+    </div>
+    <a href="/rinks?auth=signup" class="btn-primary">Create free account</a>
+  </div>
+</div>
+
+<script>
+const BRAND_INK = 'Rink';
+const BRAND_GOLD = 'Collective';
+
+const TOPICS = [
+  { id: 'start',   name: 'Getting Started', accent: '#14CFCF', rgb: '20,207,207',  desc: 'Brand new to the sport? Begin right here — the essentials, in order.' },
+  { id: 'skating', name: 'Skating',         accent: '#34E0A0', rgb: '52,224,160',  desc: 'Balance, edges, and stopping — the foundation everything else is built on.' },
+  { id: 'gear',    name: 'Gear',            accent: '#FFD24D', rgb: '255,210,77',  desc: 'What to buy, what to borrow, and what you can safely skip when starting out.' },
+  { id: 'rules',   name: 'Rules',           accent: '#CB78FF', rgb: '203,120,255', desc: 'Offsides, icing, and penalties — the rulebook made painless.' },
+  { id: 'games',   name: 'Games & Play',    accent: '#FF6B7D', rgb: '255,107,125', desc: 'Positions, pickup, and getting into your very first game.' },
+];
+
+// Editorial order for the beginner-path checklist.
+const PATH_IDS = [
+  'starting-to-play-hockey-101',
+  'hockey-equipment-guide',
+  'essential-hockey-skills-for-beginners',
+  'basic-rules-of-hockey-explained',
+  'common-beginner-hockey-mistakes',
+];
+
+function topicOf(id) { return TOPICS.find(t => t.id === id) || TOPICS[0]; }
+
+// Branded rink-diagram placeholder tinted to an explicit accent — same
+// generator shape as home.html's rinkPlaceholder(seed), but takes rgb
+// directly since guide cards are tinted by topic, not by a seed lookup.
+function art(rgb, seed) {
+  const L = (o) => `rgba(${rgb},${o})`;
+  const px = (seed % 2) === 0 ? 150 : 330;
+  const W = 480, H = 320;
+  const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='${W}' height='${H}' viewBox='0 0 ${W} ${H}'>`
+    + `<rect width='${W}' height='${H}' fill='#0E1322'/>`
+    + `<ellipse cx='150' cy='96' rx='300' ry='210' fill='${L(0.08)}'/>`
+    + `<ellipse cx='430' cy='300' rx='260' ry='170' fill='rgba(4,6,10,0.45)'/>`
+    + `<rect x='46' y='40' width='388' height='240' rx='84' fill='none' stroke='${L(0.34)}' stroke-width='2'/>`
+    + `<line x1='188' y1='40' x2='188' y2='280' stroke='${L(0.22)}' stroke-width='2'/>`
+    + `<line x1='292' y1='40' x2='292' y2='280' stroke='${L(0.22)}' stroke-width='2'/>`
+    + `<line x1='240' y1='40' x2='240' y2='280' stroke='${L(0.30)}' stroke-width='2'/>`
+    + `<circle cx='240' cy='160' r='44' fill='none' stroke='${L(0.30)}' stroke-width='2'/>`
+    + `<circle cx='240' cy='160' r='4' fill='${L(0.55)}'/>`
+    + `<circle cx='138' cy='108' r='24' fill='none' stroke='${L(0.20)}' stroke-width='1.5'/>`
+    + `<circle cx='138' cy='212' r='24' fill='none' stroke='${L(0.20)}' stroke-width='1.5'/>`
+    + `<circle cx='342' cy='108' r='24' fill='none' stroke='${L(0.20)}' stroke-width='1.5'/>`
+    + `<circle cx='342' cy='212' r='24' fill='none' stroke='${L(0.20)}' stroke-width='1.5'/>`
+    + `<circle cx='${px}' cy='160' r='13' fill='none' stroke='${L(0.4)}' stroke-width='2'/>`
+    + `<circle cx='${px}' cy='160' r='6.5' fill='${L(0.95)}'/>`
+    + `</svg>`;
+  // encodeURIComponent leaves ' unescaped, but the SVG's own attributes use
+  // single quotes — without this, a raw ' inside the data URI prematurely
+  // closes the CSS url('...') string wherever this is used.
+  return 'data:image/svg+xml,' + encodeURIComponent(svg).replace(/'/g, '%27');
+}
+
+function topicIconSvg(id, size) {
+  const s = size || 20;
+  const a = `width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"`;
+  switch (id) {
+    case 'start':   return `<svg ${a}><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88"/></svg>`;
+    case 'skating': return `<svg ${a}><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>`;
+    case 'gear':    return `<svg ${a}><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`;
+    case 'rules':   return `<svg ${a}><path d="M2 4h7a3 3 0 0 1 3 3v13a2.5 2.5 0 0 0-2.5-2.5H2z"/><path d="M22 4h-7a3 3 0 0 0-3 3v13a2.5 2.5 0 0 1 2.5-2.5H22z"/></svg>`;
+    case 'games':   return `<svg ${a}><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>`;
+    default:        return `<svg ${a}><circle cx="12" cy="12" r="10"/></svg>`;
+  }
+}
+
+const ICON_TIP = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#34E0A0" stroke-width="2.2" stroke-linecap="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.3 1 2.3M12 2a7 7 0 0 1 4 12.7c-.6.5-1 1.3-1 2.3"/></svg>`;
+const ICON_WARN = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#FFC83D" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/></svg>`;
+const ICON_GEAR = `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`;
+
+class Guides {
+  constructor() {
+    this.state = {
+      guides: [],
+      view: 'landing',
+      topicId: 'start',
+      articleId: null,
+      query: '',
+      currentUser: null,
+      progress: {},
+      menuOpen: false,
+      activeSec: 'top',
+    };
+  }
+
+  async init() {
+    document.getElementById('nav-wordmark').innerHTML = `${BRAND_INK}<span style="color:#FFC83D;">${BRAND_GOLD}</span>`;
+    this.bindNav();
+    this.bindMenu();
+    document.getElementById('guides-search').addEventListener('input', (e) => this.setState({ query: e.target.value }));
+    document.getElementById('cat-breadcrumb-home').addEventListener('click', (e) => { e.preventDefault(); this.goHome(); });
+    document.getElementById('article-breadcrumb-home').addEventListener('click', (e) => { e.preventDefault(); this.goHome(); });
+
+    const [guides, me, progress] = await Promise.all([
+      fetch('/api/guides').then(r => r.json()),
+      fetch('/api/auth/me').then(r => r.json()),
+      fetch('/api/guides/progress').then(r => r.json()).catch(() => ({})),
+    ]);
+    this.state.guides = guides;
+    this.state.currentUser = me.user;
+    this.state.progress = progress;
+
+    const params = new URLSearchParams(window.location.search);
+    const slug = params.get('slug');
+    const topic = params.get('topic');
+    if (slug && guides.some(g => g.id === slug)) {
+      this.state.view = 'article';
+      this.state.articleId = slug;
+    } else if (topic && TOPICS.some(t => t.id === topic)) {
+      this.state.view = 'category';
+      this.state.topicId = topic;
+    }
+    if (slug || topic) history.replaceState(null, '', '/guides');
+
+    this.render();
+  }
+
+  setState(partial) {
+    Object.assign(this.state, partial);
+    this.render();
+  }
+
+  guide(id) { return this.state.guides.find(g => g.id === id); }
+
+  goHome() { this.setState({ view: 'landing' }); window.scrollTo({ top: 0 }); }
+  openTopic(id) { this.setState({ view: 'category', topicId: id }); window.scrollTo({ top: 0 }); }
+  openArticle(id) { this.setState({ view: 'article', articleId: id, activeSec: 'top' }); window.scrollTo({ top: 0 }); }
+
+  render() {
+    document.getElementById('view-landing').style.display = this.state.view === 'landing' ? '' : 'none';
+    document.getElementById('view-category').style.display = this.state.view === 'category' ? '' : 'none';
+    document.getElementById('view-article').style.display = this.state.view === 'article' ? '' : 'none';
+    if (this.state.view === 'landing') this.renderLanding();
+    if (this.state.view === 'category') this.renderCategory();
+    if (this.state.view === 'article') this.renderArticle();
+  }
+
+  guideCardHtml(g) {
+    const t = topicOf(g.topic);
+    return `
+      <button class="guide-card-full" onclick="app.openArticle('${g.id}')">
+        <div class="guide-card-img" style="background-image:url('${art(t.rgb, g.seed)}');">
+          <span class="guide-card-badge" style="border:1px solid rgba(${t.rgb},0.5);color:${t.accent};">${t.name}</span>
+        </div>
+        <div class="guide-card-body">
+          <div class="guide-card-title">${g.title}</div>
+          <div class="guide-card-blurb">${g.blurb}</div>
+          <div class="guide-card-meta">
+            <span class="level-pill">${g.level}</span>
+            <span>${g.readTime}</span>
+          </div>
+        </div>
+      </button>`;
+  }
+
+  renderLanding() {
+    const done = PATH_IDS.filter(id => this.state.progress[id]).length;
+    document.getElementById('path-progress-text').textContent = `${done} of ${PATH_IDS.length} complete`;
+    document.getElementById('path-bar-fill').style.width = `${(done / PATH_IDS.length) * 100}%`;
+    document.getElementById('path-steps').innerHTML = PATH_IDS.map((id, i) => {
+      const g = this.guide(id);
+      if (!g) return '';
+      const t = topicOf(g.topic);
+      const isDone = !!this.state.progress[id];
+      return `
+        <div class="path-step">
+          <button class="path-check ${isDone ? 'done' : ''}" aria-label="Mark complete" onclick="app.toggleProgress('${id}')">${isDone ? '&#10003;' : i + 1}</button>
+          <button class="path-step-body" onclick="app.openArticle('${id}')">
+            <div class="path-step-title ${isDone ? 'done' : ''}">${g.title}</div>
+            <div class="path-step-meta">${t.name.toUpperCase()} · ${g.readTime}</div>
+          </button>
+          <span class="path-step-arrow">&rarr;</span>
+        </div>`;
+    }).join('');
+    document.getElementById('path-signin-hint').style.display = this.state.currentUser ? 'none' : '';
+
+    document.getElementById('topic-grid').innerHTML = TOPICS.map(t => {
+      const count = this.state.guides.filter(g => g.topic === t.id).length;
+      return `
+        <button class="topic-card" onclick="app.openTopic('${t.id}')">
+          <div class="topic-icon-tile" style="background:rgba(${t.rgb},0.1);border:1px solid rgba(${t.rgb},0.28);color:${t.accent};">${topicIconSvg(t.id, 21)}</div>
+          <div class="topic-name">${t.name}</div>
+          <div class="topic-desc">${t.desc}</div>
+          <div class="topic-count">${count} ${count === 1 ? 'guide' : 'guides'}</div>
+        </button>`;
+    }).join('');
+
+    const q = this.state.query.trim().toLowerCase();
+    const filtered = q ? this.state.guides.filter(g => {
+      const t = topicOf(g.topic);
+      return g.title.toLowerCase().includes(q) || g.blurb.toLowerCase().includes(q) || t.name.toLowerCase().includes(q);
+    }) : this.state.guides;
+    document.getElementById('all-guides-heading').textContent = q ? 'Search results' : 'All guides';
+    document.getElementById('all-guides-count').textContent = `${filtered.length} ${filtered.length === 1 ? 'guide' : 'guides'}`;
+    document.getElementById('all-guides-grid').style.display = filtered.length ? '' : 'none';
+    document.getElementById('all-guides-empty').style.display = filtered.length ? 'none' : '';
+    document.getElementById('all-guides-empty-query').textContent = this.state.query;
+    document.getElementById('all-guides-grid').innerHTML = filtered.map(g => this.guideCardHtml(g)).join('');
+  }
+
+  renderCategory() {
+    const t = topicOf(this.state.topicId);
+    document.getElementById('cat-breadcrumb-name').textContent = t.name;
+    document.getElementById('cat-header-wrap').style.background = `radial-gradient(120% 140% at 12% 0%, rgba(${t.rgb},0.07) 0%, #0A0E1A 55%)`;
+    const iconTile = document.getElementById('cat-icon-tile');
+    iconTile.style.background = `rgba(${t.rgb},0.1)`;
+    iconTile.style.border = `1px solid rgba(${t.rgb},0.28)`;
+    iconTile.style.color = t.accent;
+    iconTile.innerHTML = topicIconSvg(t.id, 26);
+    document.getElementById('cat-name').textContent = t.name;
+    document.getElementById('cat-desc').textContent = t.desc;
+    const catGuides = this.state.guides.filter(g => g.topic === t.id);
+    document.getElementById('cat-count').textContent = `${catGuides.length} ${catGuides.length === 1 ? 'guide' : 'guides'}`;
+    document.getElementById('topic-chips').innerHTML = TOPICS.map(tp => {
+      const active = tp.id === t.id;
+      const style = active
+        ? `background:rgba(${tp.rgb},0.14);border-color:${tp.accent};color:${tp.accent};`
+        : '';
+      return `<button class="topic-chip ${active ? 'active' : ''}" style="${style}" onclick="app.openTopic('${tp.id}')">${tp.name}</button>`;
+    }).join('');
+    document.getElementById('cat-guide-grid').innerHTML = catGuides.map(g => this.guideCardHtml(g)).join('');
+  }
+
+  renderArticle() {
+    const g = this.guide(this.state.articleId) || this.state.guides[0];
+    if (!g) return;
+    const t = topicOf(g.topic);
+
+    document.getElementById('article-topic-link').textContent = t.name;
+    document.getElementById('article-topic-link').onclick = (e) => { e.preventDefault(); this.openTopic(g.topic); };
+    const eyebrow = document.getElementById('article-topic-eyebrow');
+    eyebrow.textContent = t.name;
+    eyebrow.style.color = t.accent;
+    document.getElementById('article-title').textContent = g.title;
+    document.getElementById('article-lede').textContent = g.blurb;
+    document.getElementById('article-level').textContent = g.level;
+    document.getElementById('article-readtime').textContent = g.readTime;
+    document.getElementById('article-hero-img').style.backgroundImage = `url("${art(t.rgb, g.seed)}")`;
+
+    const hasBody = g.body && g.body.length > 0;
+    document.getElementById('article-toc-body-grid').classList.toggle('no-toc', !hasBody);
+    document.getElementById('article-toc').style.display = hasBody ? '' : 'none';
+    document.getElementById('article-body').style.display = hasBody ? '' : 'none';
+    document.getElementById('article-coming-soon').style.display = hasBody ? 'none' : '';
+
+    if (hasBody) {
+      const h2Blocks = g.body.filter(b => b.type === 'h2');
+      const toc = [{ id: 'top', label: g.tocIntroLabel || 'Overview' }, ...h2Blocks.map(b => ({ id: b.id, label: b.text }))];
+      document.getElementById('toc-list').innerHTML = toc.map(item => {
+        const active = this.state.activeSec === item.id;
+        return `<a href="#" class="toc-link ${active ? 'active' : ''}" style="border-left-color:${active ? t.accent : 'transparent'};" onclick="event.preventDefault(); app.scrollToSection('${item.id}')">${item.label}</a>`;
+      }).join('');
+
+      document.getElementById('article-body').innerHTML =
+        `<div id="top" style="scroll-margin-top:80px;"></div>` + g.body.map(block => this.renderBlock(block)).join('');
+
+      const related = (g.related || []).map(id => this.guide(id)).filter(Boolean);
+      document.getElementById('related-wrap').style.display = related.length ? '' : 'none';
+      document.getElementById('related-grid').innerHTML = related.map(r => {
+        const rt = topicOf(r.topic);
+        return `
+          <button class="related-card" onclick="app.openArticle('${r.id}')">
+            <div class="related-card-img" style="background-image:url('${art(rt.rgb, r.seed)}');"></div>
+            <div class="related-card-body">
+              <div class="related-card-topic" style="color:${rt.accent};">${rt.name}</div>
+              <div class="related-card-title">${r.title}</div>
+            </div>
+          </button>`;
+      }).join('');
+    } else {
+      document.getElementById('related-wrap').style.display = 'none';
+    }
+  }
+
+  renderBlock(block) {
+    switch (block.type) {
+      case 'p':
+        return `<p class="article-p">${block.text}</p>`;
+      case 'h2':
+        return `<h2 id="${block.id}" class="article-h2">${block.text}</h2>`;
+      case 'tip':
+        return `<div class="callout callout-tip"><div class="callout-head">${ICON_TIP}<span class="callout-label" style="color:#34E0A0;">Tip</span></div><div class="callout-body">${block.text}</div></div>`;
+      case 'warning':
+        return `<div class="callout callout-warn"><div class="callout-head">${ICON_WARN}<span class="callout-label" style="color:#FFC83D;">Heads up</span></div><div class="callout-body">${block.text}</div></div>`;
+      case 'gear-callout':
+        return `
+          <a href="${block.href}" class="gear-callout">
+            <div class="gear-callout-icon">${ICON_GEAR}</div>
+            <div style="flex:1;min-width:0;">
+              <div class="gear-callout-eyebrow">${block.eyebrow}</div>
+              <div class="gear-callout-title">${block.title}</div>
+              <div class="gear-callout-text">${block.text}</div>
+            </div>
+            <span class="gear-callout-arrow">&rarr;</span>
+          </a>`;
+      default:
+        return '';
+    }
+  }
+
+  scrollToSection(id) {
+    const el = document.getElementById(id);
+    if (el) {
+      const y = el.getBoundingClientRect().top + window.scrollY - 72;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    }
+    this.setState({ activeSec: id });
+  }
+
+  async toggleProgress(id) {
+    if (!this.state.currentUser) {
+      window.location.href = '/rinks?auth=login';
+      return;
+    }
+    const next = !this.state.progress[id];
+    const prevProgress = { ...this.state.progress };
+    this.setState({ progress: { ...this.state.progress, [id]: next } });
+    try {
+      const res = await fetch(`/api/guides/progress/${id}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ completed: next }),
+      });
+      if (!res.ok) throw new Error('Failed to save progress');
+    } catch (e) {
+      this.setState({ progress: prevProgress });
+    }
+  }
+
+  // ── Nav / mobile drawer (same trap-lite/Esc/scroll-lock pattern as home.html) ──
+  bindNav() {
+    document.getElementById('hamburger-btn').addEventListener('click', () => this.openMenu());
+  }
+
+  bindMenu() {
+    const overlay = document.getElementById('menu-overlay');
+    const panel = document.getElementById('menu-panel');
+    document.getElementById('menu-close-btn').addEventListener('click', () => this.closeMenu());
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) this.closeMenu(); });
+    panel.querySelectorAll('a').forEach(a => a.addEventListener('click', () => this.closeMenu()));
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && this.state.menuOpen) this.closeMenu();
+    });
+  }
+
+  openMenu() {
+    this.state.menuOpen = true;
+    document.getElementById('menu-overlay').classList.add('open');
+    document.getElementById('hamburger-btn').setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+    document.getElementById('menu-close-btn').focus();
+  }
+
+  closeMenu() {
+    this.state.menuOpen = false;
+    document.getElementById('menu-overlay').classList.remove('open');
+    document.getElementById('hamburger-btn').setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+    document.getElementById('hamburger-btn').focus();
+  }
+}
+
+const app = new Guides();
+app.init();
+</script>
+</body>
+</html>

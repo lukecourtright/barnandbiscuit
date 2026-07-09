@@ -138,7 +138,7 @@
     <a href="/" class="nav-link active">Home</a>
     <a href="/rinks" class="nav-link">Rink Finder</a>
     <a href="/equipment" class="nav-link">Equipment</a>
-    <a href="#" class="nav-link">Guides</a>
+    <a href="/guides" class="nav-link">Guides</a>
     <a href="#" class="nav-link">News</a>
   </div>
   <div style="display:flex;align-items:center;gap:8px;">
@@ -162,7 +162,7 @@
     <a href="/" class="menu-link active">Home</a>
     <a href="/rinks" class="menu-link">Rink Finder</a>
     <a href="/equipment" class="menu-link">Equipment</a>
-    <a href="#" class="menu-link">Guides</a>
+    <a href="/guides" class="menu-link">Guides</a>
     <a href="#" class="menu-link">News</a>
     <div style="height:1px;background:var(--hair);margin:10px 2px;"></div>
     <a href="/rinks?auth=login" class="menu-link" style="color:var(--text-muted);">Sign in</a>
@@ -231,7 +231,7 @@
   <div class="guides-inner">
     <div class="guides-head">
       <span>New here? Start with these</span>
-      <a href="#">All guides →</a>
+      <a href="/guides">All guides →</a>
     </div>
     <div class="guides-row" id="guides-row"></div>
   </div>
@@ -299,7 +299,56 @@ function rinkPlaceholder(seed) {
     + `<circle cx='${px}' cy='160' r='14' fill='none' stroke='${a.dot}' stroke-opacity='0.35' stroke-width='2'/>`
     + `<circle cx='${px}' cy='160' r='7' fill='${a.dot}'/>`
     + `</svg>`;
-  return 'data:image/svg+xml,' + encodeURIComponent(svg);
+  // encodeURIComponent leaves ' unescaped, but the SVG's own attributes use
+  // single quotes — without this, a raw ' inside the data URI prematurely
+  // closes the CSS url('...') string wherever this is used.
+  return 'data:image/svg+xml,' + encodeURIComponent(svg).replace(/'/g, '%27');
+}
+
+// Guide topic accents + beginner-path order — kept in sync with static/guides.html's
+// TOPICS/PATH_IDS constants (this strip only needs name+rgb, not the full topic objects).
+const GUIDE_TOPIC_ACCENTS = {
+  start:   { name: 'Getting Started', rgb: '20,207,207' },
+  skating: { name: 'Skating', rgb: '52,224,160' },
+  gear:    { name: 'Gear', rgb: '255,210,77' },
+  rules:   { name: 'Rules', rgb: '203,120,255' },
+  games:   { name: 'Games & Play', rgb: '255,107,125' },
+};
+const GUIDE_PATH_IDS = [
+  'starting-to-play-hockey-101',
+  'hockey-equipment-guide',
+  'essential-hockey-skills-for-beginners',
+  'basic-rules-of-hockey-explained',
+  'common-beginner-hockey-mistakes',
+];
+
+// Topic-tinted rink-diagram placeholder for guide thumbnails — same generator as
+// static/guides.html's art(rgb, seed), reusing rinkPlaceholder's SVG body/opacity ramp.
+function guideArt(rgb, seed) {
+  const L = (o) => `rgba(${rgb},${o})`;
+  const px = (seed % 2) === 0 ? 150 : 330;
+  const W = 480, H = 320;
+  const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='${W}' height='${H}' viewBox='0 0 ${W} ${H}'>`
+    + `<rect width='${W}' height='${H}' fill='#0E1322'/>`
+    + `<ellipse cx='150' cy='96' rx='300' ry='210' fill='${L(0.08)}'/>`
+    + `<ellipse cx='430' cy='300' rx='260' ry='170' fill='rgba(4,6,10,0.45)'/>`
+    + `<rect x='46' y='40' width='388' height='240' rx='84' fill='none' stroke='${L(0.34)}' stroke-width='2'/>`
+    + `<line x1='188' y1='40' x2='188' y2='280' stroke='${L(0.22)}' stroke-width='2'/>`
+    + `<line x1='292' y1='40' x2='292' y2='280' stroke='${L(0.22)}' stroke-width='2'/>`
+    + `<line x1='240' y1='40' x2='240' y2='280' stroke='${L(0.30)}' stroke-width='2'/>`
+    + `<circle cx='240' cy='160' r='44' fill='none' stroke='${L(0.30)}' stroke-width='2'/>`
+    + `<circle cx='240' cy='160' r='4' fill='${L(0.55)}'/>`
+    + `<circle cx='138' cy='108' r='24' fill='none' stroke='${L(0.20)}' stroke-width='1.5'/>`
+    + `<circle cx='138' cy='212' r='24' fill='none' stroke='${L(0.20)}' stroke-width='1.5'/>`
+    + `<circle cx='342' cy='108' r='24' fill='none' stroke='${L(0.20)}' stroke-width='1.5'/>`
+    + `<circle cx='342' cy='212' r='24' fill='none' stroke='${L(0.20)}' stroke-width='1.5'/>`
+    + `<circle cx='${px}' cy='160' r='13' fill='none' stroke='${L(0.4)}' stroke-width='2'/>`
+    + `<circle cx='${px}' cy='160' r='6.5' fill='${L(0.95)}'/>`
+    + `</svg>`;
+  // encodeURIComponent leaves ' unescaped, but the SVG's own attributes use
+  // single quotes — without this, a raw ' inside the data URI prematurely
+  // closes the CSS url('...') string wherever this is used.
+  return 'data:image/svg+xml,' + encodeURIComponent(svg).replace(/'/g, '%27');
 }
 
 function typeInfo(type) {
@@ -353,9 +402,12 @@ class Home {
 
     this.bindNav();
     this.bindMenu();
-    this.renderGuides();
 
-    const rinks = await fetch('/api/rinks').then(r => r.json());
+    const [rinks, guides] = await Promise.all([
+      fetch('/api/rinks').then(r => r.json()),
+      fetch('/api/guides').then(r => r.json()),
+    ]);
+    this.renderGuides(guides);
 
     const count = Math.floor(rinks.length / 50) * 50;
     if (count > 0) {
@@ -470,24 +522,21 @@ class Home {
     el.addEventListener('focusout', resume);
   }
 
-  // ── Starter guides (evergreen — content pending, see CLAUDE.md) ──
-  renderGuides() {
-    const guides = [
-      { title: 'How public skate works', seed: 2 },
-      { title: 'Choosing your first rink', seed: 3 },
-      { title: 'Rink types, explained', seed: 4 },
-      { title: 'What to bring to the rink', seed: 5 },
-    ];
-    document.getElementById('guides-row').innerHTML = guides.map(g => `
-      <a href="#" class="guide-card">
-        <div class="guide-thumb" style="background-image:url('${rinkPlaceholder(g.seed)}');"></div>
+  // ── Starter guides (real Guides content, beginner-path order) ──
+  renderGuides(guides) {
+    const path = GUIDE_PATH_IDS.map(id => guides.find(g => g.id === id)).filter(Boolean).slice(0, 4);
+    document.getElementById('guides-row').innerHTML = path.map(g => {
+      const t = GUIDE_TOPIC_ACCENTS[g.topic] || GUIDE_TOPIC_ACCENTS.start;
+      return `
+      <a href="/guides?slug=${g.id}" class="guide-card">
+        <div class="guide-thumb" style="background-image:url('${guideArt(t.rgb, g.seed)}');"></div>
         <div style="flex:1;min-width:0;">
-          <div class="guide-cat">Basics</div>
+          <div class="guide-cat">${t.name}</div>
           <div class="guide-title">${g.title}</div>
         </div>
         <span class="guide-arrow">→</span>
-      </a>
-    `).join('');
+      </a>`;
+    }).join('');
   }
 
   // ── Featured rinks (from rink DB — stable attributes only) ──

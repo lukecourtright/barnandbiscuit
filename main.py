@@ -25,6 +25,7 @@ ADMIN_EMAILS = {e.strip().lower() for e in os.environ.get("ADMIN_EMAILS", "").sp
 
 RINKS_FILE = pathlib.Path("rinks.json")
 EQUIPMENT_FILE = pathlib.Path("equipment.json")
+GUIDES_FILE = pathlib.Path("guides.json")
 
 DATABASE_URL = os.environ.get("DATABASE_URL", "sqlite:///./dev.db")
 if DATABASE_URL.startswith("postgres://"):
@@ -104,6 +105,34 @@ class EquipmentPriceSnapshot(SQLModel, table=True):
     checkedAt: str = Field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
 
 
+class Guide(SQLModel, table=True):
+    # Content for the Guides how-to library, upserted from guides.json on
+    # startup (same pattern as Rink/Equipment). id is a URL slug rather than
+    # an opaque int, since guides are routed by slug. Only the "101" guide
+    # ships with a populated body/related today — the rest have body: [] and
+    # render as "coming soon" until authored (see static/guides.html).
+    id: str = Field(primary_key=True)
+    topic: str
+    title: str
+    blurb: str
+    level: str = "Beginner"
+    readTime: str
+    seed: int = 0
+    tocIntroLabel: str = ""
+    body: list = Field(default_factory=list, sa_column=Column(JSON))
+    related: list = Field(default_factory=list, sa_column=Column(JSON))
+
+
+class GuideProgress(SQLModel, table=True):
+    # One row per (user, guide) beginner-path completion — powers the
+    # persisted checklist on the Guides landing page.
+    id: Optional[int] = Field(default=None, primary_key=True)
+    userId: int
+    guideId: str
+    completed: bool = True
+    updatedAt: str = Field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
+
+
 class PendingRink(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     submittedAt: str = Field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
@@ -162,6 +191,8 @@ def ensure_new_columns():
         ("equipment", Equipment),
         ("equipmentoffer", EquipmentOffer),
         ("equipmentpricesnapshot", EquipmentPriceSnapshot),
+        ("guide", Guide),
+        ("guideprogress", GuideProgress),
     ):
         if table_name not in existing_tables:
             continue
@@ -195,12 +226,24 @@ def sync_equipment_from_file():
         session.commit()
 
 
+def sync_guides_from_file():
+    guides = json.loads(GUIDES_FILE.read_text(encoding="utf-8"))
+    with Session(engine) as session:
+        for guide in guides:
+            session.merge(Guide(**guide))
+        file_ids = {g["id"] for g in guides}
+        for stale in session.exec(select(Guide).where(Guide.id.not_in(file_ids))).all():
+            session.delete(stale)
+        session.commit()
+
+
 @app.on_event("startup")
 def on_startup():
     SQLModel.metadata.create_all(engine)
     ensure_new_columns()
     sync_rinks_from_file()
     sync_equipment_from_file()
+    sync_guides_from_file()
 
 
 @app.get("/")
@@ -216,6 +259,11 @@ def rink_finder_page():
 @app.get("/equipment")
 def equipment_page():
     return FileResponse("static/equipment.html")
+
+
+@app.get("/guides")
+def guides_page():
+    return FileResponse("static/guides.html")
 
 
 @app.get("/api/rinks")
@@ -264,6 +312,46 @@ def get_equipment():
     with Session(engine) as session:
         products = session.exec(select(Equipment)).all()
         return [serialize_equipment(product, session) for product in products]
+
+
+@app.get("/api/guides")
+def get_guides():
+    with Session(engine) as session:
+        guides = session.exec(select(Guide)).all()
+        return [guide.model_dump() for guide in guides]
+
+
+@app.get("/api/guides/progress")
+def get_guide_progress(request: Request):
+    user_id = request.session.get("user_id")
+    if user_id is None:
+        return {}
+    with Session(engine) as session:
+        rows = session.exec(select(GuideProgress).where(GuideProgress.userId == user_id)).all()
+        return {row.guideId: row.completed for row in rows}
+
+
+@app.post("/api/guides/progress/{guide_id}")
+async def set_guide_progress(guide_id: str, request: Request):
+    user_id = request.session.get("user_id")
+    if user_id is None:
+        raise HTTPException(401, "Sign in to track your progress")
+    body = await request.json()
+    completed = bool(body.get("completed", True))
+    with Session(engine) as session:
+        row = session.exec(
+            select(GuideProgress).where(
+                GuideProgress.userId == user_id, GuideProgress.guideId == guide_id
+            )
+        ).first()
+        if row is None:
+            row = GuideProgress(userId=user_id, guideId=guide_id, completed=completed)
+        else:
+            row.completed = completed
+            row.updatedAt = datetime.now(timezone.utc).isoformat()
+        session.add(row)
+        session.commit()
+    return {"status": "ok", "completed": completed}
 
 
 @app.get("/api/photos/{rink_id}/{photo_idx}")

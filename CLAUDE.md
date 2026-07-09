@@ -36,12 +36,12 @@ Live at `https://rinkcollective.com` (also resolves at `https://www.rinkcollecti
 
 The brand is **RinkCollective** (domain purchased) — "HockeyLifers" was taken, "Barn & Biscuit" was the placeholder used before this rename. The wordmark is written as one solid word, no space — "Rink" in the page's text color, "Collective" in gold (`#FFC83D`) — never split with a space/hyphen or written as two words in copy.
 
-Each of the four static pages (`index.html`, `equipment.html`, `home.html`, `admin.html`) carries its own `<title>` — not shared, update each separately if the name ever changes again. The wordmark itself:
+Each of the five static pages (`index.html`, `equipment.html`, `home.html`, `admin.html`, `guides.html`) carries its own `<title>` — not shared, update each separately if the name ever changes again. The wordmark itself:
 - `static/index.html`: two class fields near the top of `RinkFinder`, `BRAND_INK = 'Rink'` / `BRAND_GOLD = 'Collective'` (plus `BRAND` = their concatenation, used anywhere the plain name is needed in copy). `init()` renders `#nav-wordmark` from `BRAND_INK`/`BRAND_GOLD` directly.
-- `static/home.html`: same `BRAND_INK`/`BRAND_GOLD` pattern as top-level `const`s near the top of its `<script>` (not shared with `index.html` — standalone page).
+- `static/home.html` and `static/guides.html`: same `BRAND_INK`/`BRAND_GOLD` pattern as top-level `const`s near the top of each page's own `<script>` (not shared between pages — each is standalone).
 - `static/equipment.html`: hardcoded wordmark markup in the nav (no JS-driven split) — standalone page, not templated.
 
-The rink-diagram mark (cyan rounded-rect boards, gold center line/face-off circle/dot) is inlined as raw SVG next to the wordmark in the nav of `index.html`, `equipment.html`, and `home.html` (nav bar *and* mobile menu drawer — two copies) — there's no shared partial, so a mark update means touching all of those plus `static/logo/` (`favicon.svg`, `mark-dark.svg`/`mark-light.svg`/`mark-mono.svg`, and the `favicon-{16,32,180,512}.png` rasters, regenerated to match since this repo has no SVG-to-PNG rasterizer as a dependency — see git history for the one-off Pillow script used).
+The rink-diagram mark (cyan rounded-rect boards, gold center line/face-off circle/dot) is inlined as raw SVG next to the wordmark in the nav of `index.html`, `equipment.html`, `home.html`, and `guides.html` (nav bar; `home.html`/`guides.html`'s mobile menu drawer only repeats the text wordmark, not a second copy of the SVG mark) — there's no shared partial, so a mark update means touching all of those plus `static/logo/` (`favicon.svg`, `mark-dark.svg`/`mark-light.svg`/`mark-mono.svg`, and the `favicon-{16,32,180,512}.png` rasters, regenerated to match since this repo has no SVG-to-PNG rasterizer as a dependency — see git history for the one-off Pillow script used).
 
 ---
 
@@ -55,6 +55,7 @@ barnbiscuit/
 ├── rinks.json                 # Curated rink data — source of truth, synced into the DB on startup
 ├── rinks_import_template.csv  # CSV template for bulk-adding rinks (fill in, run import script)
 ├── equipment.json             # Curated gear catalog data — source of truth, synced into the DB on startup
+├── guides.json                 # Guides how-to library content — source of truth, synced into the DB on startup
 ├── scripts/
 │   ├── import_rinks_csv.py         # Merges a filled CSV batch (new rinks) into rinks.json
 │   ├── export_rinks_csv.py         # Dumps all of rinks.json to one CSV for manual review/editing
@@ -72,19 +73,24 @@ barnbiscuit/
     ├── index.html           # Entire frontend SPA (Rink Finder), served at `/rinks`
     ├── equipment.html       # Standalone page — gear catalog/compare/detail-drawer app (affiliate shopping, see Equipment section below)
     ├── admin.html           # Standalone page — review/approve/reject pending user-submitted photos (see ADMIN_EMAILS above)
+    ├── guides.html          # Standalone page — how-to library + beginner-path checklist, served at `/guides` (see Guides section below)
     ├── brand-tokens.css     # CSS custom properties (Neon Night palette)
     └── logo/                # Favicons + SVG marks
 ```
 
 ### Backend (`main.py`)
 
-Data is stored in a database (Postgres in production via Railway addon, local SQLite fallback otherwise) accessed through SQLModel. `rinks.json` remains the human/AI-edited source of truth — on every startup, `SQLModel.metadata.create_all()` creates tables if missing, `ensure_new_columns()` `ALTER TABLE ADD COLUMN`s anything the `Rink`/`Equipment`/`EquipmentOffer`/`EquipmentPriceSnapshot` models have that their *already-existing* tables don't (since `create_all()` only creates missing tables, not missing columns — without this, adding a field to any model crashes startup against a live Postgres table with `UndefinedColumn`; it loops over all four tables so new columns on any are covered), then `sync_rinks_from_file()` and `sync_equipment_from_file()` each upsert (by `id`) every row from their JSON file into the matching table and delete any row whose `id` is no longer in the file. Pushing an updated `rinks.json`/`equipment.json` to `main` (additions, edits, *and* removals) is enough to update production data on the next deploy — and adding a new column to `Rink`/`Equipment` itself is safe to deploy directly, no manual migration step needed. `EquipmentOffer`/`EquipmentPriceSnapshot` are the one exception to this file-is-truth pattern — see Equipment section below.
+Data is stored in a database (Postgres in production via Railway addon, local SQLite fallback otherwise) accessed through SQLModel. `rinks.json` remains the human/AI-edited source of truth — on every startup, `SQLModel.metadata.create_all()` creates tables if missing, `ensure_new_columns()` `ALTER TABLE ADD COLUMN`s anything the `Rink`/`Equipment`/`EquipmentOffer`/`EquipmentPriceSnapshot`/`Guide`/`GuideProgress` models have that their *already-existing* tables don't (since `create_all()` only creates missing tables, not missing columns — without this, adding a field to any model crashes startup against a live Postgres table with `UndefinedColumn`; it loops over all six tables so new columns on any are covered), then `sync_rinks_from_file()`, `sync_equipment_from_file()`, and `sync_guides_from_file()` each upsert (by `id`) every row from their JSON file into the matching table and delete any row whose `id` is no longer in the file. Pushing an updated `rinks.json`/`equipment.json`/`guides.json` to `main` (additions, edits, *and* removals) is enough to update production data on the next deploy — and adding a new column to `Rink`/`Equipment`/`Guide` itself is safe to deploy directly, no manual migration step needed. `EquipmentOffer`/`EquipmentPriceSnapshot` (see Equipment section below) and `GuideProgress` (see Guides section below) are the exceptions to this file-is-truth pattern — they hold data no JSON file owns.
 
 - `GET /` → serves `static/home.html`, the evergreen landing page (see Home Page section below)
 - `GET /rinks` → serves `static/index.html`, the `RinkFinder` SPA (moved off `/` when Home shipped, so the app's own internal links — nav, "Explore rinks", deep links from Home — all point at `/rinks` now)
 - `GET /api/rinks` → queries the `Rink` table, returns all rows as JSON (same shape as before)
 - `GET /equipment` → serves `static/equipment.html`, the gear catalog page (not part of the `RinkFinder` SPA — same standalone-page pattern as `/admin/photos`)
 - `GET /api/equipment` → queries the `Equipment` table, and for each product merges in any matching `EquipmentOffer` rows via `serialize_equipment()` — if a product has zero offers (the common case today), it's served exactly as stored in `equipment.json`; if it has one or more live offers, `retailers`/`priceHistory`/`wasPrice`/`priceIsGood`/`deal`/`note` are computed from those instead, overriding the mock values without mutating them. The catalog is small (~37 rows) so all data ships at once; filtering/sorting/comparing happens client-side, same approach `RinkFinder` uses for the much larger rinks list
+- `GET /guides` → serves `static/guides.html`, the Guides how-to library (not part of the `RinkFinder` SPA — same standalone-page pattern as `/equipment`; see Guides section below)
+- `GET /api/guides` → queries the `Guide` table, returns all rows as JSON (no live-overlay serializer — content has no "live pricing" analog)
+- `GET /api/guides/progress` → returns the signed-in user's beginner-path completion as `{guideId: true, ...}`; returns `{}` (not a 401) when signed out, matching `GET /api/auth/me`'s graceful signed-out shape rather than the hard-401 write-route pattern
+- `POST /api/guides/progress/{guide_id}` → body `{completed: bool}`; upserts a `GuideProgress` row for the signed-in user (401 if signed out)
 - `GET /api/photos/{rink_id}/{photo_idx}` → looks up `rink.photos[photo_idx].ref` (a Google Places photo resource name) and redirects to a freshly-fetched Google-hosted image URL, with a `Cache-Control` header so browsers don't re-hit this (and therefore Google) on every load. Requires `GOOGLE_PLACES_API_KEY`; 404s otherwise or if the rink/index doesn't exist, which the frontend treats as "no real photo" and falls back to placeholders
 - `POST /api/rinks/submit` → inserts community-submitted rinks into the `PendingRink` table (`id`, `submittedAt`, raw `data` JSON blob) — not public until moderated, no validation yet
 - `POST /api/auth/signup`, `POST /api/auth/login`, `POST /api/auth/logout`, `GET /api/auth/me` → email/password auth against the `User` table (`id`, `email`, `passwordHash` (bcrypt), `displayName`, `createdAt`). Login state is a signed, httponly session cookie (Starlette `SessionMiddleware`, see `SECRET_KEY` above) holding `user_id` — no tokens handled in JS.
@@ -146,10 +152,21 @@ The site's front door, served at `GET /` — evergreen landing page for both fir
 - **Hero carousel** — auto-advances every 3.5s through the 5 highest-rated rinks (sorted by `rating` desc, `reviewCount` desc as tiebreaker, computed client-side from `/api/rinks` — no new backend endpoint). Two stacked `.hero-layer` divs cross-fade via an `active` class + CSS opacity transition (`showHero()`) rather than animating `background-image` directly (not something CSS can tween). Pager dots jump to a rink and permanently stop autoplay (`autoplayStopped`); hovering/focusing the carousel pauses autoplay temporarily (resumes on leave/blur, unless already stopped); `prefers-reduced-motion` disables autoplay entirely from the start. Images use a rink's real photo (`/api/photos/{id}/0`) when `rink.photos` is populated, falling back to the same `rinkPlaceholder(seed)` branded SVG generator used in `index.html` (copied in, not shared — standalone page).
 - **Featured rinks** — reuses the same ranked list, taking the *next* 4 rinks after the hero's top 5 (`ranked.slice(5, 9)`) so the two sections don't just repeat each other; each row links to `/rinks?rink={id}` to deep-link straight into that rink's drawer in Rink Finder (see Deep links from Home above).
 - **Rink counts** (hero eyebrow pill, trust row) are computed from the live `/api/rinks` count, floored to the nearest 50 (e.g. "650+ rinks"), rather than hardcoding the design mock's "400+" — avoids the copy silently going stale as `rinks.json` grows.
-- **Guides nav item + "New here? Start with these" strip** — shipped as UI now with real evergreen titles from the design doc, but `#` placeholder links, since no Guides/CMS content or pages exist yet (tracked in Not Yet Implemented below). Added to the nav on `index.html`/`equipment.html` too for consistency.
+- **Guides nav item + "New here? Start with these" strip** — real now: the nav item links to `/guides` (same on `index.html`/`equipment.html`), and the strip (`renderGuides()`) fetches `/api/guides` and shows the first 4 guides in beginner-path order (`GUIDE_PATH_IDS`, kept in sync with `guides.html`'s `PATH_IDS`), each linking to `/guides?slug=<id>` with a topic-tinted thumbnail (`guideArt()` — see Guides section above). "All guides →" links to `/guides`.
 - **"Latest reads" (News) section — intentionally omitted for now**, not just stubbed. The design doc explicitly allows hiding this section until ≥1 real article exists ("falls back gracefully"); since there's no News/CMS backend in this codebase at all, showing fabricated headlines/read-times would misrepresent real content rather than act as a harmless nav stub like Guides. Featured Rinks (see above) fills the slot alone in that row until News is real.
 - **Sign in / Create account** — not duplicated here; both link into Rink Finder's existing auth modal via `?auth=login`/`?auth=signup` query params (see Deep links from Home above). Shown unconditionally regardless of session state, matching the design's pre-personalization intent for v1.
 - **Mobile menu drawer** (`#menu-overlay`/`#menu-panel`, ≤768px) — slide-in from the right, opened by the hamburger button. Implements the production to-dos the design doc flagged as unwired in the prototype: closes on `Esc`, locks `body` scroll while open, and moves focus to the close button on open / hamburger on close (a lightweight trap, not a full focus cycle).
+
+### Guides (`static/guides.html`, `guides.json`)
+
+How-to library aimed at hockey beginners, built from the `design_handoff_guides/` design package. Standalone page at `GET /guides`, sharing only the nav bar and brand tokens with the other pages; own `class Guides { state, setState(partial), render() }` (same blind-full-rebuild pattern as `Equipment`, not `Home`'s ad-hoc-instance-property style), since it needs comparable multi-view/filter state.
+
+- **Three views in one page** (`landing`/`category`/`article` in `this.state.view`, no client-side router): landing has a search-filtered all-guides grid, 5 topic cards, and the **beginner-path checklist** (5 fixed guide ids in editorial order, `PATH_IDS`); category shows one topic's guides with topic-chip switching; article shows the full reading view. Deep-linked via `?slug=<id>` (article) / `?topic=<id>` (category) query params, consumed on init and stripped via `history.replaceState(null, '', '/guides')` — same convention as `index.html`'s `?auth=`/`?rink=` deep links.
+- **Topics are hardcoded, not DB-backed** — 5 fixed topics (Getting Started/Skating/Gear/Rules/Games & Play) with accent colors live in a `TOPICS` JS constant in `guides.html` (and a name+rgb-only subset, `GUIDE_TOPIC_ACCENTS`, duplicated in `home.html` for its guide strip — see Home Page below). Only guide *content* is DB-backed.
+- **Placeholder art** — `art(rgb, seed)` generates a topic-tinted branded rink-diagram SVG data URI, same generator shape as `rinkPlaceholder(seed)`/`guideArt(rgb, seed)` in `home.html` but taking an explicit accent instead of looking one up by seed. **Important:** the SVG's own attributes use single quotes, and `encodeURIComponent` doesn't escape `'` — the generator must `.replace(/'/g, '%27')` after encoding, or a raw `'` survives into the data URI and prematurely closes whichever `url('...')`/`url("...")` CSS wrapper embeds it (this broke silently — cards rendered with no visible art — until fixed; keep the escape if this function is ever copied elsewhere).
+- **Unauthored guides render honestly, not faked** — of the 13 guides in `guides.json`, only "Starting to Play Hockey 101" (`starting-to-play-hockey-101`) has a populated `body`; the other 12 ship with `body: []`. The article view checks `body.length` and shows a "this guide is still being written" panel (no TOC, no fake content) instead of silently substituting another guide's text — a deliberate departure from the design prototype, which faked every article open as the 101 guide.
+- **Beginner-path progress is real, account-backed** — `GuideProgress` (`id`, `userId`, `guideId`, `completed`, `updatedAt`) persists which steps a signed-in user has checked off, via `GET`/`POST /api/guides/progress[/{guide_id}]` above. Toggling while signed out redirects to `/rinks?auth=login` instead of a local auth modal (`guides.html` has none — same convention as `home.html`/`equipment.html`, which link into `index.html`'s auth modal rather than duplicating it).
+- **Mobile drawer** — ported near-verbatim from `home.html`'s trap-lite/Esc/scroll-lock pattern (same CSS/JS shape); the sticky TOC hides at the 768px breakpoint, same as the rest of the article column collapsing to one column.
 
 ### Data (`rinks.json`)
 
@@ -272,6 +289,33 @@ Source of truth for the gear catalog's curated fields, same sync-on-startup trea
 ```
 `deal`/`wasPrice` are omitted (`null`) for products with no active deal. `priceIsGood` drives the sparkline/note color (green "positive signal" vs neutral "Stable price"). Specs are consistent within a category (same label set) so the compare table aligns.
 
+### Data (`guides.json`)
+
+Source of truth for Guides content, same sync-on-startup treatment as `rinks.json`/`equipment.json` (see Backend above): upserted by `id` (a URL slug, unlike `Rink`/`Equipment`'s integer ids) into the `Guide` table, stale rows deleted. Topics are not stored here — they're a hardcoded 5-entry taxonomy in `guides.html` (see Guides section above).
+
+**Schema** (mirrors the `Guide` SQLModel in `main.py`):
+```json
+{
+  "id": "starting-to-play-hockey-101",
+  "topic": "start",
+  "title": "Starting to Play Hockey 101: The Complete Beginner's Guide",
+  "blurb": "The whole journey from never-laced-up to your first stride, in five simple steps.",
+  "level": "Beginner",
+  "readTime": "12 min read",
+  "seed": 1,
+  "tocIntroLabel": "Is hockey for beginners?",
+  "body": [
+    { "type": "p", "text": "..." },
+    { "type": "h2", "id": "sec-1", "text": "1. Get comfortable on the ice" },
+    { "type": "tip", "text": "..." },
+    { "type": "warning", "text": "..." },
+    { "type": "gear-callout", "eyebrow": "Gear checklist", "title": "...", "text": "...", "href": "/equipment" }
+  ],
+  "related": ["hockey-equipment-guide", "essential-hockey-skills-for-beginners", "common-beginner-hockey-mistakes"]
+}
+```
+`body` block `type`s are limited to what the one authored guide actually uses (`p`, `h2`, `tip`, `warning`, `gear-callout`) — no video/gallery block types yet. `tocIntroLabel` becomes the TOC's first entry (pointing at the top of the article); every other TOC entry is derived from `h2` blocks. **12 of the 13 guides ship with `body: []`** (and `related: []`) — real titles/blurbs, no authored reading content yet — and render as "coming soon" in the article view rather than faking content (see Guides section above).
+
 ### Brand System (`static/brand-tokens.css`, `static/logo/`)
 
 - Copied from `C:\Users\lukec\Desktop\SpendTools\design_handoff_brand_system\` — do not edit in place; re-copy from source if the design system is updated
@@ -291,5 +335,5 @@ Source of truth for the gear catalog's curated fields, same sync-on-startup trea
 - Real affiliate program for Equipment — both automated networks are on hold (AvantLink denied the site's application for insufficient traffic/content; Amazon PA-API requires 10 sales in 30 days before granting API access), so real offers currently come in via manual entry (`scripts/add_manual_offers.py`, `network="manual"`) with plain, untagged retailer URLs. Buy/View links in `static/equipment.html` now navigate for real once a product has a live offer (see Live Offers above), but nothing is monetized yet — Sovrn Commerce (formerly VigLink), which needs no traffic review or per-retailer application, is the planned way to auto-monetize those existing links, but the site isn't signed up yet. The affiliate disclosure copy in the detail drawer is still placeholder text pending legal review regardless. Once the site has more real traffic/content (helped by Equipment itself actually working), reapply to AvantLink and revisit Amazon PA-API; other retailers/networks (HockeyMonkey via Rakuten/Pepperjam, Ice Warehouse via Awin) aren't evaluated yet. Matching the same physical product across multiple retailers/networks has no reliable automated path regardless of network — it needs the same hand-reviewed CSV approach these scripts already use.
 - Equipment mobile layout — the catalog/sidebar/compare-table/drawer are desktop-only (matches the design handoff, which explicitly flagged mobile as an unscoped follow-up)
 - "Submit an Event" button (UI only, no backend) — "Write a Review" now has a working session-local composer (see above), just not server-persisted
-- Guides content — the nav item and "New here? Start with these" strip on `static/home.html` link to `#` placeholders; no Guides/CMS pages exist yet. Titles are already written (see Home Page section above), so this just needs actual article pages/routes and real hrefs
+- Guides content — 12 of the 13 guides in `guides.json` have real titles/blurbs but no authored `body` yet (only "Starting to Play Hockey 101" is written); they render as "coming soon" in the article view until content is added (see Guides section above). The TOC's active-section highlight also only updates on click — no scroll-spy/`IntersectionObserver` yet (same to-do as the design handoff flagged).
 - News / "Latest reads" — no CMS or News backend exists at all, so `static/home.html` omits that section entirely rather than showing fabricated headlines (see Home Page section above). Build once there's ≥1 real article to show
