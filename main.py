@@ -205,6 +205,11 @@ def on_startup():
 
 @app.get("/")
 def root():
+    return FileResponse("static/home.html")
+
+
+@app.get("/rinks")
+def rink_finder_page():
     return FileResponse("static/index.html")
 
 

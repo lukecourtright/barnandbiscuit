@@ -88,7 +88,7 @@
 
   <!-- NAV -->
   <nav id="nav">
-    <a href="#" style="display:flex;align-items:center;gap:9px;text-decoration:none;margin-right:28px;flex-shrink:0;">
+    <a href="/" style="display:flex;align-items:center;gap:9px;text-decoration:none;margin-right:28px;flex-shrink:0;">
       <svg width="22" height="22" viewBox="0 0 56 56" fill="none">
         <line x1="6" y1="47" x2="50" y2="47" stroke="#14CFCF" stroke-width="3.5" stroke-linecap="round"/>
         <path d="M9 47 L9 25 L28 11 L47 25 L47 47" stroke="#14CFCF" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -97,9 +97,10 @@
       <span id="nav-wordmark" style="font-family:var(--font-display);font-weight:700;font-size:16px;color:var(--text);letter-spacing:-0.025em;white-space:nowrap;"></span>
     </a>
     <div id="nav-links" style="display:flex;align-items:center;gap:2px;flex:1;">
-      <a href="#" style="padding:5px 11px;font-size:13px;font-weight:500;color:var(--text-faint);text-decoration:none;border-radius:6px;">Home</a>
-      <a href="#" style="padding:5px 11px;font-size:13px;font-weight:600;color:var(--color-primary);text-decoration:none;border-radius:6px;background:rgba(20,207,207,0.08);">Rink Finder</a>
+      <a href="/" style="padding:5px 11px;font-size:13px;font-weight:500;color:var(--text-faint);text-decoration:none;border-radius:6px;">Home</a>
+      <a href="/rinks" style="padding:5px 11px;font-size:13px;font-weight:600;color:var(--color-primary);text-decoration:none;border-radius:6px;background:rgba(20,207,207,0.08);">Rink Finder</a>
       <a href="/equipment" style="padding:5px 11px;font-size:13px;font-weight:500;color:var(--text-faint);text-decoration:none;border-radius:6px;">Equipment</a>
+      <a href="#" style="padding:5px 11px;font-size:13px;font-weight:500;color:var(--text-faint);text-decoration:none;border-radius:6px;">Guides</a>
       <!-- Community temporarily removed from nav in favor of Equipment (affiliate revenue priority) — restore this link when Community ships:
       <a href="#" style="padding:5px 11px;font-size:13px;font-weight:500;color:var(--text-faint);text-decoration:none;border-radius:6px;">Community</a>
       -->
@@ -426,6 +427,14 @@ class RinkFinder {
       if (this.map) setTimeout(() => { try { this.map.invalidateSize(); } catch(e){} }, 150);
     });
     this.setState({ isMobile: window.innerWidth < 768 });
+
+    // Deep-link support for links coming from the Home page (?auth=login|signup, ?rink=<id>)
+    const params = new URLSearchParams(window.location.search);
+    const authMode = params.get('auth');
+    const rinkId = Number(params.get('rink'));
+    if (!this.state.currentUser && (authMode === 'login' || authMode === 'signup')) this.showAuth(authMode);
+    if (rinkId && this.rinks.some(r => r.id === rinkId)) this.selectRink(rinkId);
+    if (authMode || rinkId) history.replaceState(null, '', '/rinks');
   }
 
   bindEvents() {

@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Barn &amp; Biscuit — Home</title>
+<link rel="icon" href="/static/logo/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Hanken+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/brand-tokens.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--bg); }
+  body { font-family: var(--font-body); color: var(--text); }
+  a { text-decoration: none; }
+
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+  /* ── Nav ── */
+  #nav { height: 56px; background: #0E1322; border-bottom: 1px solid var(--border); display: flex; align-items: center; padding: 0 20px; position: sticky; top: 0; z-index: 200; }
+  #nav-links { display: flex; align-items: center; gap: 2px; flex: 1; }
+  .nav-link { padding: 5px 11px; font-size: 13px; font-weight: 500; color: var(--text-faint); border-radius: 6px; }
+  .nav-link:hover { color: var(--text-muted); }
+  .nav-link.active { color: var(--color-primary); font-weight: 600; background: rgba(20,207,207,0.08); }
+  .nav-link.active:hover { color: var(--color-primary); }
+  #nav-signin { font-size: 13px; font-weight: 500; color: var(--text-muted); padding: 5px 6px; }
+  #nav-signin:hover { color: var(--text); }
+  .btn-primary { padding: 6px 14px; background: var(--color-primary); border-radius: 8px; color: var(--on-primary); font-size: 13px; font-weight: 700; white-space: nowrap; display: inline-block; }
+  #hamburger-btn { display: none; align-items: center; justify-content: center; width: 34px; height: 34px; background: transparent; border: 1px solid var(--border); border-radius: 8px; cursor: pointer; }
+
+  /* ── Mobile menu drawer ── */
+  #menu-overlay { position: fixed; inset: 0; z-index: 300; background: rgba(5,7,15,0.6); backdrop-filter: blur(2px); opacity: 0; pointer-events: none; transition: opacity 0.25s ease; }
+  #menu-overlay.open { opacity: 1; pointer-events: auto; }
+  #menu-panel { position: absolute; top: 0; right: 0; height: 100%; width: min(320px, 85vw); background: #0E1322; border-left: 1px solid var(--border); padding: 18px; display: flex; flex-direction: column; gap: 4px; transform: translateX(100%); transition: transform 0.28s ease; box-shadow: -8px 0 32px rgba(0,0,0,0.5); }
+  #menu-overlay.open #menu-panel { transform: translateX(0); }
+  .menu-link { padding: 12px; font-size: 15px; font-weight: 500; color: var(--text); border-radius: 9px; }
+  .menu-link.active { color: var(--color-primary); font-weight: 600; background: rgba(20,207,207,0.08); }
+
+  /* ── Content ── */
+  .wrap { max-width: 1120px; margin: 0 auto; }
+
+  .hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; padding: 56px 40px 48px; align-items: center; }
+  .eyebrow-pill { display: inline-flex; align-items: center; gap: 7px; padding: 5px 12px; background: rgba(20,207,207,0.09); border: 1px solid rgba(20,207,207,0.28); border-radius: 20px; margin-bottom: 20px; }
+  .eyebrow-pill span { font-size: 12px; color: var(--color-primary); font-weight: 600; }
+  h1.hero-h1 { font-family: var(--font-display); font-size: 46px; font-weight: 700; color: var(--text); line-height: 1.08; letter-spacing: -0.03em; margin-bottom: 18px; }
+  .hero-sub { font-size: 16px; color: var(--text-muted); line-height: 1.6; margin-bottom: 26px; max-width: 440px; }
+  .hero-cta { display: flex; flex-direction: row; gap: 12px; margin-bottom: 22px; }
+  .btn-outline { padding: 12px 22px; background: transparent; border: 1px solid var(--border); border-radius: 9px; color: var(--text); font-size: 15px; font-weight: 600; text-align: center; }
+  .btn-hero-primary { padding: 12px 22px; background: var(--color-primary); border-radius: 9px; color: var(--on-primary); font-size: 15px; font-weight: 700; text-align: center; }
+  .trust-row { display: flex; align-items: center; gap: 16px; font-family: var(--font-mono); font-size: 12px; color: var(--text-faint); flex-wrap: wrap; }
+  .trust-row .sep { color: var(--border); }
+
+  .hero-carousel { position: relative; }
+  .hero-img-frame { position: relative; aspect-ratio: 4/3; border-radius: 16px; overflow: hidden; border: 1px solid var(--border); box-shadow: 0 20px 60px rgba(0,0,0,0.5); background: #0E1322; }
+  .hero-layer { position: absolute; inset: 0; background-size: cover; background-position: center; opacity: 0; transition: opacity 0.3s ease; }
+  .hero-layer.active { opacity: 1; }
+  .hero-dots { position: absolute; top: 14px; right: 14px; display: flex; align-items: center; gap: 6px; z-index: 2; }
+  .hero-dot { height: 7px; width: 7px; border-radius: 20px; border: none; padding: 0; cursor: pointer; background: rgba(255,255,255,0.35); transition: width 0.25s, background 0.25s; }
+  .hero-dot.active { width: 22px; background: var(--color-primary); }
+  .hero-info-card { position: absolute; bottom: 16px; left: 16px; right: 16px; background: rgba(14,19,34,0.92); border: 1px solid var(--border); border-radius: 11px; padding: 12px 14px; display: flex; align-items: center; gap: 11px; backdrop-filter: blur(6px); z-index: 2; }
+  .hero-info-thumb { width: 36px; height: 36px; border-radius: 9px; background-size: cover; background-position: center; flex-shrink: 0; }
+  .hero-info-name { font-size: 13px; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .hero-info-meta { font-size: 11px; color: var(--text-muted); }
+  .hero-info-rating { font-size: 11px; color: var(--color-accent); font-weight: 600; flex-shrink: 0; }
+
+  .props-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; padding: 0 40px 44px; }
+  .prop-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 22px; }
+  .prop-icon { width: 40px; height: 40px; border-radius: 10px; background: rgba(20,207,207,0.1); border: 1px solid rgba(20,207,207,0.28); display: flex; align-items: center; justify-content: center; color: var(--color-primary); margin-bottom: 14px; }
+  .prop-title { font-family: var(--font-display); font-size: 16px; font-weight: 600; color: var(--text); margin-bottom: 7px; }
+  .prop-body { font-size: 13.5px; color: var(--text-muted); line-height: 1.55; }
+
+  .guides-band { background: #0E1322; border-top: 1px solid var(--hair); border-bottom: 1px solid var(--hair); }
+  .guides-inner { max-width: 1120px; margin: 0 auto; padding: 24px 40px; }
+  .guides-head { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; }
+  .guides-head span { font-size: 13px; font-weight: 600; color: var(--text); }
+  .guides-head a { font-size: 12.5px; color: var(--color-primary); margin-left: auto; }
+  .guides-head a:hover { color: #14CFCF; }
+  .guides-row { display: flex; flex-direction: row; gap: 14px; }
+  .guide-card { flex: 1; min-width: 0; display: flex; align-items: center; gap: 13px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; }
+  .guide-card:hover { border-color: #3E4A6B; }
+  .guide-thumb { width: 40px; height: 40px; border-radius: 9px; background-size: cover; flex-shrink: 0; }
+  .guide-cat { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-primary); }
+  .guide-title { font-size: 14px; font-weight: 600; color: var(--text); margin-top: 3px; line-height: 1.3; }
+  .guide-arrow { color: var(--neutral-600); flex-shrink: 0; }
+
+  .featured-section { padding: 38px 40px 48px; max-width: 620px; }
+  .section-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 16px; }
+  .section-title { font-family: var(--font-display); font-size: 19px; font-weight: 700; color: var(--text); }
+  .section-head a { font-size: 13px; color: var(--color-primary); }
+  .section-head a:hover { color: #14CFCF; }
+  .featured-list { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+  .featured-row { display: flex; gap: 12px; align-items: center; padding: 13px 14px; border-bottom: 1px solid var(--hair); }
+  .featured-row:last-child { border-bottom: none; }
+  .featured-row:hover { background: rgba(20,207,207,0.02); }
+  .featured-thumb { width: 46px; height: 46px; border-radius: 9px; background-size: cover; background-position: center; flex-shrink: 0; }
+  .featured-name { font-size: 13.5px; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .featured-city { font-size: 11.5px; color: var(--text-faint); }
+  .featured-meta { display: flex; flex-direction: column; align-items: flex-end; gap: 5px; flex-shrink: 0; }
+  .type-badge { padding: 2px 8px; border-radius: 20px; font-size: 10px; font-weight: 600; white-space: nowrap; }
+  .featured-rating { font-size: 11px; color: var(--color-accent); font-weight: 600; }
+
+  .footer-cta { background: linear-gradient(120deg, #0E1322, var(--surface)); border-top: 1px solid var(--hair); }
+  .footer-inner { max-width: 1120px; margin: 0 auto; padding: 44px 40px; display: flex; align-items: center; justify-content: space-between; gap: 22px; }
+  .footer-title { font-family: var(--font-display); font-size: 24px; font-weight: 700; color: var(--text); letter-spacing: -0.01em; margin-bottom: 6px; }
+  .footer-body { font-size: 14.5px; color: var(--text-muted); }
+  .footer-cta .btn-primary { padding: 13px 26px; font-size: 15px; }
+
+  @media (max-width: 768px) {
+    #nav-links, #nav-signin { display: none; }
+    #hamburger-btn { display: flex; }
+
+    .hero-grid { grid-template-columns: 1fr; gap: 28px; padding: 32px 20px 30px; }
+    h1.hero-h1 { font-size: 34px; }
+    .hero-sub { font-size: 15px; }
+    .hero-cta { flex-direction: column; }
+    .hero-cta a { width: 100%; }
+
+    .props-grid { grid-template-columns: 1fr; padding: 0 20px 36px; }
+    .guides-inner { padding: 24px 20px; }
+    .guides-row { flex-direction: column; }
+
+    .featured-section { padding: 32px 20px 40px; max-width: none; }
+    .footer-inner { padding: 36px 20px; flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="/" style="display:flex;align-items:center;gap:9px;margin-right:24px;flex-shrink:0;">
+    <svg width="24" height="24" viewBox="0 0 56 56" fill="none"><line x1="6" y1="47" x2="50" y2="47" stroke="#14CFCF" stroke-width="4" stroke-linecap="round"/><path d="M9 47 L9 25 L28 11 L47 25 L47 47" stroke="#14CFCF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><rect x="18" y="36.5" width="20" height="9.5" rx="4.75" fill="#FFC83D"/></svg>
+    <span id="nav-wordmark" style="font-family:var(--font-display);font-weight:700;font-size:16px;color:var(--text);letter-spacing:-0.025em;white-space:nowrap;"></span>
+  </a>
+  <div id="nav-links">
+    <a href="/" class="nav-link active">Home</a>
+    <a href="/rinks" class="nav-link">Rink Finder</a>
+    <a href="/equipment" class="nav-link">Equipment</a>
+    <a href="#" class="nav-link">Guides</a>
+    <a href="#" class="nav-link">News</a>
+  </div>
+  <div style="display:flex;align-items:center;gap:8px;">
+    <a href="/rinks?auth=login" id="nav-signin">Sign in</a>
+    <a href="/rinks?auth=signup" class="btn-primary">Create account</a>
+    <button id="hamburger-btn" aria-label="Menu" aria-expanded="false">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#B0B8CF" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+  </div>
+</nav>
+
+<!-- MOBILE MENU DRAWER -->
+<div id="menu-overlay">
+  <div id="menu-panel" role="dialog" aria-modal="true" aria-label="Menu">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+      <span style="font-family:var(--font-display);font-weight:700;font-size:15px;color:var(--text);letter-spacing:-0.025em;">Barn<span style="color:#FFC83D;font-weight:500;">&amp;</span>Biscuit</span>
+      <button id="menu-close-btn" aria-label="Close menu" style="display:flex;align-items:center;justify-content:center;width:34px;height:34px;background:transparent;border:1px solid var(--border);border-radius:8px;cursor:pointer;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#B0B8CF" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <a href="/" class="menu-link active">Home</a>
+    <a href="/rinks" class="menu-link">Rink Finder</a>
+    <a href="/equipment" class="menu-link">Equipment</a>
+    <a href="#" class="menu-link">Guides</a>
+    <a href="#" class="menu-link">News</a>
+    <div style="height:1px;background:var(--hair);margin:10px 2px;"></div>
+    <a href="/rinks?auth=login" class="menu-link" style="color:var(--text-muted);">Sign in</a>
+    <a href="/rinks?auth=signup" style="margin-top:4px;padding:13px;text-align:center;background:var(--color-primary);border-radius:9px;color:var(--on-primary);font-size:15px;font-weight:700;">Create account</a>
+  </div>
+</div>
+
+<div class="wrap">
+  <!-- HERO -->
+  <div class="hero-grid">
+    <div>
+      <div class="eyebrow-pill">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#14CFCF" stroke-width="2.2" stroke-linecap="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        <span id="hero-eyebrow">Rinks across North America</span>
+      </div>
+      <h1 class="hero-h1">Find your ice.<br>Know your barn.</h1>
+      <p class="hero-sub">Discover rinks near you, check hours and open skate, and learn the ropes — all in one place, built for people who live at the rink.</p>
+      <div class="hero-cta">
+        <a href="/rinks" class="btn-hero-primary">Explore rinks</a>
+        <a href="/rinks?auth=signup" class="btn-outline">Create free account</a>
+      </div>
+      <div class="trust-row">
+        <span id="hero-trust-count">Hundreds of rinks</span><span class="sep">|</span><span>Free to use</span><span class="sep">|</span><span>No app required</span>
+      </div>
+    </div>
+    <!-- hero carousel: cycles top-rated rinks; stable attributes only, no live data -->
+    <div class="hero-carousel" id="hero-carousel">
+      <div class="hero-img-frame">
+        <div class="hero-layer" id="hero-layer-a"></div>
+        <div class="hero-layer" id="hero-layer-b"></div>
+        <div class="hero-dots" id="hero-dots"></div>
+        <div class="hero-info-card">
+          <div class="hero-info-thumb" id="hero-info-thumb"></div>
+          <div style="flex:1;min-width:0;">
+            <div class="hero-info-name" id="hero-info-name"></div>
+            <div class="hero-info-meta" id="hero-info-meta"></div>
+          </div>
+          <span class="hero-info-rating" id="hero-info-rating"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VALUE PROPS -->
+  <div class="props-grid">
+    <div class="prop-card">
+      <div class="prop-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+      <div class="prop-title">Find your ice</div>
+      <div class="prop-body">Search hundreds of rinks by type, access, and distance. Every sheet within your reach, mapped.</div>
+    </div>
+    <div class="prop-card">
+      <div class="prop-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg></div>
+      <div class="prop-title">Know before you go</div>
+      <div class="prop-body">Hours, open-skate times, amenities, phone, and directions — accurate details before you lace up.</div>
+    </div>
+    <div class="prop-card">
+      <div class="prop-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg></div>
+      <div class="prop-title">Never miss a skate</div>
+      <div class="prop-body">Public skates, learn-to-skate, and drop-in leagues, pulled together so you can just show up.</div>
+    </div>
+  </div>
+</div>
+
+<!-- STARTER GUIDES (evergreen) -->
+<div class="guides-band">
+  <div class="guides-inner">
+    <div class="guides-head">
+      <span>New here? Start with these</span>
+      <a href="#">All guides →</a>
+    </div>
+    <div class="guides-row" id="guides-row"></div>
+  </div>
+</div>
+
+<!-- FEATURED RINKS -->
+<div class="wrap">
+  <div class="featured-section">
+    <div class="section-head">
+      <div class="section-title">Featured rinks</div>
+      <a href="/rinks">Open finder →</a>
+    </div>
+    <div class="featured-list" id="featured-list"></div>
+  </div>
+</div>
+
+<!-- FOOTER CTA -->
+<div class="footer-cta">
+  <div class="footer-inner">
+    <div>
+      <div class="footer-title">Make it your home rink.</div>
+      <div class="footer-body">Follow your barn, save favorites, and keep your rinks, guides, and news in one place.</div>
+    </div>
+    <a href="/rinks?auth=signup" class="btn-primary">Create free account</a>
+  </div>
+</div>
+
+<script>
+const BRAND = 'Barn & Biscuit';
+
+const PLACEHOLDER_ACCENTS = [
+  { line: '20,207,207',  dot: '#14CFCF' },
+  { line: '203,120,255', dot: '#CB78FF' },
+  { line: '52,224,160',  dot: '#34E0A0' },
+  { line: '255,210,77',  dot: '#FFD24D' },
+  { line: '255,107,125', dot: '#FF6B7D' },
+];
+
+// Deterministic branded rink-diagram placeholder — same generator as Rink Finder/Equipment.
+function rinkPlaceholder(seed) {
+  const a = PLACEHOLDER_ACCENTS[((seed % PLACEHOLDER_ACCENTS.length) + PLACEHOLDER_ACCENTS.length) % PLACEHOLDER_ACCENTS.length];
+  const L = (o) => `rgba(${a.line},${o})`;
+  const px = (seed % 2) === 0 ? 150 : 330;
+  const W = 480, H = 320;
+  const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='${W}' height='${H}' viewBox='0 0 ${W} ${H}'>`
+    + `<rect width='${W}' height='${H}' fill='#0E1322'/>`
+    + `<ellipse cx='150' cy='96' rx='300' ry='210' fill='${L(0.07)}'/>`
+    + `<ellipse cx='430' cy='300' rx='260' ry='170' fill='rgba(4,6,10,0.45)'/>`
+    + `<line x1='60' y1='120' x2='420' y2='96' stroke='${L(0.05)}' stroke-width='10'/>`
+    + `<rect x='46' y='40' width='388' height='240' rx='84' fill='none' stroke='${L(0.36)}' stroke-width='2'/>`
+    + `<line x1='92' y1='58' x2='92' y2='262' stroke='${L(0.16)}' stroke-width='1.5'/>`
+    + `<line x1='388' y1='58' x2='388' y2='262' stroke='${L(0.16)}' stroke-width='1.5'/>`
+    + `<line x1='188' y1='40' x2='188' y2='280' stroke='${L(0.22)}' stroke-width='2'/>`
+    + `<line x1='292' y1='40' x2='292' y2='280' stroke='${L(0.22)}' stroke-width='2'/>`
+    + `<line x1='240' y1='40' x2='240' y2='280' stroke='${L(0.30)}' stroke-width='2'/>`
+    + `<circle cx='240' cy='160' r='44' fill='none' stroke='${L(0.30)}' stroke-width='2'/>`
+    + `<circle cx='240' cy='160' r='4' fill='${L(0.55)}'/>`
+    + `<circle cx='138' cy='108' r='26' fill='none' stroke='${L(0.20)}' stroke-width='1.5'/>`
+    + `<circle cx='138' cy='212' r='26' fill='none' stroke='${L(0.20)}' stroke-width='1.5'/>`
+    + `<circle cx='342' cy='108' r='26' fill='none' stroke='${L(0.20)}' stroke-width='1.5'/>`
+    + `<circle cx='342' cy='212' r='26' fill='none' stroke='${L(0.20)}' stroke-width='1.5'/>`
+    + `<path d='M92 140 a20 20 0 0 1 0 40' fill='none' stroke='${L(0.24)}' stroke-width='1.5'/>`
+    + `<path d='M388 140 a20 20 0 0 0 0 40' fill='none' stroke='${L(0.24)}' stroke-width='1.5'/>`
+    + `<circle cx='${px}' cy='160' r='14' fill='none' stroke='${a.dot}' stroke-opacity='0.35' stroke-width='2'/>`
+    + `<circle cx='${px}' cy='160' r='7' fill='${a.dot}'/>`
+    + `</svg>`;
+  return 'data:image/svg+xml,' + encodeURIComponent(svg);
+}
+
+function typeInfo(type) {
+  return ({
+    NHL: { label: 'NHL Size', color: '#14CFCF', bg: 'rgba(20,207,207,0.1)' },
+    OLYMPIC: { label: 'Olympic', color: '#CB78FF', bg: 'rgba(203,120,255,0.1)' },
+    SYNTHETIC: { label: 'Synthetic', color: '#34E0A0', bg: 'rgba(52,224,160,0.1)' },
+    STANDARD: { label: 'Standard', color: '#888FA8', bg: 'rgba(136,143,168,0.1)' },
+  })[type] || { label: type, color: '#888FA8', bg: 'rgba(136,143,168,0.1)' };
+}
+
+// Real rink photos come from a proxy that 404s if GOOGLE_PLACES_API_KEY isn't set (see CLAUDE.md) —
+// probe with a real Image() load so a 404 falls back to the branded placeholder instead of a blank
+// CSS background-image (which has no error event to hook).
+function probeImage(url) {
+  return new Promise(resolve => {
+    const img = new Image();
+    img.onload = () => resolve(true);
+    img.onerror = () => resolve(false);
+    img.src = url;
+  });
+}
+
+async function resolveRinkImage(rink) {
+  if (rink.photos && rink.photos.length) {
+    const url = `/api/photos/${rink.id}/0`;
+    if (await probeImage(url)) return url;
+  }
+  return rinkPlaceholder(rink.id);
+}
+
+class Home {
+  constructor() {
+    this.heroRinks = [];
+    this.heroIdx = 0;
+    this.activeLayer = 'a';
+    this.timer = null;
+    this.autoplayStopped = false;
+    this.reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    this.menuOpen = false;
+    this.imageCache = {};
+  }
+
+  rinkImage(rink) {
+    return this.imageCache[rink.id] || rinkPlaceholder(rink.id);
+  }
+
+  async init() {
+    document.getElementById('nav-wordmark').innerHTML =
+      `${BRAND.split(' ')[0]}&nbsp;<span style="color:var(--color-primary);">${BRAND.split(' ').slice(1).join(' ')}</span>`;
+
+    this.bindNav();
+    this.bindMenu();
+    this.renderGuides();
+
+    const rinks = await fetch('/api/rinks').then(r => r.json());
+
+    const count = Math.floor(rinks.length / 50) * 50;
+    if (count > 0) {
+      document.getElementById('hero-eyebrow').textContent = `${count}+ rinks across North America`;
+      document.getElementById('hero-trust-count').textContent = `${count}+ rinks`;
+    }
+
+    // Top-rated rinks (rating, then review count as tiebreaker) — stable attributes only, no live data.
+    const ranked = [...rinks].sort((a, b) => (b.rating - a.rating) || (b.reviewCount - a.reviewCount));
+    this.heroRinks = ranked.slice(0, 5);
+    const featured = ranked.length > 9 ? ranked.slice(5, 9) : ranked.slice(0, 4);
+
+    const toResolve = [...this.heroRinks, ...featured];
+    const resolved = await Promise.all(toResolve.map(r => resolveRinkImage(r)));
+    toResolve.forEach((r, i) => { this.imageCache[r.id] = resolved[i]; });
+
+    this.renderFeatured(featured);
+    this.renderDots();
+    this.showHero(0, true);
+    this.startAutoplay();
+    this.bindCarouselPause();
+  }
+
+  // ── Nav ──
+  bindNav() {
+    document.getElementById('hamburger-btn').addEventListener('click', () => this.openMenu());
+  }
+
+  bindMenu() {
+    const overlay = document.getElementById('menu-overlay');
+    const panel = document.getElementById('menu-panel');
+    document.getElementById('menu-close-btn').addEventListener('click', () => this.closeMenu());
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) this.closeMenu(); });
+    panel.querySelectorAll('a').forEach(a => a.addEventListener('click', () => this.closeMenu()));
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && this.menuOpen) this.closeMenu();
+    });
+  }
+
+  openMenu() {
+    this.menuOpen = true;
+    document.getElementById('menu-overlay').classList.add('open');
+    document.getElementById('hamburger-btn').setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+    document.getElementById('menu-close-btn').focus();
+  }
+
+  closeMenu() {
+    this.menuOpen = false;
+    document.getElementById('menu-overlay').classList.remove('open');
+    document.getElementById('hamburger-btn').setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+    document.getElementById('hamburger-btn').focus();
+  }
+
+  // ── Hero carousel ──
+  showHero(idx, initial) {
+    this.heroIdx = idx;
+    const rink = this.heroRinks[idx];
+    if (!rink) return;
+    const nextLayer = this.activeLayer === 'a' ? 'b' : 'a';
+    const nextEl = document.getElementById(`hero-layer-${nextLayer}`);
+    const curEl = document.getElementById(`hero-layer-${this.activeLayer}`);
+    nextEl.style.backgroundImage = `url("${this.rinkImage(rink)}")`;
+    if (initial) {
+      nextEl.classList.add('active');
+    } else {
+      requestAnimationFrame(() => {
+        nextEl.classList.add('active');
+        curEl.classList.remove('active');
+      });
+    }
+    this.activeLayer = nextLayer;
+
+    const info = typeInfo(rink.type);
+    document.getElementById('hero-info-thumb').style.backgroundImage = `url("${this.rinkImage(rink)}")`;
+    document.getElementById('hero-info-name').textContent = rink.name;
+    document.getElementById('hero-info-meta').textContent = `${info.label} · ${rink.city}, ${rink.state}`;
+    document.getElementById('hero-info-rating').textContent = `★ ${rink.rating}`;
+    document.querySelectorAll('.hero-dot').forEach((d, i) => d.classList.toggle('active', i === idx));
+  }
+
+  renderDots() {
+    const wrap = document.getElementById('hero-dots');
+    wrap.innerHTML = this.heroRinks.map((_, i) => `<button class="hero-dot" aria-label="Show rink ${i + 1}" data-idx="${i}"></button>`).join('');
+    wrap.querySelectorAll('.hero-dot').forEach(btn => {
+      btn.addEventListener('click', () => {
+        this.autoplayStopped = true;
+        clearInterval(this.timer);
+        this.showHero(Number(btn.dataset.idx), false);
+      });
+    });
+  }
+
+  nextHero() {
+    this.showHero((this.heroIdx + 1) % this.heroRinks.length, false);
+  }
+
+  startAutoplay() {
+    if (this.reducedMotion || this.autoplayStopped || this.heroRinks.length < 2) return;
+    clearInterval(this.timer);
+    this.timer = setInterval(() => this.nextHero(), 3500);
+  }
+
+  bindCarouselPause() {
+    const el = document.getElementById('hero-carousel');
+    const pause = () => clearInterval(this.timer);
+    const resume = () => this.startAutoplay();
+    el.addEventListener('mouseenter', pause);
+    el.addEventListener('mouseleave', resume);
+    el.addEventListener('focusin', pause);
+    el.addEventListener('focusout', resume);
+  }
+
+  // ── Starter guides (evergreen — content pending, see CLAUDE.md) ──
+  renderGuides() {
+    const guides = [
+      { title: 'How public skate works', seed: 2 },
+      { title: 'Choosing your first rink', seed: 3 },
+      { title: 'Rink types, explained', seed: 4 },
+      { title: 'What to bring to the rink', seed: 5 },
+    ];
+    document.getElementById('guides-row').innerHTML = guides.map(g => `
+      <a href="#" class="guide-card">
+        <div class="guide-thumb" style="background-image:url('${rinkPlaceholder(g.seed)}');"></div>
+        <div style="flex:1;min-width:0;">
+          <div class="guide-cat">Basics</div>
+          <div class="guide-title">${g.title}</div>
+        </div>
+        <span class="guide-arrow">→</span>
+      </a>
+    `).join('');
+  }
+
+  // ── Featured rinks (from rink DB — stable attributes only) ──
+  renderFeatured(rinks) {
+    document.getElementById('featured-list').innerHTML = rinks.map(r => {
+      const info = typeInfo(r.type);
+      return `
+        <a href="/rinks?rink=${r.id}" class="featured-row">
+          <div class="featured-thumb" style="background-image:url('${this.rinkImage(r)}');"></div>
+          <div style="flex:1;min-width:0;">
+            <div class="featured-name">${r.name}</div>
+            <div class="featured-city">${r.city}, ${r.state}</div>
+          </div>
+          <div class="featured-meta">
+            <span class="type-badge" style="background:${info.bg};border:1px solid ${info.color}35;color:${info.color};">${info.label}</span>
+            <span class="featured-rating">★ ${r.rating}</span>
+          </div>
+        </a>
+      `;
+    }).join('');
+  }
+}
+
+const app = new Home();
+app.init();
+</script>
+</body>
+</html>

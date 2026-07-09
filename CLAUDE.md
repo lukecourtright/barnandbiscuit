@@ -38,7 +38,7 @@ The brand name is TBD — "HockeyLifers" domain was taken, "Barn & Biscuit" is t
 1. Change `this.BRAND = 'Barn & Biscuit'` near the top of `static/index.html`
 2. Update `<title>` in the same file
 3. That's it for Rink Finder — all wordmark rendering there derives from `this.BRAND`
-4. `static/equipment.html` has its own hardcoded wordmark markup (nav) and `<title>` — it's a standalone page, not driven by `this.BRAND`, so update it separately
+4. `static/equipment.html` and `static/home.html` each have their own hardcoded wordmark markup (nav) and `<title>` — standalone pages, not driven by `this.BRAND`, so update them separately (`home.html` does derive its nav wordmark from a local `BRAND` constant near the top of its `<script>`, same idea, just not shared with `index.html`)
 
 ---
 
@@ -65,7 +65,8 @@ barnbiscuit/
 ├── railway.toml
 ├── run.bat
 └── static/
-    ├── index.html           # Entire frontend SPA (Rink Finder)
+    ├── home.html            # Standalone page — evergreen marketing/landing page, served at `/` (see Home Page section below)
+    ├── index.html           # Entire frontend SPA (Rink Finder), served at `/rinks`
     ├── equipment.html       # Standalone page — gear catalog/compare/detail-drawer app (affiliate shopping, see Equipment section below)
     ├── admin.html           # Standalone page — review/approve/reject pending user-submitted photos (see ADMIN_EMAILS above)
     ├── brand-tokens.css     # CSS custom properties (Neon Night palette)
@@ -76,7 +77,8 @@ barnbiscuit/
 
 Data is stored in a database (Postgres in production via Railway addon, local SQLite fallback otherwise) accessed through SQLModel. `rinks.json` remains the human/AI-edited source of truth — on every startup, `SQLModel.metadata.create_all()` creates tables if missing, `ensure_new_columns()` `ALTER TABLE ADD COLUMN`s anything the `Rink`/`Equipment`/`EquipmentOffer`/`EquipmentPriceSnapshot` models have that their *already-existing* tables don't (since `create_all()` only creates missing tables, not missing columns — without this, adding a field to any model crashes startup against a live Postgres table with `UndefinedColumn`; it loops over all four tables so new columns on any are covered), then `sync_rinks_from_file()` and `sync_equipment_from_file()` each upsert (by `id`) every row from their JSON file into the matching table and delete any row whose `id` is no longer in the file. Pushing an updated `rinks.json`/`equipment.json` to `main` (additions, edits, *and* removals) is enough to update production data on the next deploy — and adding a new column to `Rink`/`Equipment` itself is safe to deploy directly, no manual migration step needed. `EquipmentOffer`/`EquipmentPriceSnapshot` are the one exception to this file-is-truth pattern — see Equipment section below.
 
-- `GET /` → serves `static/index.html`
+- `GET /` → serves `static/home.html`, the evergreen landing page (see Home Page section below)
+- `GET /rinks` → serves `static/index.html`, the `RinkFinder` SPA (moved off `/` when Home shipped, so the app's own internal links — nav, "Explore rinks", deep links from Home — all point at `/rinks` now)
 - `GET /api/rinks` → queries the `Rink` table, returns all rows as JSON (same shape as before)
 - `GET /equipment` → serves `static/equipment.html`, the gear catalog page (not part of the `RinkFinder` SPA — same standalone-page pattern as `/admin/photos`)
 - `GET /api/equipment` → queries the `Equipment` table, and for each product merges in any matching `EquipmentOffer` rows via `serialize_equipment()` — if a product has zero offers (the common case today), it's served exactly as stored in `equipment.json`; if it has one or more live offers, `retailers`/`priceHistory`/`wasPrice`/`priceIsGood`/`deal`/`note` are computed from those instead, overriding the mock values without mutating them. The catalog is small (~37 rows) so all data ships at once; filtering/sorting/comparing happens client-side, same approach `RinkFinder` uses for the much larger rinks list
@@ -129,6 +131,22 @@ Vanilla JS SPA — no bundler, no framework.
 **Responsive breakpoint:** 768px
 - Below: sidebar hidden, nav links hidden, floating Map/List toggle, full-screen list overlay (`#mobile-list`)
 - Above: 355px sidebar, 400px detail drawer
+
+**Deep links from Home** — `init()` reads `?auth=login|signup` and `?rink=<id>` off the URL on load (after `this.rinks` is fetched), calls `showAuth()`/`selectRink()` accordingly, then strips them via `history.replaceState(null, '', '/rinks')` so a refresh doesn't re-trigger them. This is how `static/home.html`'s Sign in/Create account links and Featured Rinks/hero-carousel rink links reuse the real auth modal and drawer instead of duplicating either.
+
+### Home Page (`static/home.html`)
+
+The site's front door, served at `GET /` — evergreen landing page for both first-time visitors and returning regulars, built from the "Barn & Biscuit — Home" design handoff (`design_handoff_home/` package). Standalone page (own top-level `class Home`, own `<script>`, same pattern as `equipment.html`), sharing only the nav bar visual language and brand tokens with Rink Finder/Equipment — not part of the `RinkFinder` SPA.
+
+**Deliberately evergreen, no personalization yet** — everything on the page is either static copy or derived from data already in the `Rink` table; there is no feed/check-in/events pipeline behind it (matches the design doc's stated intent). Rink Finder itself moved off `/` to `/rinks` when this shipped — see Backend above.
+
+- **Hero carousel** — auto-advances every 3.5s through the 5 highest-rated rinks (sorted by `rating` desc, `reviewCount` desc as tiebreaker, computed client-side from `/api/rinks` — no new backend endpoint). Two stacked `.hero-layer` divs cross-fade via an `active` class + CSS opacity transition (`showHero()`) rather than animating `background-image` directly (not something CSS can tween). Pager dots jump to a rink and permanently stop autoplay (`autoplayStopped`); hovering/focusing the carousel pauses autoplay temporarily (resumes on leave/blur, unless already stopped); `prefers-reduced-motion` disables autoplay entirely from the start. Images use a rink's real photo (`/api/photos/{id}/0`) when `rink.photos` is populated, falling back to the same `rinkPlaceholder(seed)` branded SVG generator used in `index.html` (copied in, not shared — standalone page).
+- **Featured rinks** — reuses the same ranked list, taking the *next* 4 rinks after the hero's top 5 (`ranked.slice(5, 9)`) so the two sections don't just repeat each other; each row links to `/rinks?rink={id}` to deep-link straight into that rink's drawer in Rink Finder (see Deep links from Home above).
+- **Rink counts** (hero eyebrow pill, trust row) are computed from the live `/api/rinks` count, floored to the nearest 50 (e.g. "650+ rinks"), rather than hardcoding the design mock's "400+" — avoids the copy silently going stale as `rinks.json` grows.
+- **Guides nav item + "New here? Start with these" strip** — shipped as UI now with real evergreen titles from the design doc, but `#` placeholder links, since no Guides/CMS content or pages exist yet (tracked in Not Yet Implemented below). Added to the nav on `index.html`/`equipment.html` too for consistency.
+- **"Latest reads" (News) section — intentionally omitted for now**, not just stubbed. The design doc explicitly allows hiding this section until ≥1 real article exists ("falls back gracefully"); since there's no News/CMS backend in this codebase at all, showing fabricated headlines/read-times would misrepresent real content rather than act as a harmless nav stub like Guides. Featured Rinks (see above) fills the slot alone in that row until News is real.
+- **Sign in / Create account** — not duplicated here; both link into Rink Finder's existing auth modal via `?auth=login`/`?auth=signup` query params (see Deep links from Home above). Shown unconditionally regardless of session state, matching the design's pre-personalization intent for v1.
+- **Mobile menu drawer** (`#menu-overlay`/`#menu-panel`, ≤768px) — slide-in from the right, opened by the hamburger button. Implements the production to-dos the design doc flagged as unwired in the prototype: closes on `Esc`, locks `body` scroll while open, and moves focus to the close button on open / hamburger on close (a lightweight trap, not a full focus cycle).
 
 ### Data (`rinks.json`)
 
@@ -270,3 +288,5 @@ Source of truth for the gear catalog's curated fields, same sync-on-startup trea
 - Real affiliate program for Equipment — both automated networks are on hold (AvantLink denied the site's application for insufficient traffic/content; Amazon PA-API requires 10 sales in 30 days before granting API access), so real offers currently come in via manual entry (`scripts/add_manual_offers.py`, `network="manual"`) with plain, untagged retailer URLs. Buy/View links in `static/equipment.html` now navigate for real once a product has a live offer (see Live Offers above), but nothing is monetized yet — Sovrn Commerce (formerly VigLink), which needs no traffic review or per-retailer application, is the planned way to auto-monetize those existing links, but the site isn't signed up yet. The affiliate disclosure copy in the detail drawer is still placeholder text pending legal review regardless. Once the site has more real traffic/content (helped by Equipment itself actually working), reapply to AvantLink and revisit Amazon PA-API; other retailers/networks (HockeyMonkey via Rakuten/Pepperjam, Ice Warehouse via Awin) aren't evaluated yet. Matching the same physical product across multiple retailers/networks has no reliable automated path regardless of network — it needs the same hand-reviewed CSV approach these scripts already use.
 - Equipment mobile layout — the catalog/sidebar/compare-table/drawer are desktop-only (matches the design handoff, which explicitly flagged mobile as an unscoped follow-up)
 - "Submit an Event" button (UI only, no backend) — "Write a Review" now has a working session-local composer (see above), just not server-persisted
+- Guides content — the nav item and "New here? Start with these" strip on `static/home.html` link to `#` placeholders; no Guides/CMS pages exist yet. Titles are already written (see Home Page section above), so this just needs actual article pages/routes and real hrefs
+- News / "Latest reads" — no CMS or News backend exists at all, so `static/home.html` omits that section entirely rather than showing fabricated headlines (see Home Page section above). Build once there's ≥1 real article to show
