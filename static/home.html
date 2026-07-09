@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Barn &amp; Biscuit — Home</title>
+<title>RinkCollective — Home</title>
 <link rel="icon" href="/static/logo/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Hanken+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -131,7 +131,7 @@
 <!-- NAV -->
 <nav id="nav">
   <a href="/" style="display:flex;align-items:center;gap:9px;margin-right:24px;flex-shrink:0;">
-    <svg width="24" height="24" viewBox="0 0 56 56" fill="none"><line x1="6" y1="47" x2="50" y2="47" stroke="#14CFCF" stroke-width="4" stroke-linecap="round"/><path d="M9 47 L9 25 L28 11 L47 25 L47 47" stroke="#14CFCF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><rect x="18" y="36.5" width="20" height="9.5" rx="4.75" fill="#FFC83D"/></svg>
+    <svg width="24" height="18" viewBox="0 0 80 60" fill="none"><rect x="5" y="5" width="70" height="50" rx="24" stroke="#14CFCF" stroke-width="4"/><line x1="40" y1="5" x2="40" y2="55" stroke="#FFC83D" stroke-width="3" stroke-linecap="round"/><circle cx="40" cy="30" r="9" stroke="#FFC83D" stroke-width="3"/><circle cx="40" cy="30" r="3.2" fill="#FFC83D"/></svg>
     <span id="nav-wordmark" style="font-family:var(--font-display);font-weight:700;font-size:16px;color:var(--text);letter-spacing:-0.025em;white-space:nowrap;"></span>
   </a>
   <div id="nav-links">
@@ -154,7 +154,7 @@
 <div id="menu-overlay">
   <div id="menu-panel" role="dialog" aria-modal="true" aria-label="Menu">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
-      <span style="font-family:var(--font-display);font-weight:700;font-size:15px;color:var(--text);letter-spacing:-0.025em;">Barn<span style="color:#FFC83D;font-weight:500;">&amp;</span>Biscuit</span>
+      <span style="font-family:var(--font-display);font-weight:700;font-size:15px;color:var(--text);letter-spacing:-0.025em;">Rink<span style="color:#FFC83D;">Collective</span></span>
       <button id="menu-close-btn" aria-label="Close menu" style="display:flex;align-items:center;justify-content:center;width:34px;height:34px;background:transparent;border:1px solid var(--border);border-radius:8px;cursor:pointer;">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#B0B8CF" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
       </button>
@@ -260,7 +260,8 @@
 </div>
 
 <script>
-const BRAND = 'Barn & Biscuit';
+const BRAND_INK = 'Rink';
+const BRAND_GOLD = 'Collective';
 
 const PLACEHOLDER_ACCENTS = [
   { line: '20,207,207',  dot: '#14CFCF' },
@@ -348,7 +349,7 @@ class Home {
 
   async init() {
     document.getElementById('nav-wordmark').innerHTML =
-      `${BRAND.split(' ')[0]}&nbsp;<span style="color:var(--color-primary);">${BRAND.split(' ').slice(1).join(' ')}</span>`;
+      `${BRAND_INK}<span style="color:#FFC83D;">${BRAND_GOLD}</span>`;
 
     this.bindNav();
     this.bindMenu();

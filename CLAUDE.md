@@ -20,7 +20,7 @@ pip install -r requirements.txt
 
 ## Deployment
 
-Live at `https://barnandbiscuit-production.up.railway.app`. GitHub repo: `github.com/lukecourtright/barnandbiscuit`. Deploys to Railway via `railway.toml`, auto-deploying on push to `main`. The Postgres addon is linked to the web service.
+Live at `https://rinkcollective.com` (also resolves at `https://www.rinkcollective.com` and the underlying `https://rinkcollective-production.up.railway.app`). GitHub repo: `github.com/lukecourtright/rinkcollective`. Deploys to Railway via `railway.toml`, auto-deploying on push to `main`. The Postgres addon is linked to the web service.
 
 `DATABASE_URL` — Postgres connection string, auto-injected by the Railway Postgres addon. Not required locally: if unset, the app falls back to a local `dev.db` SQLite file (gitignored).
 
@@ -34,11 +34,14 @@ Live at `https://barnandbiscuit-production.up.railway.app`. GitHub repo: `github
 
 ## Brand Name
 
-The brand name is TBD — "HockeyLifers" domain was taken, "Barn & Biscuit" is the current placeholder. To rename:
-1. Change `this.BRAND = 'Barn & Biscuit'` near the top of `static/index.html`
-2. Update `<title>` in the same file
-3. That's it for Rink Finder — all wordmark rendering there derives from `this.BRAND`
-4. `static/equipment.html` and `static/home.html` each have their own hardcoded wordmark markup (nav) and `<title>` — standalone pages, not driven by `this.BRAND`, so update them separately (`home.html` does derive its nav wordmark from a local `BRAND` constant near the top of its `<script>`, same idea, just not shared with `index.html`)
+The brand is **RinkCollective** (domain purchased) — "HockeyLifers" was taken, "Barn & Biscuit" was the placeholder used before this rename. The wordmark is written as one solid word, no space — "Rink" in the page's text color, "Collective" in gold (`#FFC83D`) — never split with a space/hyphen or written as two words in copy.
+
+Each of the four static pages (`index.html`, `equipment.html`, `home.html`, `admin.html`) carries its own `<title>` — not shared, update each separately if the name ever changes again. The wordmark itself:
+- `static/index.html`: two class fields near the top of `RinkFinder`, `BRAND_INK = 'Rink'` / `BRAND_GOLD = 'Collective'` (plus `BRAND` = their concatenation, used anywhere the plain name is needed in copy). `init()` renders `#nav-wordmark` from `BRAND_INK`/`BRAND_GOLD` directly.
+- `static/home.html`: same `BRAND_INK`/`BRAND_GOLD` pattern as top-level `const`s near the top of its `<script>` (not shared with `index.html` — standalone page).
+- `static/equipment.html`: hardcoded wordmark markup in the nav (no JS-driven split) — standalone page, not templated.
+
+The rink-diagram mark (cyan rounded-rect boards, gold center line/face-off circle/dot) is inlined as raw SVG next to the wordmark in the nav of `index.html`, `equipment.html`, and `home.html` (nav bar *and* mobile menu drawer — two copies) — there's no shared partial, so a mark update means touching all of those plus `static/logo/` (`favicon.svg`, `mark-dark.svg`/`mark-light.svg`/`mark-mono.svg`, and the `favicon-{16,32,180,512}.png` rasters, regenerated to match since this repo has no SVG-to-PNG rasterizer as a dependency — see git history for the one-off Pillow script used).
 
 ---
 
@@ -217,7 +220,7 @@ Source of truth for rink data — edit by hand to add/remove/update. Synced into
 
 ### Equipment (`static/equipment.html`, `equipment.json`)
 
-Full-screen gear catalog/comparison app — Barn & Biscuit's second feature alongside Rink Finder, and its first revenue path (affiliate shopping links). Standalone page at `GET /equipment`, sharing only the nav bar and brand tokens with Rink Finder; it has its own `class Equipment { state, setState(), render() }` (same pattern as `RinkFinder`, not the thin `admin.html` template-string style) because its UI — filters, sort, a multi-select compare tray, a compare overlay, a detail drawer — is comparably complex.
+Full-screen gear catalog/comparison app — RinkCollective's second feature alongside Rink Finder, and its first revenue path (affiliate shopping links). Standalone page at `GET /equipment`, sharing only the nav bar and brand tokens with Rink Finder; it has its own `class Equipment { state, setState(), render() }` (same pattern as `RinkFinder`, not the thin `admin.html` template-string style) because its UI — filters, sort, a multi-select compare tray, a compare overlay, a detail drawer — is comparably complex.
 
 - **State** (`this.state` in `static/equipment.html`): `products` (fetched from `/api/equipment` on init), `category`, `search`, `brands` (checked filters), `maxPrice`, `minRating`, `sort`, `compare` (selected product ids, max 4), `compareOpen`, `detailId`.
 - **Sidebar** — 10 fixed categories (Skates, Sticks, Helmets, Gloves, Shoulder pads, Elbow pads, Shin guards, Pants, Bags, Goalie gear) each with a live product count; brand checkboxes generated per-category; a max-price slider bounded by that category's cheapest/priciest product; min-rating pills. Selecting a category resets brand/price/rating filters and clears the compare tray (`selectCategory()`) — compare is intentionally single-category.

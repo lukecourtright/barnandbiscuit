@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Barn &amp; Biscuit — Equipment</title>
+<title>RinkCollective — Equipment</title>
 <link rel="icon" href="/static/logo/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Hanken+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -95,12 +95,13 @@
   <!-- NAV -->
   <nav id="nav">
     <a href="/" style="display:flex;align-items:center;gap:9px;text-decoration:none;margin-right:28px;flex-shrink:0;">
-      <svg width="22" height="22" viewBox="0 0 56 56" fill="none">
-        <line x1="6" y1="47" x2="50" y2="47" stroke="#14CFCF" stroke-width="3.5" stroke-linecap="round"/>
-        <path d="M9 47 L9 25 L28 11 L47 25 L47 47" stroke="#14CFCF" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
-        <rect x="18" y="36.5" width="20" height="9.5" rx="4.75" fill="#FFC83D"/>
+      <svg width="24" height="18" viewBox="0 0 80 60" fill="none">
+        <rect x="5" y="5" width="70" height="50" rx="24" stroke="#14CFCF" stroke-width="4"/>
+        <line x1="40" y1="5" x2="40" y2="55" stroke="#FFC83D" stroke-width="3" stroke-linecap="round"/>
+        <circle cx="40" cy="30" r="9" stroke="#FFC83D" stroke-width="3"/>
+        <circle cx="40" cy="30" r="3.2" fill="#FFC83D"/>
       </svg>
-      <span style="font-family:var(--font-display);font-weight:700;font-size:16px;color:var(--text);letter-spacing:-0.025em;white-space:nowrap;">Barn<span style="color:#FFC83D;font-weight:500;">&amp;</span>Biscuit</span>
+      <span style="font-family:var(--font-display);font-weight:700;font-size:16px;color:var(--text);letter-spacing:-0.025em;white-space:nowrap;">Rink<span style="color:#FFC83D;">Collective</span></span>
     </a>
     <div style="display:flex;align-items:center;gap:2px;flex:1;">
       <a href="/" style="padding:5px 11px;font-size:13px;font-weight:500;color:var(--text-faint);text-decoration:none;border-radius:6px;">Home</a>
@@ -585,7 +586,7 @@ class Equipment {
             <div style="margin-bottom:12px;">${this.sparkline(p.priceHistory, 90, 30, p.priceIsGood ? '#34E0A0' : '#656C84')}</div>
             <a class="buy-btn" style="width:100%;margin-bottom:10px;" href="${bestRet.url}" target="_blank" rel="noopener sponsored" onclick="app.buyClick(event)">Buy at ${bestRet.name} <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M7 7h10v10"/></svg></a>
             ${retailerRows}
-            <div style="font-size:10px;color:var(--neutral-700);margin-top:8px;line-height:1.5;">Barn &amp; Biscuit earns a commission on purchases made through these links, at no extra cost to you. Prices updated daily.</div>
+            <div style="font-size:10px;color:var(--neutral-700);margin-top:8px;line-height:1.5;">RinkCollective earns a commission on purchases made through these links, at no extra cost to you. Prices updated daily.</div>
           </div>
           <button class="compare-toggle ${inCompare ? 'active' : ''}" style="width:100%;margin-bottom:16px;" onclick="app.toggleCompare(${p.id}, event)">${inCompare ? '✓ In compare' : '＋ Add to Compare'}</button>
 

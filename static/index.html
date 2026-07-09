@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Barn &amp; Biscuit — Rink Finder</title>
+<title>RinkCollective — Rink Finder</title>
 <link rel="icon" href="/static/logo/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Hanken+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -89,10 +89,11 @@
   <!-- NAV -->
   <nav id="nav">
     <a href="/" style="display:flex;align-items:center;gap:9px;text-decoration:none;margin-right:28px;flex-shrink:0;">
-      <svg width="22" height="22" viewBox="0 0 56 56" fill="none">
-        <line x1="6" y1="47" x2="50" y2="47" stroke="#14CFCF" stroke-width="3.5" stroke-linecap="round"/>
-        <path d="M9 47 L9 25 L28 11 L47 25 L47 47" stroke="#14CFCF" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
-        <rect x="18" y="36.5" width="20" height="9.5" rx="4.75" fill="#FFC83D"/>
+      <svg width="24" height="18" viewBox="0 0 80 60" fill="none">
+        <rect x="5" y="5" width="70" height="50" rx="24" stroke="#14CFCF" stroke-width="4"/>
+        <line x1="40" y1="5" x2="40" y2="55" stroke="#FFC83D" stroke-width="3" stroke-linecap="round"/>
+        <circle cx="40" cy="30" r="9" stroke="#FFC83D" stroke-width="3"/>
+        <circle cx="40" cy="30" r="3.2" fill="#FFC83D"/>
       </svg>
       <span id="nav-wordmark" style="font-family:var(--font-display);font-weight:700;font-size:16px;color:var(--text);letter-spacing:-0.025em;white-space:nowrap;"></span>
     </a>
@@ -326,7 +327,7 @@
 <div id="modal-auth" style="display:none;" class="modal-overlay">
   <div class="modal-card" style="max-width:380px;">
     <div id="auth-title" style="font-family:var(--font-display);font-size:18px;font-weight:700;color:var(--text);margin-bottom:4px;">Sign In</div>
-    <div id="auth-subtitle" style="font-size:13px;color:var(--text-faint);margin-bottom:20px;">Welcome back to Barn & Biscuit</div>
+    <div id="auth-subtitle" style="font-size:13px;color:var(--text-faint);margin-bottom:20px;">Welcome back to RinkCollective</div>
     <form id="auth-form" style="display:flex;flex-direction:column;gap:12px;margin-bottom:8px;">
       <div id="auth-displayname-field" style="display:none;">
         <label style="font-size:10px;font-weight:600;color:var(--neutral-700);text-transform:uppercase;letter-spacing:0.09em;display:block;margin-bottom:5px;">Display Name</label>
@@ -352,7 +353,9 @@
 
 <script>
 class RinkFinder {
-  BRAND = 'Barn & Biscuit';
+  BRAND_INK = 'Rink';
+  BRAND_GOLD = 'Collective';
+  BRAND = this.BRAND_INK + this.BRAND_GOLD;
   BASE_PHOTO_COUNT = 4;
   FEED_NAMES = ['Jordan','Sam','Casey','Morgan','Riley','Taylor','Avery','Quinn','Drew','Reese'];
   FEED_COLORS = ['#14CFCF', '#CB78FF', '#34E0A0', '#FFD24D'];
@@ -405,7 +408,7 @@ class RinkFinder {
   async init() {
     // Set brand wordmark
     document.getElementById('nav-wordmark').innerHTML =
-      `${this.BRAND.split(' ')[0]}&nbsp;<span style="color:var(--color-primary);">${this.BRAND.split(' ').slice(1).join(' ')}</span>`;
+      `${this.BRAND_INK}<span style="color:#FFC83D;">${this.BRAND_GOLD}</span>`;
 
     const [rinks, me] = await Promise.all([
       fetch('/api/rinks').then(r => r.json()),
@@ -707,8 +710,8 @@ class RinkFinder {
     const s = this.state;
     document.getElementById('auth-title').textContent = s.authMode === 'signup' ? 'Create Account' : 'Sign In';
     document.getElementById('auth-subtitle').textContent = s.authMode === 'signup'
-      ? 'Join Barn & Biscuit to check in and leave reviews'
-      : 'Welcome back to Barn & Biscuit';
+      ? 'Join RinkCollective to check in and leave reviews'
+      : 'Welcome back to RinkCollective';
     document.getElementById('auth-displayname-field').style.display = s.authMode === 'signup' ? 'block' : 'none';
     const toggle = document.getElementById('auth-toggle');
     toggle.textContent = s.authMode === 'signup' ? 'Already have an account? Sign in' : 'Need an account? Sign up';
@@ -969,7 +972,7 @@ class RinkFinder {
           <div style="font-size:14px;font-weight:600;color:var(--text);text-align:center;">Drag a photo here, or <span style="color:var(--color-primary);">browse</span></div>
           <div style="font-size:12px;color:var(--text-faint);">JPG or PNG · from your device</div>
         </label>
-        <div style="font-size:11px;color:var(--text-faint);line-height:1.5;margin-top:12px;">Photos are shared with the Barn & Biscuit community. Please only upload shots you took yourself.</div>`;
+        <div style="font-size:11px;color:var(--text-faint);line-height:1.5;margin-top:12px;">Photos are shared with the RinkCollective community. Please only upload shots you took yourself.</div>`;
     return `${body}${errorHTML}
       <div style="display:flex;gap:8px;margin-top:20px;">
         <button onclick="app.hideAddPhotoModal()" style="flex:1;padding:10px;background:transparent;border:1px solid var(--border);border-radius:8px;color:var(--text-muted);font-size:14px;font-family:inherit;cursor:pointer;">Cancel</button>
