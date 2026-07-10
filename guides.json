@@ -9,10 +9,10 @@
     "seed": 1,
     "tocIntroLabel": "Is hockey for beginners?",
     "body": [
-      { "type": "p", "text": "Every player who's ever stepped onto the ice started exactly where you are now: a little nervous, a lot excited, and unsure what they actually need. Good news — hockey is far more welcoming than it looks from the stands. This guide walks you through the five things that get you from the sidelines to your first stride." },
-      { "type": "p", "text": "Take it one section at a time. You don't need to master everything before you show up — you just need to start." },
+      { "type": "p", "text": "Every player who's ever stepped onto the ice started exactly where you are now: a little nervous, a lot excited, and unsure what they actually need. Good news: hockey is far more welcoming than it looks from the stands. This guide walks you through the five things that get you from the sidelines to your first stride." },
+      { "type": "p", "text": "Take it one section at a time. You don't need to master everything before you show up. You just need to start." },
       { "type": "h2", "id": "sec-1", "text": "1. Get comfortable on the ice" },
-      { "type": "p", "text": "Before sticks and pucks, there's skating. If you can stand up, glide, and stop, you're already playing hockey — everything else builds on those three things. Spend a few public-skate sessions just getting your balance before you worry about anything fancy." },
+      { "type": "p", "text": "Before sticks and pucks, there's skating. If you can stand up, glide, and stop, you're already playing hockey. Everything else builds on those three things. Spend a few public-skate sessions just getting your balance before you worry about anything fancy." },
       { "type": "p", "text": "Keep your knees bent, your weight slightly forward, and your head up. Falling is part of it for everyone, so wear gloves and don't be shy about grabbing the boards early on." },
       { "type": "tip", "text": "Book a Learn-to-Skate session at your local rink. An hour with a coach beats a month of guessing, and most rinks run beginner blocks on weekends." },
       { "type": "h2", "id": "sec-2", "text": "2. Gather the essential gear" },
@@ -25,7 +25,7 @@
       { "type": "p", "text": "Where you play matters as much as how. Look for drop-in sessions labeled “beginner” or “learn-to-play,” adult learn-to-play leagues, and rinks that run intro clinics. These are full of people exactly like you — not weekend warriors who'll skate circles around a newcomer." },
       { "type": "warning", "text": "Not all “open hockey” is beginner-friendly — some sessions are competitive. Check the skill level in the listing, or call the rink, before you show up." },
       { "type": "h2", "id": "sec-5", "text": "5. Just start playing" },
-      { "type": "p", "text": "This is the one that matters most. You will not feel “ready” — nobody does. Sign up for that beginner session, lace up, and get out there. Every rep on the ice teaches you more than another video ever will, and the hockey community is famously happy to welcome new players." },
+      { "type": "p", "text": "This is the one that matters most. You will not feel “ready.” Nobody does. Sign up for that beginner session, lace up, and get out there. Every rep on the ice teaches you more than another video ever will, and the hockey community is famously happy to welcome new players." },
       { "type": "p", "text": "Show up, have fun, and give yourself permission to be new. That's the whole secret." }
     ],
     "related": ["hockey-equipment-guide", "essential-hockey-skills-for-beginners", "common-beginner-hockey-mistakes"]
