@@ -222,11 +222,15 @@ def ensure_new_columns():
         if table_name not in existing_tables:
             continue
         existing = {col["name"] for col in inspector.get_columns(table_name)}
+        # Quote the table name via the dialect's identifier preparer — "user"
+        # is a reserved word in Postgres (unlike SQLite, which is lenient
+        # about it), so a raw f-string ALTER TABLE user ... fails there.
+        quoted_table = engine.dialect.identifier_preparer.quote(table_name)
         with engine.begin() as conn:
             for column in model.__table__.columns:
                 if column.name not in existing:
                     ddl = CreateColumn(column).compile(dialect=engine.dialect)
-                    conn.execute(text(f"ALTER TABLE {table_name} ADD COLUMN {ddl}"))
+                    conn.execute(text(f"ALTER TABLE {quoted_table} ADD COLUMN {ddl}"))
 
 
 def sync_rinks_from_file():
