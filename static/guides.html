@@ -138,6 +138,9 @@
   .article-hero-img { height: 200px; border-radius: 14px; background-size: cover; background-position: center; border: 1px solid var(--border); margin-bottom: 32px; }
   .article-p { font-size: 16px; color: #C4CBDD; line-height: 1.75; margin-bottom: 18px; }
   .article-h2 { font-family: var(--font-display); font-size: 23px; font-weight: 700; color: var(--text); letter-spacing: -0.01em; margin-top: 34px; margin-bottom: 14px; scroll-margin-top: 80px; }
+  .article-list { list-style: none; margin: 0 0 22px; padding: 0; }
+  .article-list li { position: relative; padding-left: 22px; font-size: 16px; color: #C4CBDD; line-height: 1.7; margin-bottom: 8px; }
+  .article-list li::before { content: ''; position: absolute; left: 2px; top: 10px; width: 6px; height: 6px; border-radius: 50%; background: var(--color-primary); }
   .callout { border-radius: 12px; padding: 15px 16px; margin: 8px 0 22px; }
   .callout-tip { background: rgba(52,224,160,0.06); border: 1px solid rgba(52,224,160,0.25); }
   .callout-warn { background: rgba(255,200,61,0.06); border: 1px solid rgba(255,200,61,0.25); }
@@ -652,6 +655,8 @@ class Guides {
         return `<p class="article-p">${block.text}</p>`;
       case 'h2':
         return `<h2 id="${block.id}" class="article-h2">${block.text}</h2>`;
+      case 'list':
+        return `<ul class="article-list">${block.items.map(item => `<li>${item}</li>`).join('')}</ul>`;
       case 'tip':
         return `<div class="callout callout-tip"><div class="callout-head">${ICON_TIP}<span class="callout-label" style="color:#34E0A0;">Tip</span></div><div class="callout-body">${block.text}</div></div>`;
       case 'warning':
