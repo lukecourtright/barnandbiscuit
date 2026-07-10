@@ -157,7 +157,11 @@ class User(SQLModel, table=True):
     passwordHash: str
     displayName: str
     createdAt: str = Field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
-    loginCount: int = 0
+    # server_default (not just the Python-side default=0) so
+    # ensure_new_columns()'s ALTER TABLE ADD COLUMN can backfill existing
+    # rows — a NOT NULL column added with no DB-level default fails against
+    # a table that already has rows (as production's user table did).
+    loginCount: int = Field(default=0, sa_column_kwargs={"server_default": "0"})
 
 
 class AdminActivity(SQLModel, table=True):
