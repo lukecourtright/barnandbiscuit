@@ -38,8 +38,6 @@
   .nav-item.active { background: rgba(20,207,207,0.1); color: var(--color-primary); font-weight: 600; }
   .nav-item.active .ic { color: var(--color-primary); }
   .nav-badge { margin-left: auto; background: #FFC83D; color: #2A1F00; font-family: var(--font-mono); font-size: 10.5px; font-weight: 700; border-radius: 20px; padding: 1px 7px; }
-  .soon-row { display: flex; align-items: center; gap: 11px; padding: 9px 10px; border-radius: 9px; opacity: 0.5; cursor: not-allowed; }
-  .soon-tag { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.06em; text-transform: uppercase; color: #656C84; border: 1px solid var(--border); border-radius: 5px; padding: 2px 5px; }
   .sb-footer { padding: 12px; border-top: 1px solid var(--hair); display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
   .sb-avatar { width: 34px; height: 34px; border-radius: 9px; background: linear-gradient(135deg,#14CFCF,#07C8C8); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px; color: #06181A; flex-shrink: 0; }
   .sb-logout { width: 34px; height: 34px; border-radius: 8px; background: transparent; border: 1px solid var(--border); color: #888FA8; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
@@ -596,13 +594,7 @@ class Admin {
     }).join('');
     document.getElementById('sb-nav-items').innerHTML = `
       <div class="sb-label">Manage</div>
-      ${navHtml}
-      <div class="sb-label" style="padding-top:16px;">Coming soon</div>
-      <div class="soon-row" title="Rink Admin delegation ships in a later phase">
-        <span class="ic" style="font-size:18px;color:#656C84;display:flex;">${icon('shield')}</span>
-        <span style="flex:1;font-size:13.5px;font-weight:500;color:#888FA8;">Rink Admin roles</span>
-        <span class="soon-tag">soon</span>
-      </div>`;
+      ${navHtml}`;
     document.querySelectorAll('[data-nav]').forEach(btn => {
       btn.addEventListener('click', () => this.setView(btn.dataset.nav));
     });
