@@ -336,7 +336,16 @@
 <div id="modal-auth" style="display:none;" class="modal-overlay">
   <div class="modal-card" style="max-width:380px;">
     <div id="auth-title" style="font-family:var(--font-display);font-size:18px;font-weight:700;color:var(--text);margin-bottom:4px;">Sign In</div>
-    <div id="auth-subtitle" style="font-size:13px;color:var(--text-faint);margin-bottom:20px;">Welcome back to RinkCollective</div>
+    <div id="auth-subtitle" style="font-size:13px;color:var(--text-faint);margin-bottom:16px;">Welcome back to RinkCollective</div>
+    <a href="/api/auth/google/login" style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:10px;background:var(--surface-2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:13px;font-weight:600;font-family:inherit;text-decoration:none;margin-bottom:14px;">
+      <svg width="15" height="15" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.52 12.27c0-.85-.08-1.67-.22-2.45H12v4.64h6.47a5.53 5.53 0 0 1-2.4 3.63v3h3.88c2.27-2.09 3.57-5.17 3.57-8.82Z"/><path fill="#34A853" d="M12 24c3.24 0 5.96-1.07 7.95-2.91l-3.88-3c-1.08.72-2.45 1.15-4.07 1.15-3.13 0-5.78-2.11-6.73-4.96H1.27v3.1A12 12 0 0 0 12 24Z"/><path fill="#FBBC05" d="M5.27 14.28A7.2 7.2 0 0 1 4.89 12c0-.79.14-1.56.38-2.28v-3.1H1.27A12 12 0 0 0 0 12c0 1.94.46 3.77 1.27 5.38l4-3.1Z"/><path fill="#EA4335" d="M12 4.77c1.76 0 3.35.61 4.6 1.8l3.44-3.44C17.95 1.19 15.24 0 12 0A12 12 0 0 0 1.27 6.62l4 3.1C6.22 6.88 8.87 4.77 12 4.77Z"/></svg>
+      Continue with Google
+    </a>
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+      <div style="flex:1;height:1px;background:var(--border);"></div>
+      <span style="font-size:11px;color:var(--text-faint);">or</span>
+      <div style="flex:1;height:1px;background:var(--border);"></div>
+    </div>
     <form id="auth-form" style="display:flex;flex-direction:column;gap:12px;margin-bottom:8px;">
       <div id="auth-firstname-field" style="display:none;">
         <label style="font-size:10px;font-weight:600;color:var(--neutral-700);text-transform:uppercase;letter-spacing:0.09em;display:block;margin-bottom:5px;">First Name</label>
@@ -356,7 +365,18 @@
       </div>
       <div>
         <label style="font-size:10px;font-weight:600;color:var(--neutral-700);text-transform:uppercase;letter-spacing:0.09em;display:block;margin-bottom:5px;">Password</label>
-        <input name="password" type="password" placeholder="••••••••" required style="width:100%;padding:10px 12px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:14px;font-family:inherit;outline:none;">
+        <input name="password" id="auth-password-input" type="password" placeholder="••••••••" required style="width:100%;padding:10px 12px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:14px;font-family:inherit;outline:none;">
+        <div id="auth-password-meter" style="display:none;gap:4px;margin-top:6px;">
+          <div class="pw-meter-bar" style="flex:1;height:3px;border-radius:2px;background:var(--border);"></div>
+          <div class="pw-meter-bar" style="flex:1;height:3px;border-radius:2px;background:var(--border);"></div>
+          <div class="pw-meter-bar" style="flex:1;height:3px;border-radius:2px;background:var(--border);"></div>
+        </div>
+      </div>
+      <div id="auth-consent-field" style="display:none;">
+        <label style="display:flex;align-items:flex-start;gap:8px;font-size:11.5px;color:var(--text-faint);line-height:1.5;cursor:pointer;">
+          <input name="consent" type="checkbox" style="margin-top:2px;flex-shrink:0;">
+          <span>I agree to the <a href="#" onclick="event.stopPropagation()" style="color:var(--color-primary);">Terms of Service</a> and <a href="#" onclick="event.stopPropagation()" style="color:var(--color-primary);">Privacy Policy</a>, and confirm I'm 13 or older.</span>
+        </label>
       </div>
     </form>
     <div id="auth-error" style="display:none;font-size:12px;color:#F16A6A;margin-bottom:12px;"></div>
@@ -401,6 +421,7 @@ class RinkFinder {
     { id: 'coach', label: 'Coach',        desc: 'I coach or instruct' },
   ];
   INTEREST_TAGS = ['Pickup Hockey', 'Youth Leagues', 'Adult Leagues', 'Figure Skating', 'Public Skate', 'Coaching'];
+  NAV_AVATAR_ICON = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>';
   AUTH_CONTEXT_COPY = {
     photo: 'Sign in to share a photo of the ice',
     review: 'Sign in to leave a review',
@@ -445,6 +466,8 @@ class RinkFinder {
     onboardingSaving: false,
     onboardingError: '',
     onboardingToast: false,
+    onboardingAvatarPreviewUrl: null,
+    onboardingAvatarUploading: false,
     showAddPhoto: false,
     photoDraftFile: null,
     photoPreviewUrl: null,
@@ -484,12 +507,20 @@ class RinkFinder {
     this.setState({ isMobile: window.innerWidth < 768 });
 
     // Deep-link support for links coming from the Home page (?auth=login|signup, ?rink=<id>)
+    // and for the Google SSO redirect (?onboarding=1, ?error=google_unavailable).
     const params = new URLSearchParams(window.location.search);
     const authMode = params.get('auth');
     const rinkId = Number(params.get('rink'));
+    const onboarding = params.get('onboarding');
+    const authErrorParam = params.get('error');
     if (!this.state.currentUser && (authMode === 'login' || authMode === 'signup')) this.showAuth(authMode);
+    if (this.state.currentUser && onboarding === '1') this.startOnboarding();
+    if (authErrorParam === 'google_unavailable') {
+      this.showAuth('login');
+      this.setState({ authError: 'Google sign-in isn’t available right now — try email instead.' });
+    }
     if (rinkId && this.rinks.some(r => r.id === rinkId)) this.selectRink(rinkId);
-    if (authMode || rinkId) history.replaceState(null, '', '/rinks');
+    if (authMode || rinkId || onboarding || authErrorParam) history.replaceState(null, '', '/rinks');
   }
 
   bindEvents() {
@@ -512,6 +543,22 @@ class RinkFinder {
     };
     fnInput.addEventListener('input', suggestDisplayName);
     lnInput.addEventListener('input', suggestDisplayName);
+
+    // Auth: password-strength meter — purely advisory, does not change the
+    // 8-char minimum already enforced server-side (and via `required`
+    // below isn't itself a length check). Bars: weak (<10 chars), good
+    // (10+ with a letter and a number), strong (12+ with a symbol too).
+    const pwInput = document.getElementById('auth-password-input');
+    const pwBars = document.querySelectorAll('#auth-password-meter .pw-meter-bar');
+    pwInput.addEventListener('input', () => {
+      const v = pwInput.value;
+      let tier = 0;
+      if (v.length >= 10 && /[a-zA-Z]/.test(v) && /[0-9]/.test(v)) tier = 2;
+      else if (v.length > 0) tier = 1;
+      if (v.length >= 12 && /[a-zA-Z]/.test(v) && /[0-9]/.test(v) && /[^a-zA-Z0-9]/.test(v)) tier = 3;
+      const colors = ['var(--border)', '#F16A6A', '#FFC83D', '#34E0A0'];
+      pwBars.forEach((bar, i) => { bar.style.background = i < tier ? colors[tier] : 'var(--border)'; });
+    });
 
     // Search
     document.getElementById('search-input').addEventListener('input', e => {
@@ -795,6 +842,8 @@ class RinkFinder {
       prev.onboardingInterests !== s.onboardingInterests ||
       prev.onboardingSaving !== s.onboardingSaving ||
       prev.onboardingError !== s.onboardingError ||
+      prev.onboardingAvatarPreviewUrl !== s.onboardingAvatarPreviewUrl ||
+      prev.onboardingAvatarUploading !== s.onboardingAvatarUploading ||
       !prev.showOnboarding
     )) {
       document.getElementById('onboarding-dynamic').innerHTML = this.renderOnboardingModal();
@@ -813,6 +862,8 @@ class RinkFinder {
     document.getElementById('auth-firstname-field').style.display = s.authMode === 'signup' ? 'block' : 'none';
     document.getElementById('auth-lastname-field').style.display = s.authMode === 'signup' ? 'block' : 'none';
     document.getElementById('auth-displayname-field').style.display = s.authMode === 'signup' ? 'block' : 'none';
+    document.getElementById('auth-consent-field').style.display = s.authMode === 'signup' ? 'block' : 'none';
+    document.getElementById('auth-password-meter').style.display = s.authMode === 'signup' ? 'flex' : 'none';
     const toggle = document.getElementById('auth-toggle');
     toggle.textContent = s.authMode === 'signup' ? 'Already have an account? Sign in' : 'Need an account? Sign up';
     toggle.onclick = () => this.toggleAuthMode();
@@ -821,10 +872,22 @@ class RinkFinder {
     errEl.textContent = s.authError;
 
     document.getElementById('nav-username').textContent = s.currentUser ? s.currentUser.displayName : '';
-    document.getElementById('nav-avatar').title = s.currentUser ? s.currentUser.displayName : 'Sign in';
+    const navAvatar = document.getElementById('nav-avatar');
+    navAvatar.title = s.currentUser ? s.currentUser.displayName : 'Sign in';
+    navAvatar.innerHTML = this.avatarInnerHTML(s.currentUser);
     document.getElementById('account-menu').style.display = (s.currentUser && s.accountMenuOpen) ? 'block' : 'none';
     document.getElementById('account-menu-name').textContent = s.currentUser ? s.currentUser.displayName : '';
     document.getElementById('account-menu-admin').style.display = (s.currentUser && s.currentUser.isAdmin) ? 'block' : 'none';
+  }
+
+  // Real photo when set, else an initial-letter fallback — reused by the
+  // nav avatar here (and the identical pattern in equipment.html/home.html/
+  // guides.html's own account-menu template, not shared between pages per
+  // this codebase's existing duplication convention).
+  avatarInnerHTML(currentUser) {
+    if (!currentUser) return this.NAV_AVATAR_ICON;
+    if (currentUser.avatarUrl) return `<img src="${currentUser.avatarUrl}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+    return `<span style="font-size:13px;font-weight:700;color:var(--color-primary);">${this.esc(currentUser.displayName.charAt(0).toUpperCase())}</span>`;
   }
 
   updateChips() {
@@ -1133,14 +1196,54 @@ class RinkFinder {
       const active = s.onboardingInterests.includes(tag);
       return `<span onclick="app.toggleOnboardingInterest('${this.esc(tag)}')" style="padding:8px 14px;border-radius:20px;border:1px solid ${active ? 'var(--color-primary)' : 'var(--border)'};background:${active ? 'rgba(20,207,207,0.12)' : 'transparent'};color:${active ? 'var(--color-primary)' : 'var(--text-muted)'};font-size:12.5px;font-weight:500;cursor:pointer;">${this.esc(tag)}</span>`;
     }).join('');
+    const avatarPreview = s.onboardingAvatarPreviewUrl || s.currentUser?.avatarUrl;
+    const avatarBody = avatarPreview
+      ? `<div style="display:flex;align-items:center;gap:12px;">
+          <div style="width:52px;height:52px;border-radius:50%;background-image:url('${avatarPreview}');background-size:cover;background-position:center;flex-shrink:0;"></div>
+          <div style="font-size:12.5px;color:var(--color-primary);">${s.onboardingAvatarUploading ? 'Uploading…' : '✓ Photo added'}</div>
+        </div>`
+      : `<label class="photo-dropzone" style="padding:14px;"
+          ondragover="event.preventDefault();event.currentTarget.classList.add('drag-over')"
+          ondragleave="event.currentTarget.classList.remove('drag-over')"
+          ondrop="event.preventDefault();event.currentTarget.classList.remove('drag-over');app.handleAvatarFile(event.dataTransfer.files[0])">
+          <input type="file" accept="image/jpeg,image/png" style="display:none;" onchange="app.handleAvatarFile(event.target.files[0])">
+          <div style="font-size:13px;font-weight:600;color:var(--text);text-align:center;">Drag a photo here, or <span style="color:var(--color-primary);">browse</span></div>
+          <div style="font-size:11.5px;color:var(--text-faint);">JPG or PNG · optional, falls back to your initials</div>
+        </label>`;
     return `${header}
       <label style="font-size:10px;font-weight:600;color:var(--neutral-700);text-transform:uppercase;letter-spacing:0.09em;display:block;margin-bottom:8px;">What are you into?</label>
-      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px;">${interestChips}</div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;">${interestChips}</div>
+      <label style="font-size:10px;font-weight:600;color:var(--neutral-700);text-transform:uppercase;letter-spacing:0.09em;display:block;margin-bottom:8px;">Profile Photo</label>
+      ${avatarBody}
       ${errorHTML}
       <div style="display:flex;gap:8px;margin-top:20px;">
         <button onclick="app.skipOnboarding()" style="flex:1;padding:10px;background:transparent;border:1px solid var(--border);border-radius:8px;color:var(--text-muted);font-size:14px;font-family:inherit;cursor:pointer;">Skip for now</button>
         <button onclick="app.finishOnboarding()" ${s.onboardingSaving ? 'disabled' : ''} style="flex:1;padding:10px;background:var(--color-primary);border:none;border-radius:8px;color:#06181A;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;">Finish</button>
       </div>`;
+  }
+
+  async handleAvatarFile(file) {
+    if (!file) return;
+    if (!['image/jpeg', 'image/png'].includes(file.type)) {
+      this.setState({ onboardingError: 'Please choose a JPG or PNG photo.' });
+      return;
+    }
+    const previewUrl = URL.createObjectURL(file);
+    this.setState({ onboardingAvatarPreviewUrl: previewUrl, onboardingAvatarUploading: true, onboardingError: '' });
+    const body = new FormData();
+    body.append('file', file);
+    const res = await fetch('/api/auth/avatar', { method: 'POST', body }).catch(() => null);
+    if (!res || !res.ok) {
+      URL.revokeObjectURL(previewUrl);
+      const err = res ? await res.json().catch(() => ({})) : {};
+      this.setState({
+        onboardingAvatarPreviewUrl: null, onboardingAvatarUploading: false,
+        onboardingError: err.detail || 'Something went wrong uploading that photo — try again.',
+      });
+      return;
+    }
+    const user = await res.json();
+    this.setState({ currentUser: user, onboardingAvatarUploading: false });
   }
 
   filterOnboardingRinks(query) {
@@ -1679,6 +1782,9 @@ class RinkFinder {
   async submitAuth() {
     const form = document.getElementById('auth-form');
     const data = Object.fromEntries(new FormData(form));
+    // FormData omits unchecked checkboxes entirely and yields "on" (not
+    // true) when checked — convert explicitly before JSON-encoding.
+    data.consent = form.querySelector('[name=consent]').checked;
     const isSignup = this.state.authMode === 'signup';
     const endpoint = isSignup ? '/api/auth/signup' : '/api/auth/login';
     const res = await fetch(endpoint, {
@@ -1695,14 +1801,21 @@ class RinkFinder {
     form.reset();
     if (isSignup) {
       // Onboarding runs once, right after a new signup — not on login.
-      this.setState({
-        currentUser: user, showAuth: false, authError: '', authContext: null,
-        showOnboarding: true, onboardingStep: 1,
-        onboardingHomeRinkId: null, onboardingSkillLevel: null, onboardingInterests: [], onboardingError: '',
-      });
+      this.setState({ currentUser: user, showAuth: false, authError: '', authContext: null });
+      this.startOnboarding();
     } else {
       this.setState({ currentUser: user, showAuth: false, authError: '', authContext: null });
     }
+  }
+
+  // Reset + open the onboarding wizard. Called both from submitAuth() (new
+  // email/password signup) and from init() (new Google-SSO signup, which
+  // arrives via a full-page redirect with ?onboarding=1 rather than an XHR).
+  startOnboarding() {
+    this.setState({
+      showOnboarding: true, onboardingStep: 1,
+      onboardingHomeRinkId: null, onboardingSkillLevel: null, onboardingInterests: [], onboardingError: '',
+    });
   }
 
   async logout() {

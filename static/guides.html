@@ -225,7 +225,7 @@
     <div id="nav-account-wrap" style="display:none;position:relative;">
       <div id="nav-account" style="display:flex;align-items:center;gap:6px;cursor:pointer;" onclick="app.toggleAccountMenu(event)">
         <span id="nav-username" style="font-size:12px;font-weight:500;color:var(--text-muted);white-space:nowrap;"></span>
-        <div style="width:30px;height:30px;border-radius:50%;background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--text-faint);flex-shrink:0;">
+        <div id="nav-avatar" style="width:30px;height:30px;border-radius:50%;background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--text-faint);flex-shrink:0;overflow:hidden;">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
         </div>
       </div>
@@ -557,6 +557,11 @@ class Guides {
     document.getElementById('menu-auth-signed-in').style.display = signedIn ? 'block' : 'none';
     if (!signedIn) return;
     document.getElementById('nav-username').textContent = s.currentUser.displayName;
+    // Real photo when set, else an initial-letter fallback — same pattern
+    // as index.html's nav avatar, not shared between pages.
+    document.getElementById('nav-avatar').innerHTML = s.currentUser.avatarUrl
+      ? `<img src="${s.currentUser.avatarUrl}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`
+      : `<span style="font-size:13px;font-weight:700;color:var(--color-primary);">${esc(s.currentUser.displayName.charAt(0).toUpperCase())}</span>`;
     document.getElementById('account-menu').style.display = s.accountMenuOpen ? 'block' : 'none';
     document.getElementById('account-menu-name').textContent = s.currentUser.displayName;
     document.getElementById('account-menu-admin').style.display = s.currentUser.isAdmin ? 'block' : 'none';

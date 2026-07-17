@@ -1,6 +1,7 @@
 import json
 import os
 import pathlib
+import secrets
 from datetime import date, datetime, timedelta, timezone
 from typing import Optional
 
@@ -20,6 +21,14 @@ SECRET_KEY = os.environ.get("SECRET_KEY", "dev-secret-change-in-prod")
 app.add_middleware(SessionMiddleware, secret_key=SECRET_KEY, same_site="lax")
 
 GOOGLE_PLACES_API_KEY = os.environ.get("GOOGLE_PLACES_API_KEY")
+
+# Google Sign-In (Phase 3) — optional, same graceful-degrade convention as
+# GOOGLE_PLACES_API_KEY: not required locally or in prod, the "Continue with
+# Google" flow just redirects back with an error if unset. No redirect-URI
+# env var — it's derived from the incoming request so local/prod both work
+# with no extra config.
+GOOGLE_OAUTH_CLIENT_ID = os.environ.get("GOOGLE_OAUTH_CLIENT_ID")
+GOOGLE_OAUTH_CLIENT_SECRET = os.environ.get("GOOGLE_OAUTH_CLIENT_SECRET")
 
 ADMIN_EMAILS = {e.strip().lower() for e in os.environ.get("ADMIN_EMAILS", "").split(",") if e.strip()}
 
@@ -162,6 +171,11 @@ class User(SQLModel, table=True):
     # rows — a NOT NULL column added with no DB-level default fails against
     # a table that already has rows (as production's user table did).
     loginCount: int = Field(default=0, sa_column_kwargs={"server_default": "0"})
+    # server_default like loginCount above — NOT NULL on a table that
+    # already has rows. "password" for every account created before Google
+    # Sign-In shipped, "google" for accounts created via that flow (their
+    # passwordHash is an unusable random value — see the OAuth callback).
+    authProvider: str = Field(default="password", sa_column_kwargs={"server_default": "password"})
 
     # Private — collected at signup, never returned by any public-facing
     # surface. Only user_public() reads these, and it's called exclusively
@@ -171,7 +185,16 @@ class User(SQLModel, table=True):
     # ALTER TABLE these onto existing rows with no backfill needed.
     firstName: Optional[str] = None
     lastName: Optional[str] = None
-    avatarUrl: Optional[str] = None  # placeholder column — no upload UI yet
+    consentAcceptedAt: Optional[str] = None
+
+    # Real avatar storage (Phase 3) — same LargeBinary-on-the-row pattern as
+    # RinkPhoto.data, no separate table since it's 1:1 with the user. No
+    # moderation queue: an avatar only ever displays next to its own
+    # uploader's name, the same self-attribution trust model as displayName
+    # itself already has. user_public() computes a serving URL from these
+    # rather than storing one directly.
+    avatarData: Optional[bytes] = Field(default=None, sa_column=Column(LargeBinary))
+    avatarContentType: Optional[str] = None
 
     # Onboarding, collected progressively via PATCH /api/auth/onboarding.
     homeRinkId: Optional[int] = None
@@ -297,6 +320,13 @@ def verify_password(password: str, password_hash: str) -> bool:
     return bcrypt.checkpw(password.encode(), password_hash.encode())
 
 
+def suggest_display_name(first_name: str, last_name: str) -> str:
+    # Shared by signup's defensive fallback and the Google callback (which
+    # has no client-side JS to live-suggest one) — "First L." when a last
+    # name is available, just "First" otherwise.
+    return f"{first_name} {last_name[0]}." if last_name else first_name
+
+
 def user_public(user: User) -> dict:
     return {
         "id": user.id,
@@ -304,11 +334,12 @@ def user_public(user: User) -> dict:
         "displayName": user.displayName,
         "firstName": user.firstName,
         "lastName": user.lastName,
-        "avatarUrl": user.avatarUrl,
+        "avatarUrl": f"/api/users/{user.id}/avatar" if user.avatarData else None,
         "homeRinkId": user.homeRinkId,
         "skillLevel": user.skillLevel,
         "interests": user.interests or [],
         "onboardingCompletedAt": user.onboardingCompletedAt,
+        "authProvider": user.authProvider,
         "isAdmin": user.email in ADMIN_EMAILS,
     }
 
@@ -614,6 +645,51 @@ async def upload_rink_photo(
         session.commit()
 
     return {"status": "pending_review"}
+
+
+@app.post("/api/auth/avatar")
+async def upload_avatar(request: Request, file: UploadFile = File(...)):
+    # Same size/type validation as upload_rink_photo above, reusing its
+    # MAX_PHOTO_BYTES/PHOTO_SIGNATURES constants — but no moderation queue:
+    # an avatar only ever displays next to its own uploader's name, so the
+    # same trust model as displayName itself applies.
+    user_id = request.session.get("user_id")
+    if user_id is None:
+        raise HTTPException(401, "Sign in required")
+
+    data = await file.read()
+    if len(data) > MAX_PHOTO_BYTES:
+        raise HTTPException(413, "Photo must be under 8MB")
+
+    content_type = next(
+        (ct for sig, ct in PHOTO_SIGNATURES.items() if data.startswith(sig)), None
+    )
+    if content_type is None:
+        raise HTTPException(400, "Please choose a JPG or PNG photo")
+
+    with Session(engine) as session:
+        user = session.get(User, user_id)
+        if user is None:
+            raise HTTPException(401, "Sign in required")
+        user.avatarData = data
+        user.avatarContentType = content_type
+        session.add(user)
+        session.commit()
+        session.refresh(user)
+        return user_public(user)
+
+
+@app.get("/api/users/{user_id}/avatar")
+def user_avatar_image(user_id: int):
+    with Session(engine) as session:
+        user = session.get(User, user_id)
+        if user is None or not user.avatarData:
+            raise HTTPException(404, "No avatar")
+        return Response(
+            content=user.avatarData,
+            media_type=user.avatarContentType,
+            headers={"Cache-Control": "public, max-age=3600"},
+        )
 
 
 @app.get("/admin")
@@ -1450,15 +1526,20 @@ async def signup(request: Request):
         # Defensive fallback only — the client live-suggests "First L." as
         # the user types and lets them edit it; this just covers a
         # JS-disabled/failed client still submitting the form.
-        displayName = f"{firstName} {lastName[0]}." if lastName else firstName
+        displayName = suggest_display_name(firstName, lastName)
     if not email or not firstName or not displayName or len(password) < 8:
         raise HTTPException(400, "First name, email, display name, and a password of at least 8 characters are required")
+    if not (2 <= len(displayName) <= 30):
+        raise HTTPException(400, "Display name must be between 2 and 30 characters")
+    if body.get("consent") is not True:
+        raise HTTPException(400, "You must agree to the Terms of Service and Privacy Policy to sign up")
     with Session(engine) as session:
         if session.exec(select(User).where(User.email == email)).first():
             raise HTTPException(409, "Email already registered")
         user = User(
             email=email, passwordHash=hash_password(password), displayName=displayName,
             firstName=firstName, lastName=lastName or None, loginCount=1,
+            consentAcceptedAt=datetime.now(timezone.utc).isoformat(),
         )
         session.add(user)
         session.commit()
@@ -1483,6 +1564,87 @@ async def login(request: Request):
         session.commit()
         request.session["user_id"] = user.id
         return user_public(user)
+
+
+@app.get("/api/auth/google/login")
+async def google_login(request: Request):
+    if not GOOGLE_OAUTH_CLIENT_ID:
+        return RedirectResponse("/rinks?auth=login&error=google_unavailable")
+    state = secrets.token_urlsafe(24)
+    request.session["oauth_state"] = state
+    redirect_uri = f"{str(request.base_url).rstrip('/')}/api/auth/google/callback"
+    params = httpx.QueryParams({
+        "client_id": GOOGLE_OAUTH_CLIENT_ID,
+        "redirect_uri": redirect_uri,
+        "response_type": "code",
+        "scope": "openid email profile",
+        "state": state,
+    })
+    return RedirectResponse(f"https://accounts.google.com/o/oauth2/v2/auth?{params}")
+
+
+@app.get("/api/auth/google/callback")
+async def google_callback(request: Request, code: Optional[str] = None, state: Optional[str] = None, error: Optional[str] = None):
+    if error or not GOOGLE_OAUTH_CLIENT_ID or not GOOGLE_OAUTH_CLIENT_SECRET:
+        return RedirectResponse("/rinks?auth=login&error=google_unavailable")
+    expected_state = request.session.pop("oauth_state", None)
+    if not state or not expected_state or state != expected_state or not code:
+        return RedirectResponse("/rinks?auth=login&error=google_unavailable")
+
+    redirect_uri = f"{str(request.base_url).rstrip('/')}/api/auth/google/callback"
+    async with httpx.AsyncClient() as client:
+        token_resp = await client.post("https://oauth2.googleapis.com/token", data={
+            "code": code,
+            "client_id": GOOGLE_OAUTH_CLIENT_ID,
+            "client_secret": GOOGLE_OAUTH_CLIENT_SECRET,
+            "redirect_uri": redirect_uri,
+            "grant_type": "authorization_code",
+        })
+        if token_resp.status_code != 200:
+            return RedirectResponse("/rinks?auth=login&error=google_unavailable")
+        access_token = token_resp.json()["access_token"]
+        userinfo_resp = await client.get(
+            "https://www.googleapis.com/oauth2/v3/userinfo",
+            headers={"Authorization": f"Bearer {access_token}"},
+        )
+        if userinfo_resp.status_code != 200:
+            return RedirectResponse("/rinks?auth=login&error=google_unavailable")
+        info = userinfo_resp.json()
+
+    email = info.get("email", "").strip().lower()
+    if not email:
+        return RedirectResponse("/rinks?auth=login&error=google_unavailable")
+    first_name = info.get("given_name", "").strip() or "Skater"
+    last_name = info.get("family_name", "").strip()
+
+    with Session(engine) as session:
+        user = session.exec(select(User).where(User.email == email)).first()
+        is_new = user is None
+        if user is None:
+            user = User(
+                email=email,
+                # Unusable random password — this account can only sign in
+                # via Google, never via the email/password form.
+                passwordHash=hash_password(secrets.token_urlsafe(32)),
+                displayName=suggest_display_name(first_name, last_name),
+                firstName=first_name,
+                lastName=last_name or None,
+                authProvider="google",
+                loginCount=1,
+                consentAcceptedAt=datetime.now(timezone.utc).isoformat(),
+            )
+            session.add(user)
+        else:
+            user.loginCount += 1
+            session.add(user)
+        session.commit()
+        session.refresh(user)
+        if is_new:
+            log_activity(session, "user", f"{user.displayName} joined")
+            session.commit()
+        request.session["user_id"] = user.id
+
+    return RedirectResponse("/rinks?onboarding=1" if is_new else "/rinks")
 
 
 @app.post("/api/auth/logout")
