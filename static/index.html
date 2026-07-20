@@ -102,7 +102,7 @@
     <div id="nav-links" style="display:flex;align-items:center;gap:2px;flex:1;">
       <a href="/" style="padding:5px 11px;font-size:13px;font-weight:500;color:var(--text-faint);text-decoration:none;border-radius:6px;">Home</a>
       <a href="/rinks" style="padding:5px 11px;font-size:13px;font-weight:600;color:var(--color-primary);text-decoration:none;border-radius:6px;background:rgba(20,207,207,0.08);">Rink Finder</a>
-      <a href="/equipment" style="padding:5px 11px;font-size:13px;font-weight:500;color:var(--text-faint);text-decoration:none;border-radius:6px;">Equipment</a>
+      <a href="/equipment" id="nav-link-equipment" style="display:none;padding:5px 11px;font-size:13px;font-weight:500;color:var(--text-faint);text-decoration:none;border-radius:6px;">Equipment</a>
       <a href="/guides" style="padding:5px 11px;font-size:13px;font-weight:500;color:var(--text-faint);text-decoration:none;border-radius:6px;">Guides</a>
       <!-- Community temporarily removed from nav in favor of Equipment (affiliate revenue priority) — restore this link when Community ships:
       <a href="#" style="padding:5px 11px;font-size:13px;font-weight:500;color:var(--text-faint);text-decoration:none;border-radius:6px;">Community</a>
@@ -871,6 +871,7 @@ class RinkFinder {
     errEl.style.display = s.authError ? 'block' : 'none';
     errEl.textContent = s.authError;
 
+    document.getElementById('nav-link-equipment').style.display = (s.currentUser && s.currentUser.isAdmin) ? 'block' : 'none';
     document.getElementById('nav-username').textContent = s.currentUser ? s.currentUser.displayName : '';
     const navAvatar = document.getElementById('nav-avatar');
     navAvatar.title = s.currentUser ? s.currentUser.displayName : 'Sign in';

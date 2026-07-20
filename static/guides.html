@@ -214,7 +214,7 @@
   <div id="nav-links">
     <a href="/" class="nav-link">Home</a>
     <a href="/rinks" class="nav-link">Rink Finder</a>
-    <a href="/equipment" class="nav-link">Equipment</a>
+    <a href="/equipment" id="nav-link-equipment" class="nav-link" style="display:none;">Equipment</a>
     <a href="/guides" class="nav-link active">Guides</a>
   </div>
   <div style="display:flex;align-items:center;gap:8px;">
@@ -252,7 +252,7 @@
     </div>
     <a href="/" class="menu-link">Home</a>
     <a href="/rinks" class="menu-link">Rink Finder</a>
-    <a href="/equipment" class="menu-link">Equipment</a>
+    <a href="/equipment" id="menu-link-equipment" class="menu-link" style="display:none;">Equipment</a>
     <a href="/guides" class="menu-link active">Guides</a>
     <div style="height:1px;background:var(--hair);margin:10px 2px;"></div>
     <div id="menu-auth-signed-out">
@@ -551,6 +551,9 @@ class Guides {
   renderAccountNav() {
     const s = this.state;
     const signedIn = !!s.currentUser;
+    const isAdmin = signedIn && s.currentUser.isAdmin;
+    document.getElementById('nav-link-equipment').style.display = isAdmin ? 'block' : 'none';
+    document.getElementById('menu-link-equipment').style.display = isAdmin ? 'block' : 'none';
     document.getElementById('nav-auth-links').style.display = signedIn ? 'none' : 'flex';
     document.getElementById('nav-account-wrap').style.display = signedIn ? 'block' : 'none';
     document.getElementById('menu-auth-signed-out').style.display = signedIn ? 'none' : 'block';
