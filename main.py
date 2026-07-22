@@ -797,7 +797,7 @@ def render_email_html(subject: str, body_html: str, recipient: User, token: str)
       {body}
     </div>
     <div style="background:#F1F3F8;padding:20px 26px;color:#888;font-size:11px;line-height:1.6;">
-      Rink Collective &middot; Boston, MA<br>
+      Rink Collective<br>
       You're receiving this because you have a Rink Collective account.
       <a href="{unsubscribe_url}" style="color:#656C84;text-decoration:underline;">Unsubscribe</a> &middot;
       <a href="{unsubscribe_url}" style="color:#656C84;text-decoration:underline;">Manage preferences</a>
